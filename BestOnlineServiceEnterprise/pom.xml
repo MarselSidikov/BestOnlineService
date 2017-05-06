@@ -10,6 +10,9 @@
 
     <properties>
         <spring.version>4.3.8.RELEASE</spring.version>
+        <jdbc.driver.version>9.1-901-1.jdbc4</jdbc.driver.version>
+        <junit.version>4.12</junit.version>
+        <mockito.version>2.0.2-beta</mockito.version>
     </properties>
 
     <dependencies>
@@ -26,7 +29,19 @@
         <dependency>
             <groupId>postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>9.1-901-1.jdbc4</version>
+            <version>${jdbc.driver.version}</version>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>${mockito.version}</version>
+        </dependency>
+
+
     </dependencies>
 </project>
