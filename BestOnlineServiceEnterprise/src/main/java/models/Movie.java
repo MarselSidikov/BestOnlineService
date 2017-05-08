@@ -1,4 +1,4 @@
-package poster.models;
+package models;
 
 import java.sql.Time;
 import java.util.Date;

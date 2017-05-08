@@ -1,14 +1,14 @@
-package poster.dao;
+package dao;
 
-import poster.models.Movie;
+import models.Movie;
 
 /**
  * 08.05.2017
- * PosterDao @author Ayupov Ayaz (First Software Engineering Platform)
+ * AfishaDao @author Ayupov Ayaz (First Software Engineering Platform)
  *
  * @version v1.0 /
  */
-public class PosterDao implements BasePosterDao{
+public class AfishaDao implements BaseAfishaDao {
     public Movie find(int id) {
         return null;
     }
