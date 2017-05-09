@@ -21,23 +21,15 @@ public class ProfileDao implements BaseProfileDao {
         return null;
     }
 
-    public void delete(int friend) {
+    public void delete(int friend, String users, String posts) {
 
     }
 
-    public void add(int friend) {
+    public void add(int friend, String posts) {
 
     }
 
-    public void add(String posts) {
-
-    }
-
-    public void delete(String posts) {
-
-    }
-
-    public void update(Profile users) {
+    public void update(Profile users, Profile posts) {
 
     }
 

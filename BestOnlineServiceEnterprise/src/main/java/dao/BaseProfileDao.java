@@ -13,11 +13,9 @@ import java.util.List;
 public interface BaseProfileDao {
     List<Profile> findAllByUsers(String users);
     Profile findFriend (int friend);
-    void delete (int friend);
-    void add (int friend);
-    void add (String posts);
-    void delete (String posts);
-    void update (Profile users);
+    void delete (int friend, String users, String posts);
+    void add (int friend, String posts);
+    void update (Profile users , Profile posts);
     void save (Profile users);
 
 }
