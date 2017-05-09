@@ -42,6 +42,15 @@ public class MessageDaoJdbcImpl implements MessageDao{
     //language=SQL
     private static final String SQL_FIND_MESSAGE_BY_ID = "SELECT * FROM message WHERE message_id = :messageId";
 
+//    //language=SQL
+//    private static final String SQL_ADD_MESSAGE = "INSERT INTO message(text, chat_id, user_id) VALUES (?, ?, ?)";
+//    //language=SQL
+//    private static final String SQL_UPDATE_MESSAGE = "UPDATE message SET text = ? WHERE message_id = ?";
+//    //language=SQL
+//    private static final String SQL_FIND_MESSAGE_BY_CHAT_ID = "SELECT * FROM message JOIN chat ON message.chat_id = chat.chat_id WHERE chat.chat_id = ?";
+//    //language=SQL
+//    private static final String SQL_FIND_MESSAGE_BY_ID = "SELECT * FROM message WHERE message_id = ?";
+
     public void add(Message message) {
         Map<String, Object> params = new HashMap<>();
         params.put("text", message.getText());

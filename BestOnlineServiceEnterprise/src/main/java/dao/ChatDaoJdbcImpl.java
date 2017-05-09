@@ -39,6 +39,15 @@ public class ChatDaoJdbcImpl implements ChatDao{
     //language=SQL
     private static final String SQL_UPDATE_CHAT = "UPDATE chat SET userName = :userName, user_id = :userId WHERE chat_id = :chatId";
 
+//    //language=SQL
+//    private static final String SQL_FIND_CHAT = "SELECT * FROM chat WHERE chat_id = ?";
+//    //language=SQL
+//    private static final String SQL_ADD_CHAT = "INSERT INTO chat(userName, user_id) VALUES (?, ?)";
+//    //language=SQL
+//    private static final String SQL_DELETE_CHAT = "DELETE FROM chat WHERE chat_id = ?";
+//    //language=SQL
+//    private static final String SQL_UPDATE_CHAT = "UPDATE chat SET userName = ?, user_id = ? WHERE chat_id = ?";
+
     public Chat find(Integer chatId) {
 //        return  template.query(SQL_FIND_CHAT,chatRowMapper, chatId);
         Map<String, Object> params = new HashMap<>();
