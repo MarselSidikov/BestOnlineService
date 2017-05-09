@@ -59,15 +59,13 @@ public class MessageDaoJdbcImpl implements MessageDao{
 
     public Message findById(Integer messageId) {
         Map<String, Object> params = new HashMap<>();
-//        params.put("messageId", message.getMessageId());
-//        return namedParameterTemplate.query(SQL_FIND_MESSAGE_BY_ID, params,messageRowMapper);
-        return null;
+        params.put("messageId", message.getMessageId());
+        return (Message) namedParameterTemplate.query(SQL_FIND_MESSAGE_BY_ID, params,messageRowMapper);
     }
 
     public List<Message> findByChatId(Integer chatId) {
         Map<String, Object> params = new HashMap<>();
-//        params.put("chatId", chat.getChatId());
-//        return namedParameterTemplate.query(SQL_FIND_MESSAGE_BY_CHAT_ID, params,chatRowMapper);
-        return null;
+        params.put("chatId", chat.getChatId());
+        return namedParameterTemplate.query(SQL_FIND_MESSAGE_BY_CHAT_ID, params,messageRowMapper);
     }
 }

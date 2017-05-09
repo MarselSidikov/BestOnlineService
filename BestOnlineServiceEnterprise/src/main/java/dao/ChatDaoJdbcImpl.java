@@ -39,11 +39,11 @@ public class ChatDaoJdbcImpl implements ChatDao{
     //language=SQL
     private static final String SQL_UPDATE_CHAT = "UPDATE chat SET userName = :userName, user_id = :userId WHERE chat_id = :chatId";
 
-    public void find(Integer chatId) {
+    public Chat find(Integer chatId) {
 //        return  template.query(SQL_FIND_CHAT,chatRowMapper, chatId);
         Map<String, Object> params = new HashMap<>();
-//        params.put("chatId", chat.getChatId());
-//        return namedParameterTemplate.query(SQL_FIND_CHAT, params,chatRowMapper);
+        params.put("chatId", chat.getChatId());
+        return (Chat)namedParameterTemplate.query(SQL_FIND_CHAT, params,chatRowMapper);
     }
 
     public void add(Chat chat) {
@@ -54,10 +54,10 @@ public class ChatDaoJdbcImpl implements ChatDao{
     }
 
     public void delete(Integer chatId) {
-//        return template.query(SQL_DELETE_CHAT, chatRowMapper, chatId);
+//        template.query(SQL_DELETE_CHAT, chatRowMapper, chatId);
         Map<String, Object> params = new HashMap<>();
-//        params.put("chatId", chat.getChatId());
-//        return namedParameterTemplate.query(SQL_DELETE_CHAT, params,chatRowMapper);
+        params.put("chatId", chat.getChatId());
+        namedParameterTemplate.query(SQL_DELETE_CHAT, params,chatRowMapper);
 
     }
 
