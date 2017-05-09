@@ -2,6 +2,8 @@ package dao;
 
 import models.Movie;
 
+import java.util.List;
+
 /**
  * 08.05.2017
  * BaseAfishaDao @author Ayupov Ayaz (First Software Engineering Platform)
@@ -11,15 +13,17 @@ import models.Movie;
 public interface BaseAfishaDao {
     Movie find(int id);
 
-    Movie findByName(String name);
+    List<Movie> findByName(String name);
 
-    Movie findByContry(String contry);
+    List<Movie> findByCountry(String country);
 
-    Movie findByProducer(String producer);
+    List<Movie> findByProducer(String producer);
 
-    Movie findByGenre(String genre);
+    List<Movie> findByGenre(String genre);
 
-    void save(Movie movie);
+    List<Movie> findByActors(String actorsName);
+
+    int save(Movie movie);
 
     void update(Movie movie);
 

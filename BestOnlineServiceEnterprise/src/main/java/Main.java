@@ -1,3 +1,7 @@
+import dao.AfishaJdbcTemplteDao;
+import dao.BaseAfishaDao;
+import models.Movie;
+
 /**
  * 08.05.2017
  * Main @author Ayupov Ayaz (First Software Engineering Platform)
@@ -6,6 +10,11 @@
  */
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!!!!!");
+        BaseAfishaDao afishaDao = new AfishaJdbcTemplteDao();
+        Movie movie43 = new Movie.Builder().name("movie").releaseDate("2013").genre("Комедия").country("США")
+                .lasting(2.5).description("Сам2222й").actors("Хью Джекман")
+                .picture("").producer("Стивен Брилл").build();
+
+        System.out.println( afishaDao.findByActors("Хью Джекман"));
     }
 }

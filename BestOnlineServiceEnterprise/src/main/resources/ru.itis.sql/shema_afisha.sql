@@ -1,11 +1,11 @@
-CREATE TABLE poster (
+CREATE TABLE afisha (
   id SERIAL PRIMARY KEY,
   name VARCHAR(50),
-  date DATE,
+  releaseDate VARCHAR(10),
   genre VARCHAR(50),
   country VARCHAR(50),
   producer VARCHAR(50),
-  lasting TIME,
+  lasting DOUBLE PRECISION,
   description VARCHAR(255),
   actors VARCHAR(50),
   picture VARCHAR(100)

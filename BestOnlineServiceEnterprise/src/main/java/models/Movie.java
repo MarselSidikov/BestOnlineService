@@ -12,11 +12,11 @@ import java.util.Date;
 public class Movie {
     private int id;
     private String name;
-    private Date releaseDate;
+    private String releaseDate;
     private String genre;
     private String country;
     private String producer;
-    private Time lasting;
+    private Double lasting;
     private String description;
     private String actors;
     private String picture;
@@ -34,14 +34,14 @@ public class Movie {
         this.picture = builder.picture;
     }
 
-    private static class Builder{
+    public static class Builder{
         private int id;
         private String name;
-        private Date releaseDate;
+        private String releaseDate;
         private String genre;
         private String country;
         private String producer;
-        private Time lasting;
+        private Double lasting;
         private String description;
         private String actors;
         private String picture;
@@ -54,11 +54,11 @@ public class Movie {
             this.name = name;
             return this;
         }
-        public Builder releaseDate(Date releaseDate){
+        public Builder releaseDate(String releaseDate){
             this.releaseDate = releaseDate;
             return this;
         }
-        public Builder genry(String genre){
+        public Builder genre(String genre){
             this.genre = genre;
             return this;
         }
@@ -70,7 +70,7 @@ public class Movie {
             this.producer = producer;
             return this;
         }
-        public Builder lasting(Time lasting){
+        public Builder lasting(Double lasting){
             this.lasting = lasting;
             return this;
         }
@@ -103,7 +103,7 @@ public class Movie {
         return name;
     }
 
-    public Date getReleaseDate() {
+    public String getReleaseDate() {
         return releaseDate;
     }
 
@@ -119,7 +119,7 @@ public class Movie {
         return producer;
     }
 
-    public Time getLasting() {
+    public Double getLasting() {
         return lasting;
     }
 
