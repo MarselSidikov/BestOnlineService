@@ -42,7 +42,7 @@ public class ChatDaoJdbcImpl implements ChatDao{
     public Chat find(Integer chatId) {
 //        return  template.query(SQL_FIND_CHAT,chatRowMapper, chatId);
         Map<String, Object> params = new HashMap<>();
-        params.put("chatId", chat.getChatId());
+        params.put("chatId", chatId);
         return (Chat)namedParameterTemplate.query(SQL_FIND_CHAT, params,chatRowMapper);
     }
 
@@ -56,7 +56,7 @@ public class ChatDaoJdbcImpl implements ChatDao{
     public void delete(Integer chatId) {
 //        template.query(SQL_DELETE_CHAT, chatRowMapper, chatId);
         Map<String, Object> params = new HashMap<>();
-        params.put("chatId", chat.getChatId());
+        params.put("chatId", chatId);
         namedParameterTemplate.query(SQL_DELETE_CHAT, params,chatRowMapper);
 
     }
