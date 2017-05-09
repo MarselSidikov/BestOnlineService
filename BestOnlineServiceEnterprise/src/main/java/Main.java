@@ -16,7 +16,7 @@ public class Main {
 //        List<Chat> chatList = (List<Chat>) chatDao.add();
 //        System.out.println(chatList);
         MessageDaoJdbcImpl messageDao = context.getBean(MessageDaoJdbcImpl.class);
-       
+
 
     }
 }
