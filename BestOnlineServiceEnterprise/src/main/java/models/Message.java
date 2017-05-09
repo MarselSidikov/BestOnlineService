@@ -14,9 +14,8 @@ public class Message {
     private int chatId;
     private int userId;
 
-    public Message(){}
 
-    public Message(int messageId, String text, int chatId, int userId) {
+    public Message(Builder builder) {
         this.messageId = messageId;
         this.text = text;
         this.chatId = chatId;
@@ -63,42 +62,40 @@ public class Message {
                 + userId;
     }
 
-    public static Builder newBuilder() {
-        return new Message().new Builder();
-    }
 
-    public class Builder {
+    public static class Builder {
+
+        public Builder() {
+        }
 
         private int messageId;
         private String text;
         private int chatId;
         private int userId;
 
-        public Builder() {
-        }
 
-        public Builder MessageId(int messageId) {
+        public Builder messageId(int messageId) {
             this.messageId = messageId;
             return this;
         }
 
-        public Builder Text(String text) {
+        public Builder text(String text) {
             this.text = text;
             return this;
         }
 
-        public Builder ChatId(int chatId) {
+        public Builder chatId(int chatId) {
             this.chatId = chatId;
             return this;
         }
 
-        public Builder UserId(int userId) {
+        public Builder userId(int userId) {
             this.userId = userId;
             return this;
         }
 
         public Message build() {
-            return Message.this;
+            return new Message(this);
         }
     }
 }

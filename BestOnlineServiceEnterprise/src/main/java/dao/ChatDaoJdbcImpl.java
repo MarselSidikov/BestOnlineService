@@ -21,15 +21,15 @@ public class ChatDaoJdbcImpl implements ChatDao{
         this.namedParameterTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
-//        private RowMapper<Chat> chatRowMapper = new RowMapper<Chat>() {
-//        public Chat mapRow(ResultSet resultSet, int i) throws SQLException {
-//            Chat chat = new Chat.Builder()
-//                    .chatId(resultSet.getInt("chat_id"))
-//                    .userName(resultSet.getString("userName"))
-//                    .userId(resultSet.getInt("user_id")).build();
-//            return chat;
-//        }
-//    };
+        private RowMapper<Chat> chatRowMapper = new RowMapper<Chat>() {
+        public Chat mapRow(ResultSet resultSet, int i) throws SQLException {
+            Chat chat = new Chat.Builder()
+                    .chatId(resultSet.getInt("chat_id"))
+                    .userName(resultSet.getString("userName"))
+                    .userId(resultSet.getInt("user_id")).build();
+            return chat;
+        }
+    };
     //language=SQL
     private static final String SQL_FIND_CHAT = "SELECT * FROM chat WHERE chat_id = :chatId";
     //language=SQL

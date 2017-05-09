@@ -22,17 +22,17 @@ public class MessageDaoJdbcImpl implements MessageDao{
         this.namedParameterTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
-//    private RowMapper<Message> messageRowMapper = new RowMapper<Message>() {
-//        public Message mapRow(ResultSet resultSet, int i) throws SQLException {
-//            Message message = new Message.Builder()
-//                    .messageId(resultSet.getInt("message_id"))
-//                    .text(resultSet.getString("text"))
-//                    .chatId(resultSet.getInt("chat_id"))
-//                    .userId(resultSet.getInt("user_id")).build();
-//
-//            return message;
-//        }
-//    };
+    private RowMapper<Message> messageRowMapper = new RowMapper<Message>() {
+        public Message mapRow(ResultSet resultSet, int i) throws SQLException {
+            Message message = new Message.Builder()
+                    .messageId(resultSet.getInt("message_id"))
+                    .text(resultSet.getString("text"))
+                    .chatId(resultSet.getInt("chat_id"))
+                    .userId(resultSet.getInt("user_id")).build();
+
+            return message;
+        }
+    };
     //language=SQL
     private static final String SQL_ADD_MESSAGE = "INSERT INTO message(text, chat_id, user_id) VALUES (:text, :chatId, :userId)";
     //language=SQL
@@ -58,14 +58,14 @@ public class MessageDaoJdbcImpl implements MessageDao{
     }
 
     public Message findById(Integer messageId) {
-//        Map<String, Object> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
 //        params.put("messageId", message.getMessageId());
 //        return namedParameterTemplate.query(SQL_FIND_MESSAGE_BY_ID, params,messageRowMapper);
         return null;
     }
 
     public List<Message> findByChatId(Integer chatId) {
-//        Map<String, Object> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
 //        params.put("chatId", chat.getChatId());
 //        return namedParameterTemplate.query(SQL_FIND_MESSAGE_BY_CHAT_ID, params,chatRowMapper);
         return null;

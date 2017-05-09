@@ -13,9 +13,8 @@ public class Chat {
     private String userName;
     private int userId;
 
-    public Chat(){}
 
-    public Chat(int chatId, String userName,int userId) {
+    public Chat(Builder builder) {
         this.chatId = chatId;
         this.userName = userName;
         this.userId = userId;
@@ -52,10 +51,8 @@ public class Chat {
                 + userName + " "
                 + userId;
     }
-    public static Builder newBuilder() {
-        return new Chat().new Builder();
-    }
-    public class Builder {
+
+    public static class Builder {
 
         private int chatId;
         private String userName;
@@ -64,23 +61,23 @@ public class Chat {
         public Builder() {
         }
 
-        public Builder ChatId(int chatId) {
+        public Builder chatId(int chatId) {
             this.chatId = chatId;
             return this;
         }
 
-        public Builder UserName(String userName) {
+        public Builder userName(String userName) {
             this.userName = userName;
             return this;
         }
 
-        public Builder UserId(int userId) {
+        public Builder userId(int userId) {
             this.userId = userId;
             return this;
         }
 
         public Chat build() {
-            return Chat.this;
+            return new Chat(this);
         }
     }
 }
