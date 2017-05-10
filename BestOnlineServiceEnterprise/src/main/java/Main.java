@@ -1,4 +1,5 @@
-import dao.AfishaJdbcTemplteDao;
+import dao.AfishaJdbcTemplteDaoImpl;
+import dao.AfishaNamedJdbcTemplateDaoImpl;
 import dao.BaseAfishaDao;
 import models.Movie;
 
@@ -10,11 +11,12 @@ import models.Movie;
  */
 public class Main {
     public static void main(String[] args) {
-        BaseAfishaDao afishaDao = new AfishaJdbcTemplteDao();
-        Movie movie43 = new Movie.Builder().name("movie").releaseDate("2013").genre("Комедия").country("США")
-                .lasting(2.5).description("Сам2222й").actors("Хью Джекман")
-                .picture("").producer("Стивен Брилл").build();
+        BaseAfishaDao afishaDao = new AfishaNamedJdbcTemplateDaoImpl();
+        Movie movie43 = new Movie.Builder().name("movie43").releaseDate("2012").genre("Комедия").country("США")
+                .lasting(2.5).description("Самый упоротый фильм2").actors("Хью Джекман").id(1)
+                .picture("2.jpg").producer("Стивен Брилл").build();
 
-        System.out.println( afishaDao.findByActors("Хью Джекман"));
+
+        System.out.println( afishaDao.findByProducer("Стивен Брилл"));
     }
 }

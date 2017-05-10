@@ -16,11 +16,11 @@ import java.util.List;
 
 /**
  * 08.05.2017
- * AfishaJdbcTemplteDao @author Ayupov Ayaz (First Software Engineering Platform)
+ * AfishaJdbcTemplteDaoImpl @author Ayupov Ayaz (First Software Engineering Platform)
  *
  * @version v1.0 /
  */
-public class AfishaJdbcTemplteDao implements BaseAfishaDao {
+public class AfishaJdbcTemplteDaoImpl implements BaseAfishaDao {
 
     private JdbcTemplate jdbcTemplate;
 
@@ -47,7 +47,7 @@ public class AfishaJdbcTemplteDao implements BaseAfishaDao {
     //language=SQL
     private final String SQL_SELECT_MOVIE_BY_ACTORS = "SELECT * FROM afisha WHERE actors = ?";
 
-    public AfishaJdbcTemplteDao() {
+    public AfishaJdbcTemplteDaoImpl() {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("ru.itis\\spring\\context.xml");
          DataSource dataSource = (DataSource) applicationContext.getBean(DataSource.class);
          this.jdbcTemplate = new JdbcTemplate(dataSource);
