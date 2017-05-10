@@ -1,5 +1,6 @@
 package test;
 
+import models.Message;
 import org.junit.Before;
 import org.junit.Test;
 

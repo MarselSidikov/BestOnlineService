@@ -13,7 +13,7 @@ public class Main {
     public static void main(String[] args) {
         ApplicationContext context = new ClassPathXmlApplicationContext("ru.itis.spring\\context.xml");
         ChatDaoJdbcImpl chatDao = context.getBean(ChatDaoJdbcImpl.class);
-
+        chatDao.delete(1);
 //        List<Chat> chatList = chatDao.add();
 //        System.out.println(chatList);
 //        MessageDaoJdbcImpl messageDao = context.getBean(MessageDaoJdbcImpl.class);
