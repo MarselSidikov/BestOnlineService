@@ -3,13 +3,11 @@ package dao;
 import models.Chat;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
+
 
 public class ChatDaoJdbcImpl implements ChatDao{
 
@@ -43,10 +41,7 @@ public class ChatDaoJdbcImpl implements ChatDao{
     }
 
     public void add(Chat chat) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("userName", chat.getUserName());
-        params.put("userId", chat.getUserId());
-        template.update(SQL_ADD_CHAT, params);
+        template.update(SQL_ADD_CHAT, chatRowMapper);
     }
 
     public void delete(Integer chatId) {
@@ -55,10 +50,7 @@ public class ChatDaoJdbcImpl implements ChatDao{
     }
 
     public void update(Chat chat) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("userName", chat.getUserName());
-        params.put("userId", chat.getUserId());
-        template.update(SQL_UPDATE_CHAT, params);
+        template.update(SQL_UPDATE_CHAT, chatRowMapper);
 
     }
 }
