@@ -12,11 +12,18 @@ import models.Movie;
 public class Main {
     public static void main(String[] args) {
         BaseAfishaDao afishaDao = new AfishaNamedJdbcTemplateDaoImpl();
-        Movie movie43 = new Movie.Builder().name("movie43").releaseDate("2012").genre("Комедия").country("США")
-                .lasting(2.5).description("Самый упоротый фильм2").actors("Хью Джекман").id(1)
-                .picture("2.jpg").producer("Стивен Брилл").build();
+        Movie movie = new Movie.Builder()
+                .name("Доспехи бога: В поисках сокровищ")
+                .releaseDate("8 мая 2017")
+                .genre("комедия")
+                .country("Китай")
+                .lasting(98.0)
+                .description("Профессора археологии Джека Си ждет по-настоящему увлекательное приключение.")
+                .actors("Джеки Чан")
+                .producer("Джонатан Шень")
+                .picture("default.jpg")
+                .build();
 
-
-        System.out.println( afishaDao.findByProducer("Стивен Брилл"));
+        System.out.println(afishaDao.save(movie));
     }
 }
