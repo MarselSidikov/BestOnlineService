@@ -9,25 +9,25 @@ package models;
  */
 public class Message {
 
-    private int messageId;
+    private int id;
     private String text;
-    private int chatId;
-    private int userId;
+    private int chat_id;
+    private int author_id;
 
 
     public Message(Builder builder) {
-        this.messageId = messageId;
+        this.id = id;
         this.text = text;
-        this.chatId = chatId;
-        this.userId = userId;
+        this.chat_id = chat_id;
+        this.author_id = author_id;
     }
 
-    public int getMessageId() {
-        return messageId;
+    public int getId() {
+        return id;
     }
 
-    public void setMessageId(int messageId) {
-        this.messageId = messageId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getText() {
@@ -38,28 +38,28 @@ public class Message {
         this.text = text;
     }
 
-    public int getChatId() {
-        return chatId;
+    public int getChat_id() {
+        return chat_id;
     }
 
-    public void setChatId(int chatId) {
-        this.chatId = chatId;
+    public void setChat_id(int chat_id) {
+        this.chat_id = chat_id;
     }
 
-    public int getUserId() {
-        return userId;
+    public int getAuthor_id() {
+        return author_id;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void seAuthor_id(int author_id) {
+        this.author_id = author_id;
     }
 
     @Override
     public String toString() {
-        return messageId + " "
+        return id + " "
                 + text + " "
-                + chatId + " "
-                + userId;
+                + chat_id + " "
+                + author_id;
     }
 
 
@@ -68,14 +68,14 @@ public class Message {
         public Builder() {
         }
 
-        private int messageId;
+        private int id;
         private String text;
-        private int chatId;
-        private int userId;
+        private int chat_id;
+        private int author_id;
 
 
-        public Builder messageId(int messageId) {
-            this.messageId = messageId;
+        public Builder id(int id) {
+            this.id = id;
             return this;
         }
 
@@ -84,13 +84,13 @@ public class Message {
             return this;
         }
 
-        public Builder chatId(int chatId) {
-            this.chatId = chatId;
+        public Builder chat_id(int chat_id) {
+            this.chat_id = chat_id;
             return this;
         }
 
-        public Builder userId(int userId) {
-            this.userId = userId;
+        public Builder author_id(int author_id) {
+            this.author_id = author_id;
             return this;
         }
 

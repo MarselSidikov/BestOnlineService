@@ -9,72 +9,73 @@ package models;
  */
 public class Chat {
 
-    private int chatId;
-    private String userName;
-    private int userId;
-
+    private int id;
+    private User creator_id;
+    private String name;
 
     public Chat(Builder builder) {
-        this.chatId = chatId;
-        this.userName = userName;
-        this.userId = userId;
+        this.creator_id = creator_id;
+        this.name = name;
+        this.id = id;
 
     }
 
-    public int getChatId() {
-        return chatId;
+    public int getId() {
+        return id;
     }
 
-    public void setChatId(int chatId) {
-        this.chatId = chatId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public User getCreator_id() {
+        return creator_id;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setCreator_id(User creator_id) {
+        this.creator_id = creator_id;
     }
 
-    public int getUserId() {
-        return userId;
+    public String getName() {
+        return name;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public String toString() {
-        return chatId + " "
-                + userName + " "
-                + userId;
+        return creator_id + " "
+                + name + " "
+                + id;
     }
 
     public static class Builder {
 
-        private int chatId;
-        private String userName;
-        private int userId;
+        private int creator_id;
+        private String name;
+        private int id;
+
 
         public Builder() {
         }
 
-        public Builder chatId(int chatId) {
-            this.chatId = chatId;
+        public Builder creator_id(int creator_id) {
+            this.creator_id = creator_id;
             return this;
         }
 
-        public Builder userName(String userName) {
-            this.userName = userName;
+        public Builder name(String name) {
+            this.name = name;
             return this;
         }
 
-        public Builder userId(int userId) {
-            this.userId = userId;
+        public Builder id(int id) {
+            this.id = id;
             return this;
         }
+
 
         public Chat build() {
             return new Chat(this);
