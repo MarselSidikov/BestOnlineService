@@ -8,6 +8,7 @@ package models;
  * @version v1.0
  */
 public class Chat {
+<<<<<<< HEAD
 
     private int chatId;
     private String userName;
@@ -80,4 +81,6 @@ public class Chat {
             return new Chat(this);
         }
     }
+=======
+>>>>>>> TASK_POSTER_01
 }

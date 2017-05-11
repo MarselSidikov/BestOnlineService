@@ -1,8 +1,5 @@
 package dao;
 
-import models.Chat;
-import models.Message;
-
 import java.util.List;
 
 /**
