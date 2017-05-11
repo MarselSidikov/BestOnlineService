@@ -1,5 +1,7 @@
 package models;
 
+import java.util.List;
+
 /**
  * 06.05.2017
  * Chat
@@ -10,75 +12,10 @@ package models;
 public class Chat {
 
     private int id;
-    private User creator_id;
+    private User creator;
     private String name;
-
-    public Chat(Builder builder) {
-        this.creator_id = creator_id;
-        this.name = name;
-        this.id = id;
-
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public User getCreator_id() {
-        return creator_id;
-    }
-
-    public void setCreator_id(User creator_id) {
-        this.creator_id = creator_id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return creator_id + " "
-                + name + " "
-                + id;
-    }
-
-    public static class Builder {
-
-        private int creator_id;
-        private String name;
-        private int id;
+    private List<User> users;
+    private List<Message> messages;
 
 
-        public Builder() {
-        }
-
-        public Builder creator_id(int creator_id) {
-            this.creator_id = creator_id;
-            return this;
-        }
-
-        public Builder name(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder id(int id) {
-            this.id = id;
-            return this;
-        }
-
-
-        public Chat build() {
-            return new Chat(this);
-        }
-    }
 }
