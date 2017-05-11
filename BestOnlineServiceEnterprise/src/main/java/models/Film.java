@@ -1,15 +1,12 @@
 package models;
 
-import java.sql.Time;
-import java.util.Date;
-
 /**
  * 08.05.2017
- * Movie @author Ayupov Ayaz (First Software Engineering Platform)
+ * Film @author Ayupov Ayaz (First Software Engineering Platform)
  *
  * @version v1.0 /
  */
-public class Movie {
+public class Film {
     private int id;
     private String name;
     private String releaseDate;
@@ -21,7 +18,7 @@ public class Movie {
     private String actors;
     private String picture;
 
-    public Movie(Builder builder){
+    public Film(Builder builder){
         this.id = builder.id;
         this.name = builder.name;
         this.releaseDate = builder.releaseDate;
@@ -86,8 +83,8 @@ public class Movie {
             this.picture = picture;
             return this;
         }
-        public Movie build(){
-            return new Movie(this);
+        public Film build(){
+            return new Film(this);
         }
     }
 
@@ -151,9 +148,9 @@ public class Movie {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj != null || obj instanceof Movie){
+        if(obj != null || obj instanceof Film){
             if(obj == this) return true;
-            Movie that = (Movie) obj;
+            Film that = (Film) obj;
             return this.id == that.id
                     && this.name.equals(that.name)
                     && this.genre.equals(that.genre)

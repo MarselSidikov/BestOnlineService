@@ -1,6 +1,6 @@
 package dao;
 
-import models.Movie;
+import models.Film;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,50 +11,50 @@ import org.springframework.jdbc.support.KeyHolder;
 
 import javax.sql.DataSource;
 import java.sql.*;
-import java.util.Date;
 import java.util.List;
 
 /**
  * 08.05.2017
- * AfishaJdbcTemplteDaoImpl @author Ayupov Ayaz (First Software Engineering Platform)
+ * FilmsJdbcTemplteDaoImpl @author Ayupov Ayaz (First Software Engineering Platform)
  *
  * @version v1.0 /
  */
-public class AfishaJdbcTemplteDaoImpl implements BaseAfishaDao {
+public class FilmsJdbcTemplteDaoImpl implements BaseFilmsDao {
 
     private JdbcTemplate jdbcTemplate;
 
-
+    //language=SQL
+    private final String SQL_SELECT_ALL = "SELECT * FROM films";
     // language=SQL
-    private final String SQL_SELECT_MOVIE_BY_ID = "SELECT * FROM afisha WHERE id = ?";
+    private final String SQL_SELECT_FILM_BY_ID = "SELECT * FROM films WHERE id = ?";
     // language=SQL
-    private final String SQL_SELECT_MOVIE_BY_NAME = "SELECT * FROM afisha WHERE name = ?";
+    private final String SQL_SELECT_FILMS_BY_NAME = "SELECT * FROM films WHERE name = ?";
     // language=SQL
-    private final String SQL_SELECT_MOVIE_BY_COUNTRY = "SELECT * FROM afisha WHERE country = ?";
+    private final String SQL_SELECT_FILMS_BY_COUNTRY = "SELECT * FROM films WHERE country = ?";
     // language=SQL
-    private final String SQL_SELECT_MOVIE_BY_PRODUCER = "SELECT * FROM afisha WHERE producer = ?";
+    private final String SQL_SELECT_FILMS_BY_PRODUCER = "SELECT * FROM films WHERE producer = ?";
     // language=SQL
-    private final String SQL_SELECT_MOVIE_BY_GENRE = "SELECT * FROM afisha WHERE genre = ?";
+    private final String SQL_SELECT_FILMS_BY_GENRE = "SELECT * FROM films WHERE genre = ?";
     // language=SQL
-    private final String SQL_INSERT_MOVIE = "INSERT INTO afisha(name,releaseDate,genre,country,producer,lasting,description,actors,picture) VALUES " +
+    private final String SQL_INSERT_FILM = "INSERT INTO films(name,releaseDate,genre,country,producer,lasting,description,actors,picture) VALUES " +
             "(? , ? , ? , ? , ? , ? , ? , ? , ?)";
     // language=SQL
-    private final String SQL_UPDATE_MOVIE_BY_ID = "UPDATE afisha SET name = ? , releasedate = ? , " +
+    private final String SQL_UPDATE_FILM_BY_ID = "UPDATE films SET name = ? , releasedate = ? , " +
             "genre = ? , country = ? , producer = ? , lasting = ? , description = ? , actors = ? , picture = ? WHERE id = ? ";
     // language=SQL
-    private final String SQL_DELETE_MOVIE_BY_ID = "DELETE FROM afisha WHERE id = ?";
+    private final String SQL_DELETE_FILM_BY_ID = "DELETE FROM films WHERE id = ?";
 
     //language=SQL
-    private final String SQL_SELECT_MOVIE_BY_ACTORS = "SELECT * FROM afisha WHERE actors = ?";
+    private final String SQL_SELECT_FILMS_BY_ACTORS = "SELECT * FROM films WHERE actors = ?";
 
-    public AfishaJdbcTemplteDaoImpl() {
+    public FilmsJdbcTemplteDaoImpl() {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("ru.itis\\spring\\context.xml");
          DataSource dataSource = (DataSource) applicationContext.getBean(DataSource.class);
          this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
-    private RowMapper<Movie> movieRowMapper = new RowMapper<Movie>() {
-        public Movie mapRow(ResultSet resultSet, int i) throws SQLException {
-            return new Movie.Builder()
+    private RowMapper<Film> movieRowMapper = new RowMapper<Film>() {
+        public Film mapRow(ResultSet resultSet, int i) throws SQLException {
+            return new Film.Builder()
                     .id(resultSet.getInt(1))
                     .name(resultSet.getString("name"))
                     .releaseDate(resultSet.getString("releasedate"))
@@ -69,50 +69,50 @@ public class AfishaJdbcTemplteDaoImpl implements BaseAfishaDao {
          }
     };
 
-    public Movie find(int id) {
-        List<Movie> movies = jdbcTemplate.query(SQL_SELECT_MOVIE_BY_ID,movieRowMapper,id);
+    public Film find(int id) {
+        List<Film> movies = jdbcTemplate.query(SQL_SELECT_FILM_BY_ID,movieRowMapper,id);
         return movies.get(0);
     }
 
-    public List<Movie> findByName(String name) {
-        return jdbcTemplate.query(SQL_SELECT_MOVIE_BY_NAME,movieRowMapper,name);
+    public List<Film> findByName(String name) {
+        return jdbcTemplate.query(SQL_SELECT_FILMS_BY_NAME,movieRowMapper,name);
     }
 
-    public List<Movie> findByCountry(String country) {
-        return jdbcTemplate.query(SQL_SELECT_MOVIE_BY_COUNTRY,movieRowMapper,country);
+    public List<Film> findByCountry(String country) {
+        return jdbcTemplate.query(SQL_SELECT_FILMS_BY_COUNTRY,movieRowMapper,country);
     }
 
-    public List<Movie> findByProducer(String producer) {
-        return jdbcTemplate.query(SQL_SELECT_MOVIE_BY_PRODUCER,movieRowMapper,producer);
+    public List<Film> findByProducer(String producer) {
+        return jdbcTemplate.query(SQL_SELECT_FILMS_BY_PRODUCER,movieRowMapper,producer);
     }
 
-    public List<Movie> findByGenre(String genre) {
-        return jdbcTemplate.query(SQL_SELECT_MOVIE_BY_GENRE,movieRowMapper,genre);
+    public List<Film> findByGenre(String genre) {
+        return jdbcTemplate.query(SQL_SELECT_FILMS_BY_GENRE,movieRowMapper,genre);
     }
 
-    public List<Movie> findByActors(String actorsName) {
-        return jdbcTemplate.query(SQL_SELECT_MOVIE_BY_ACTORS,movieRowMapper,actorsName);
+    public List<Film> findByActors(String actorsName) {
+        return jdbcTemplate.query(SQL_SELECT_FILMS_BY_ACTORS,movieRowMapper,actorsName);
     }
 
-    public int save( Movie movie) {
+    public int save( Film film) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         // параметры:
-        final String name = movie.getName();
-        final String releaseDate = movie.getReleaseDate();
-        final String genre = movie.getGenre();
-        final String country = movie.getCountry();
-        final String producer = movie.getProducer();
-        final Double lasting = movie.getLasting();
-        final String description = movie.getDescription();
-        final String actors = movie.getActors();
-        final String picture = movie.getPicture();
+        final String name = film.getName();
+        final String releaseDate = film.getReleaseDate();
+        final String genre = film.getGenre();
+        final String country = film.getCountry();
+        final String producer = film.getProducer();
+        final Double lasting = film.getLasting();
+        final String description = film.getDescription();
+        final String actors = film.getActors();
+        final String picture = film.getPicture();
 
         jdbcTemplate.update(
                 new PreparedStatementCreator() {
                     public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
 
                         PreparedStatement ps =
-                                connection.prepareStatement(SQL_INSERT_MOVIE, new String[]{"id"});
+                                connection.prepareStatement(SQL_INSERT_FILM, new String[]{"id"});
                         ps.setString(1, name);
                         ps.setString(2, releaseDate);
                         ps.setString(3, genre);
@@ -128,20 +128,20 @@ public class AfishaJdbcTemplteDaoImpl implements BaseAfishaDao {
         return keyHolder.getKey().intValue();
     }
 
-    public void update(Movie movie) {
-        final int id = movie.getId();
-        final String name = movie.getName();
-        final String releaseDate = movie.getReleaseDate();
-        final String genre = movie.getGenre();
-        final String country = movie.getCountry();
-        final String producer = movie.getProducer();
-        final Double lasting = movie.getLasting();
-        final String description = movie.getDescription();
-        final String actors = movie.getActors();
-        final String picture = movie.getPicture();
+    public void update(Film film) {
+        final int id = film.getId();
+        final String name = film.getName();
+        final String releaseDate = film.getReleaseDate();
+        final String genre = film.getGenre();
+        final String country = film.getCountry();
+        final String producer = film.getProducer();
+        final Double lasting = film.getLasting();
+        final String description = film.getDescription();
+        final String actors = film.getActors();
+        final String picture = film.getPicture();
         jdbcTemplate.update(new PreparedStatementCreator() {
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-                PreparedStatement ps = connection.prepareStatement(SQL_UPDATE_MOVIE_BY_ID);
+                PreparedStatement ps = connection.prepareStatement(SQL_UPDATE_FILM_BY_ID);
                 ps.setString(1, name);
                 ps.setString(2, releaseDate);
                 ps.setString(3, genre);
@@ -163,11 +163,15 @@ public class AfishaJdbcTemplteDaoImpl implements BaseAfishaDao {
                 new PreparedStatementCreator() {
                     public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                         PreparedStatement ps =
-                                connection.prepareStatement(SQL_DELETE_MOVIE_BY_ID);
+                                connection.prepareStatement(SQL_DELETE_FILM_BY_ID);
                         ps.setInt(1,deleteId);
                         return ps;
                     }
                 }
         );
+    }
+
+    public List<Film> findAll() {
+       return jdbcTemplate.query(SQL_SELECT_ALL,movieRowMapper);
     }
 }

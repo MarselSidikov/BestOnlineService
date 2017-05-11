@@ -1,7 +1,6 @@
-import dao.AfishaJdbcTemplteDaoImpl;
-import dao.AfishaNamedJdbcTemplateDaoImpl;
-import dao.BaseAfishaDao;
-import models.Movie;
+import dao.BaseFilmsDao;
+import dao.FilmsNamedJdbcTemplateDaoImpl;
+import models.Film;
 
 /**
  * 08.05.2017
@@ -11,8 +10,8 @@ import models.Movie;
  */
 public class Main {
     public static void main(String[] args) {
-        BaseAfishaDao afishaDao = new AfishaNamedJdbcTemplateDaoImpl();
-        Movie movie = new Movie.Builder()
+        BaseFilmsDao afishaDao = new FilmsNamedJdbcTemplateDaoImpl();
+        Film film = new Film.Builder()
                 .name("Доспехи бога: В поисках сокровищ")
                 .releaseDate("8 мая 2017")
                 .genre("комедия")
@@ -24,6 +23,6 @@ public class Main {
                 .picture("default.jpg")
                 .build();
 
-        System.out.println(afishaDao.save(movie));
+        System.out.println(afishaDao.save(film));
     }
 }

@@ -1,20 +1,8 @@
-CREATE TABLE afisha (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR(50),
-  releaseDate VARCHAR(20),
-  genre VARCHAR(50),
-  country VARCHAR(50),
-  producer VARCHAR(50),
-  lasting DOUBLE PRECISION,
-  description VARCHAR(255),
-  actors VARCHAR(50),
-  picture VARCHAR(100)
-);
 
 /**
 Добавление фильмов
  */
-INSERT INTO afisha (name, releaseDate, genre, country, producer, lasting, description, actors, picture)
+INSERT INTO films (name, releaseDate, genre, country, producer, lasting, description, actors, picture)
 VALUES ('Меч короля Артура',
         '11 мая 2017',
         'фентези',
@@ -25,7 +13,7 @@ VALUES ('Меч короля Артура',
         'Чарли Ханном',
         '1.jpg' );
 
-INSERT INTO afisha (name, releaseDate, genre, country, producer, lasting, description, actors, picture)
+INSERT INTO films (name, releaseDate, genre, country, producer, lasting, description, actors, picture)
 VALUES ('Прочь',
         '11 мая 2017',
         'ужасы',
