@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-public class ChatDaoJdbcImpl implements ChatDao{
+public class ChatDaoJdbcImpl implements ChatDao {
 
     private JdbcTemplate template;
 

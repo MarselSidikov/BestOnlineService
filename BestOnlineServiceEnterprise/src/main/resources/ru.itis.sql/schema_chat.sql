@@ -1,7 +1,6 @@
 CREATE TABLE chat (
   id SERIAL PRIMARY KEY,
-  chatId INTEGER,
-  userName VARCHAR(50),
-  userId INTEGER
+  creator_id INTEGER REFERENCES service_user(id),
+  name VARCHAR(20)
 );
 
