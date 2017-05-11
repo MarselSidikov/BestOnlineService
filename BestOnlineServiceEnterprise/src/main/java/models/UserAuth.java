@@ -71,6 +71,10 @@ public class UserAuth {
             this.date_modified = date_modified;
             return this;
         }
+
+        public UserAuth build() {
+            return new UserAuth(this);
+        }
     }
 
     public void setId() {
