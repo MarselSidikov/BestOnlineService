@@ -1,6 +1,6 @@
 package models;
 
-import services.BooksService;
+import services.ProductService;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class Product   {
     private int id;
     private String name;
     private String manufacturer;
-    private String data_release;
+    private String date_release;
     private int price;
 
 
@@ -25,7 +25,7 @@ public class Product   {
         private int id;
         private String name;
         private String manufacturer;
-        private String data_release;
+        private String date_release;
         private int price;
 
 
@@ -49,8 +49,8 @@ public class Product   {
 
         }
 
-        public Builder data_release(String data_release) {
-            this.data_release = data_release;
+        public Builder date_release(String data_release) {
+            this.date_release = date_release;
             return this;
         }
         public Builder Price(int price) {
@@ -68,7 +68,7 @@ public class Product   {
         this.id = builder.id;
         this.name = builder.name;
         this.manufacturer = builder.manufacturer;
-        this.data_release = builder.data_release;
+        this.date_release = builder.date_release;
         this.price = builder.price;
     }
 
@@ -77,7 +77,7 @@ public class Product   {
         return id +" "
                 + name +" "
                 + manufacturer +" "
-                + data_release +" "
+                + date_release +" "
                 + price +" ";
     }
 
@@ -100,8 +100,8 @@ public class Product   {
         return manufacturer;
     }
 
-    public String getData_release() {
-        return data_release;
+    public String getDate_release() {
+        return date_release;
     }
 
     public void setPrice(int price) {
@@ -122,7 +122,7 @@ public class Product   {
             return this.id == that.id
                     && this.name.equals(that.name)
                     && this.manufacturer.equals(that.manufacturer)
-                    && this.data_release.equals(that.data_release)
+                    && this.date_release.equals(that.date_release)
                     && this.price == that.price ;
         }return false;
     }
