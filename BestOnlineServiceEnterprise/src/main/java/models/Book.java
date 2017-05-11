@@ -20,7 +20,6 @@ public class Book {
     private int yearOfIssue;
     private int numberOfPages;
     private String language;
-    private boolean translatedOnRussian;
     private String descriprion;
 
     public Book(Builder builder) {
@@ -33,7 +32,6 @@ public class Book {
         this.yearOfIssue = builder.yearOfIssue;
         this.numberOfPages = builder.numberOfPages;
         this.language = builder.language;
-        this.translatedOnRussian = builder.translatedOnRussian;
         this.descriprion = builder.description;
     }
 
@@ -48,7 +46,6 @@ public class Book {
         private int yearOfIssue;
         private int numberOfPages;
         private String language;
-        private boolean translatedOnRussian;
         private String description;
 
 
@@ -97,10 +94,6 @@ public class Book {
             return this;
         }
 
-        public Builder translatedOnRussian(boolean translatedOnRussian) {
-            this.translatedOnRussian = translatedOnRussian;
-            return this;
-        }
 
         public Builder descrniption(String description) {
             this.description = description;
@@ -151,10 +144,6 @@ public class Book {
             return language;
         }
 
-        public boolean isTranslatedOnRussian() {
-            return translatedOnRussian;
-        }
-
         public String getDescription() {
             return description;
         }
@@ -170,7 +159,6 @@ public class Book {
                     " " + yearOfIssue +
                     " " + numberOfPages +
                     " " + language +
-                    " " + translatedOnRussian +
                     " " + description;
         }
 
@@ -187,7 +175,6 @@ public class Book {
                         && this.yearOfIssue == that.yearOfIssue
                         && this.numberOfPages == that.numberOfPages
                         && this.language.equals(that.language)
-                        && this.translatedOnRussian == that.translatedOnRussian
                         && this.description.equals(that.descriprion);
             }
 
@@ -205,7 +192,6 @@ public class Book {
             result = 31 * result + yearOfIssue;
             result = 31 * result + numberOfPages;
             result = 31 * result + language.hashCode();
-            result = 31 * result + (translatedOnRussian ? 1 : 0);
             result = 31 * result + description.hashCode();
             return result;
         }
