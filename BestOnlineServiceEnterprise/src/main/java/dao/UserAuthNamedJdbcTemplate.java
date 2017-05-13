@@ -38,7 +38,7 @@ public class UserAuthNamedJdbcTemplate implements BaseUserAuthDao {
     //language=SQL
     private final String SQL_SELECT_USER_BY_LOGIN = "SELECT * FROM logins WHERE login = :login";
     //language=SQL
-    private final String SQL_SELECt_USER_BY_TOKEN = "SELECT * FROM logins WHERE auth_token = auth_token";
+    private final String SQL_SELECT_USER_BY_TOKEN = "SELECT * FROM logins WHERE auth_token = auth_token";
 
     private NamedParameterJdbcTemplate namedJdbcTemplate;
 
@@ -104,7 +104,7 @@ public class UserAuthNamedJdbcTemplate implements BaseUserAuthDao {
     public UserAuth findByToken(Token token) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("auth_token", token);
-        List<UserAuth> userAuth = namedJdbcTemplate.query(SQL_SELECt_USER_BY_TOKEN, params, userAuthRowMapper);
+        List<UserAuth> userAuth = namedJdbcTemplate.query(SQL_SELECT_USER_BY_TOKEN, params, userAuthRowMapper);
         return userAuth.get(0);
     }
 }
