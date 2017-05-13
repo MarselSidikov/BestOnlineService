@@ -1,8 +1,7 @@
-
-CREATE TABLE PRODUCT (
-id_product       varchar,
-name_product     varchar,
-manufacturer     varchar,
-data_release     date,
-price_product    money
+CREATE TABLE product (
+  id SERIAL PRIMARY KEY ,
+  name VARCHAR(30),
+  manufacturer VARCHAR(30),
+  data_release VARCHAR(30),
+  price INTEGER
 );

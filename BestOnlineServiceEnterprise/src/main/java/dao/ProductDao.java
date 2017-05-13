@@ -10,11 +10,6 @@ import java.util.List;
 public interface ProductDao extends BaseDao<Product>{
     List<Product> findById(int id);
     List<Product> findByManufacturer(String manufacturer);
-    List<Product> findByDate_release(String date_release);
+    List<Product> findByDateRelease(String dateRelease);
     List<Product> findByPrice(int price);
-    void delete(Product product);
-
-    Product getById(int id);
-
-    List<Product> getAll();
 }
