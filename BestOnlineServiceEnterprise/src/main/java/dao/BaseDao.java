@@ -1,7 +1,7 @@
 package dao;
 
 import java.util.List;
-
+import models.Product;
 /**
  * 04.05.2017
  * BaseDao
@@ -12,9 +12,8 @@ import java.util.List;
 public interface BaseDao<T> {
     T find(int id);
     int save(T model);
-    void delete(int id);
     void update(T model);
-
+    void delete(int id);
     List<T> findAll();
 
 }

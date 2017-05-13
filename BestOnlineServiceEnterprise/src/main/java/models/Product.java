@@ -53,7 +53,7 @@ public class Product   {
             this.date_release = date_release;
             return this;
         }
-        public Builder Price(int price) {
+        public Builder price(int price) {
             this.price = price;
             return this;
         }

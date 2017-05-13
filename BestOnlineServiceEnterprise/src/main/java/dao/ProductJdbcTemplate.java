@@ -1,11 +1,11 @@
-package jdbc;
+package dao;
 
 import dao.ProductDao;
 import models.Product;
 
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementSetter;
+
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -46,8 +46,6 @@ public class ProductJdbcTemplate implements ProductDao {
     private final String SQL_SELECT_PRODUCT_BY_PRICE = "SELECT * FROM PRODUCT WHERE price = ?";
 
 
-
-
     //language=SQL
     private final String SQL_INSERT_PRODUCT = "INSERT INTO PRODUCT(id, name, manufacturer, date_release, price)"
             + "VALUES (id, name, manufacturer, date_release, price)";
@@ -62,84 +60,44 @@ public class ProductJdbcTemplate implements ProductDao {
     private final String SQL_DELETE_PRODUCT_BY_ID = "DELETE FROM PRODUCT WHERE id = :id";
 
     private RowMapper<Product> rowMapper = new RowMapper<Product>() {
-        @Override
-        public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Product book = new Product();
-            Product.setId(rs.getInt("id"));
-            book.setComment(rs.getString("comment"));
-            book.setDateRelease(rs.getDate("date_release"));
-            book.setTitle(rs.getString("title"));
-            book.setAuthorId(rs.getInt("author_id"));
-            return book;
+        public Product mapRow(ResultSet resultSet, int i) throws SQLException {
+            return new Product.Builder()
+                    .id(resultSet.getInt(1))
+                    .name(resultSet.getString("name"))
+                    .date_release(resultSet.getString("date_release"))
+                    .manufacturer(resultSet.getString("manufacturer"))
+                    .Price(resultSet.getInt("price"));
+        }
+
+
+        public void insert(Product product) {
+            String sql = "INSERT INTO product(id, date_release, manufacturer, price) VALUES(?,?,?,?,?)";
+            jdbcTemplate.update(sql, (product));
+        }
+
+
+        public void update(Product product) {
+            String sql = "UPDATE product SET title=?, comment=?, date_release=?, author_id=? WHERE id=?";
+            jdbcTemplate.update(sql, (product));
+        }
+
+
+        public void delete(Product product) {
+            jdbcTemplate.update("DELETE FROM product WHERE id=?", product.getId());
+        }
+
+
+        public Product getById(int id) {
+            return jdbcTemplate.queryForObject("SELECT * FROM Product WHERE id=?", rowMapper, id);
+        }
+
+
+        public List<Product> getAll() {
+            return jdbcTemplate.query("SELECT * FROM Product", rowMapper);
         }
     };
-
-    @Override
-    public void insert(Product product) {
-        String sql = "INSERT INTO product(id, date_release, manufacturer, price) VALUES(?,?,?,?,?)";
-        jdbcTemplate.update(sql, getPreparedStatementSetter(product));
-    }
-
-    @Override
-    public void update(Product product) {
-        String sql = "UPDATE book SET title=?, comment=?, date_release=?, author_id=? WHERE id=?";
-        jdbcTemplate.update(sql, getPreparedStatementSetter(product));
-    }
-
-    @Override
-    public void delete(Product product) {
-        jdbcTemplate.update("DELETE FROM product WHERE id=?", product.getId());
-    }
-
-    @Override
-    public Product getById(int id) {
-        return jdbcTemplate.queryForObject("SELECT * FROM Product WHERE id=?", rowMapper, id);
-    }
-
-    @Override
-    public List<Product> getAll() {
-        return jdbcTemplate.query("SELECT * FROM Product", rowMapper);
-    }
-
-    @Override
-    public List<Product> findByCriteria(BookSearchCriteria criteria) {
-        if (criteria.isEmpty()) {
-            return getAll();
-        }
-        String sql = "SELECT * FROM book WHERE true";
-        if (criteria.getComment() != null) {
-            sql += " AND comment=:comment";
-        }
-        if (criteria.getTitle() != null) {
-            sql += " AND title=:title";
-        }
-        if (criteria.getMaxDateRelease() != null) {
-            sql += " AND date_release<:maxDateRelease";
-        }
-        if (criteria.getMinDateRelease() != null) {
-            sql += " AND date_release>:minDateRelease";
-        }
-        if (criteria.getAuthorId() != null) {
-            sql += " AND author_id=:authorId";
-        }
-        BeanPropertySqlParameterSource namedParameters = new BeanPropertySqlParameterSource(criteria);
-        return namedTemplate.query(sql, namedParameters, rowMapper);
-    }
-
-    private PreparedStatementSetter getPreparedStatementSetter(final Product product) {
-        return new PreparedStatementSetter() {
-            @Override
-            public void setValues(PreparedStatement ps) throws SQLException {
-                int i = 0;
-                ps.setString(++i, product.getTitle());
-                ps.setString(++i, book.getComment());
-                ps.setDate(++i, new java.sql.Date(book.getDateRelease().getTime()));
-                ps.setInt(++i, book.getAuthorId());
-                ps.setInt(++i, book.getId());
-            }
-        };
-    }
-
 }
+
+
 
 
