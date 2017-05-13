@@ -6,7 +6,10 @@ import models.User;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -58,10 +61,13 @@ public class ChatDaoNamedJdbcImpl implements BaseDao<Chat> {
     }
 
     public int save(Chat chat) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("creator", chat.getCreator());
-        params.put("name", chat.getName());
-        return namedParameterTemplate.update(SQL_SAVE, params);
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("creator", chat.getCreator())
+                .addValue("name", chat.getName());
+        final KeyHolder holder = new GeneratedKeyHolder();
+        namedParameterTemplate.update(SQL_SAVE, params, holder, new String[]{"id"});
+        Number generetedId = holder.getKey();
+        return generetedId.intValue();
     }
 
     public void delete(int id) {
