@@ -2,8 +2,6 @@ package dao;
 
 import models.Token;
 import models.UserAuth;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -26,14 +24,6 @@ import java.util.Map;
  */
 public class UserAuthNamedJdbcTemplate implements BaseUserAuthDao {
 
-    private NamedParameterJdbcTemplate namedJdbcTemplate;
-
-    public UserAuthNamedJdbcTemplate() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("ru.itis\\spring\\context.xml");
-        DataSource dataSource = context.getBean(DataSource.class);
-        this.namedJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-    }
-
     //language=SQL
     private final String SQL_SELECT_ALL = "SELECT * FROM login";
     //language=SQL
@@ -49,6 +39,12 @@ public class UserAuthNamedJdbcTemplate implements BaseUserAuthDao {
     private final String SQL_SELECT_USER_BY_LOGIN = "SELECT * FROM logins WHERE login = :login";
     //language=SQL
     private final String SQL_SELECt_USER_BY_TOKEN = "SELECT * FROM logins WHERE auth_token = auth_token";
+
+    private NamedParameterJdbcTemplate namedJdbcTemplate;
+
+    public UserAuthNamedJdbcTemplate(DataSource dataSource) {
+        this.namedJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+    }
 
 
     private RowMapper<UserAuth> userAuthRowMapper = new RowMapper<UserAuth>() {
