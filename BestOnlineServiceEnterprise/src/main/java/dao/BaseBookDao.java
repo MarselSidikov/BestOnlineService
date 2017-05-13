@@ -10,9 +10,11 @@ import java.util.List;
  * @author Shaikhutdinov Artur (First Software Engineering Platform)
  * @version v1.0
  */
-public interface BaseBookDao extends BaseDao{
-    List<Book> findAllByName(int age);
-    List<Book> findAllByAuthor(int author);
-    List<Book> findAllBy(String type);
+public interface BaseBookDao extends BaseDao<Book>{
+    List<Book> findByName(String name);
+    List<Book> findByAuthor(String author);
+    List<Book> findByType(String type);
+    List<Book> findByGenre(String genre);
+    List<Book> findByYearOfIssue(int yearOfIssue);
 
 }

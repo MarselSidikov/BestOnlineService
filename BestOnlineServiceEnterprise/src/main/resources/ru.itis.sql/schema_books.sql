@@ -1,4 +1,4 @@
-CREATE TABLE book (
+CREATE TABLE books (
   id SERIAL PRIMARY KEY,
   name VARCHAR(50),
   author VARCHAR(50),
@@ -8,5 +8,5 @@ CREATE TABLE book (
   yearOfIssue INTEGER,
   numberOfPages INTEGER,
   language VARCHAR(50),
-  descriprion VARCHAR(50)
+  descriprion VARCHAR(350)
 );

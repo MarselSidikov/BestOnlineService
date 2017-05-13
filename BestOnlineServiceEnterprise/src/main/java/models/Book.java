@@ -20,7 +20,7 @@ public class Book {
     private int yearOfIssue;
     private int numberOfPages;
     private String language;
-    private String descriprion;
+    private String description;
 
     public Book(Builder builder) {
         this.id = builder.id;
@@ -32,11 +32,54 @@ public class Book {
         this.yearOfIssue = builder.yearOfIssue;
         this.numberOfPages = builder.numberOfPages;
         this.language = builder.language;
-        this.descriprion = builder.description;
+        this.description = builder.description;
     }
 
+    public String getName() {
+        return name;
+    }
 
-    private static class Builder {
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public String getPublishingHouse() {
+        return publishingHouse;
+    }
+
+    public int getYearOfIssue() {
+        return yearOfIssue;
+    }
+
+    public int getNumberOfPages() {
+        return numberOfPages;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public static class Builder {
         private int id;
         private String name;
         private String author;
@@ -95,7 +138,7 @@ public class Book {
         }
 
 
-        public Builder descrniption(String description) {
+        public Builder description(String description) {
             this.description = description;
             return this;
         }
@@ -103,97 +146,53 @@ public class Book {
         public Book build() {
             return new Book(this);
         }
+    }
 
-        public void setId(int id) {
-            this.id = id;
+    @Override
+    public String toString() {
+        return id +
+                " " + name +
+                " " + author +
+                " " + type +
+                " " + genre +
+                " " + publishingHouse +
+                " " + yearOfIssue +
+                " " + numberOfPages +
+                " " + language +
+                " " + description;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj != null && obj instanceof Book) {
+            Book that  = (Book)obj;
+            return this.id == that.id
+                    && this.name.equals(that.name)
+                    && this.author.equals(that.author)
+                    && this.type.equals(that.type)
+                    && this.genre.equals(that.genre)
+                    && this.publishingHouse.equals(that.publishingHouse)
+                    && this.yearOfIssue == that.yearOfIssue
+                    && this.numberOfPages == that.numberOfPages
+                    && this.language.equals(that.language)
+                    && this.description.equals(that.description);
         }
 
-        public int getId() {
-            return id;
-        }
+        return false;
+    }
 
-        public String getName() {
-            return name;
-        }
-
-        public String getAuthor() {
-            return author;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public String getGenre() {
-            return genre;
-        }
-
-        public String getPublishingHouse() {
-            return publishingHouse;
-        }
-
-        public int getYearOfIssue() {
-            return yearOfIssue;
-        }
-
-        public int getNumberOfPages() {
-            return numberOfPages;
-        }
-
-        public String getLanguage() {
-            return language;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        @Override
-        public String toString() {
-            return id +
-                    " " + name +
-                    " " + author +
-                    " " + type +
-                    " " + genre +
-                    " " + publishingHouse +
-                    " " + yearOfIssue +
-                    " " + numberOfPages +
-                    " " + language +
-                    " " + description;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (obj != null && obj instanceof Book) {
-                Book that  = (Book)obj;
-                return this.id == that.id
-                        && this.name.equals(that.name)
-                        && this.author.equals(that.author)
-                        && this.type.equals(that.type)
-                        && this.genre.equals(that.genre)
-                        && this.publishingHouse.equals(that.publishingHouse)
-                        && this.yearOfIssue == that.yearOfIssue
-                        && this.numberOfPages == that.numberOfPages
-                        && this.language.equals(that.language)
-                        && this.description.equals(that.descriprion);
-            }
-
-            return false;
-        }
-
-        @Override
-        public int hashCode() {
-            int result = id;
-            result = 31 * result + name.hashCode();
-            result = 31 * result + author.hashCode();
-            result = 31 * result + type.hashCode();
-            result = 31 * result + genre.hashCode();
-            result = 31 * result + publishingHouse.hashCode();
-            result = 31 * result + yearOfIssue;
-            result = 31 * result + numberOfPages;
-            result = 31 * result + language.hashCode();
-            result = 31 * result + description.hashCode();
-            return result;
-        }
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + name.hashCode();
+        result = 31 * result + author.hashCode();
+        result = 31 * result + type.hashCode();
+        result = 31 * result + genre.hashCode();
+        result = 31 * result + publishingHouse.hashCode();
+        result = 31 * result + yearOfIssue;
+        result = 31 * result + numberOfPages;
+        result = 31 * result + language.hashCode();
+        result = 31 * result + description.hashCode();
+        return result;
     }
 }
