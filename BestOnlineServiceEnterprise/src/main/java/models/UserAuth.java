@@ -15,10 +15,10 @@ public class UserAuth {
     private Token token;
 
     public UserAuth(Builder builder) {
-        this.id = id;
-        this.login = login;
-        this.password = password;
-        this.token = token;
+        this.id = builder.id;
+        this.login = builder.login;
+        this.password = builder.password;
+        this.token = builder.token;
     }
 
     public static class Builder {
