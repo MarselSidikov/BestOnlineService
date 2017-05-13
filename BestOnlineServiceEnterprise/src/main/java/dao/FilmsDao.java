@@ -6,11 +6,11 @@ import java.util.List;
 
 /**
  * 08.05.2017
- * BaseFilmsDao @author Ayupov Ayaz (First Software Engineering Platform)
+ * FilmsDao @author Ayupov Ayaz (First Software Engineering Platform)
  *
  * @version v1.0 /
  */
-public interface BaseFilmsDao extends BaseDao<Film> {
+public interface FilmsDao extends BaseDao<Film> {
 
     List<Film> findByName(String name);
 

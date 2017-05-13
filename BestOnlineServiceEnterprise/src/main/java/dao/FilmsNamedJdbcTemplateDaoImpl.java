@@ -21,7 +21,7 @@ import java.util.Map;
  *
  * @version v1.0 /
  */
-public class FilmsNamedJdbcTemplateDaoImpl implements BaseFilmsDao {
+public class FilmsNamedJdbcTemplateDaoImpl implements FilmsDao {
 
     private NamedParameterJdbcTemplate namedJdbcTemplate;
 
