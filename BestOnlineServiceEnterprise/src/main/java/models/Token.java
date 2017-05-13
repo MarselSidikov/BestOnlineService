@@ -9,19 +9,55 @@ package models;
  */
 public class Token {
 
+    private int id;
     private String token;
+
+    public Token(Builder builder) {
+        this.id = id;
+        this.token = token;
+    }
+
+    public static class Builder {
+
+        private int id;
+        private String token;
+
+        public Builder id(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder token(String token) {
+            this.token = token;
+            return this;
+        }
+
+        public Token build() {
+            return new Token(this);
+        }
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     @Override
     public String toString() {
-        return token;
+        return id +
+                " " + token;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj != null || obj instanceof Token) {
             if (obj == this) return true;
-            UserAuth that = (UserAuth obj);
-            return this.token.equals(that.token);
+            Token that = (Token) obj;
+            return this.id == that.id &&
+                    this.token.equals(that.token);
         } return false;
     }
 }

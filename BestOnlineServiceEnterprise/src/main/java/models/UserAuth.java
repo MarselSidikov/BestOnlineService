@@ -8,9 +8,10 @@ package models;
  * @version v0.1 /
  */
 public class UserAuth {
+
     private int id;
-    private String login;
-    private String password;
+    private Login login;
+    private Login password;
     private Token token;
 
     public UserAuth(Builder builder) {
@@ -22,8 +23,8 @@ public class UserAuth {
 
     public static class Builder {
         private int id;
-        private String login;
-        private String password;
+        private Login login;
+        private Login password;
         private Token token;
 
         public Builder id(int id) {
@@ -31,12 +32,12 @@ public class UserAuth {
             return this;
         }
 
-        public Builder login(String login) {
+        public Builder login(Login login) {
             this.login = login;
             return this;
         }
 
-        public Builder password(String password) {
+        public Builder password(Login password) {
             this.password = password;
             return this;
         }
@@ -51,20 +52,28 @@ public class UserAuth {
         }
     }
 
-    public void setId() {
-        this.id = id;
-    }
-
     public int getId() {
         return id;
     }
 
-    public String getLogin() {
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Login getLogin() {
         return login;
     }
 
-    public String getPassword() {
+    public void setLogin(Login login) {
+        this.login = login;
+    }
+
+    public Login getPassword() {
         return password;
+    }
+
+    public void setPassword(Login password) {
+        this.password = password;
     }
 
     public Token getToken() {
@@ -83,7 +92,7 @@ public class UserAuth {
     public boolean equals(Object obj) {
         if (obj != null || obj instanceof UserAuth) {
             if (obj == this) return true;
-            UserAuth that = (UserAuth obj);
+            UserAuth that = (UserAuth) obj;
             return this.id == that.id
                     && this.login.equals(that.login)
                     && this.password.equals(that.password)
