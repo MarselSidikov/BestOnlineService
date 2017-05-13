@@ -81,11 +81,11 @@ public class UserAuthNamedJdbcTemplate implements BaseUserAuthDao {
     }
 
     public void update(UserAuth model) {
-        Map<String,Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<String, Object>();
         /*
-            
+
          */
-        namedJdbcTemplate.update(SQL_UPDATE_LOGIN_BY_ID,params);
+        namedJdbcTemplate.update(SQL_UPDATE_LOGIN_BY_ID, params);
     }
 
     public void delete(int id) {
@@ -101,8 +101,8 @@ public class UserAuthNamedJdbcTemplate implements BaseUserAuthDao {
     public UserAuth findByLogin(String login) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("login", login);
-        List<UserAuth> userAuths = namedJdbcTemplate.query(SQL_SELECT_USER_BY_LOGIN, params, userAuthRowMapper);
-        return userAuths.get(0);
+        List<UserAuth> userAuth = namedJdbcTemplate.query(SQL_SELECT_USER_BY_LOGIN, params, userAuthRowMapper);
+        return userAuth.get(0);
     }
 
     public UserAuth findByToken(Token token) {
