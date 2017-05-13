@@ -37,15 +37,18 @@ public class UserAuthNamedJdbcTemplate implements BaseUserAuthDao {
     //language=SQL
     private final String SQL_SELECT_ALL = "SELECT * FROM login";
     //language=SQL
-    private final String SQL_SELECT_LOGIN_BY_ID = "SELECT * FROM logins WHERE id = :id";
+    private final String SQL_SELECT_LOGIN_BY_ID = "SELECT * FROM logins WHERE user_id = :user_id";
     //language=SQL
-    private final String SQL_INSERT_LOGIN = "INSERT INTO logins(login,password) VALUES (:login , :password)";
+    private final String SQL_INSERT_LOGIN = "INSERT INTO logins(login,password) VALUES (:login, :password)";
     //language=SQL
-    private final String SQL_UPDATE_LOGIN_BY_ID = "UPDATE logins SET login = :login , password = :password , WHERE id = :id ";
+    private final String SQL_UPDATE_LOGIN_BY_ID = "UPDATE logins SET login = :login, password = :password, " +
+            "WHERE user_id = :user_id ";
     //language=SQL
-    private final String SQL_DELETE_LOGIN_BY_ID = "DELETE FROM logins WHERE id = :id";
+    private final String SQL_DELETE_LOGIN_BY_ID = "DELETE FROM logins WHERE user_id = :user_id";
     //language=SQL
     private final String SQL_SELECT_USER_BY_LOGIN = "SELECT * FROM logins WHERE login = :login";
+    //language=SQL
+    private final String SQL_SELECt_USER_BY_TOKEN = "SELECT * FROM logins WHERE auth_token = auth_token";
 
 
     private RowMapper<UserAuth> userAuthRowMapper = new RowMapper<UserAuth>() {
@@ -63,8 +66,8 @@ public class UserAuthNamedJdbcTemplate implements BaseUserAuthDao {
     public UserAuth find(int id) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("id", id);
-        List<UserAuth> userAuths = namedJdbcTemplate.query(SQL_SELECT_LOGIN_BY_ID, params, userAuthRowMapper);
-        return userAuths.get(0);
+        List<UserAuth> userAuth = namedJdbcTemplate.query(SQL_SELECT_LOGIN_BY_ID, params, userAuthRowMapper);
+        return userAuth.get(0);
     }
 
     public int save(UserAuth model) {
@@ -73,21 +76,21 @@ public class UserAuthNamedJdbcTemplate implements BaseUserAuthDao {
                 .addValue("password", model.getPassword());
         final KeyHolder holder = new GeneratedKeyHolder();
         namedJdbcTemplate.update(SQL_INSERT_LOGIN, params, holder, new String[]{"id"});
-        Number generatedId = holder.getKey();
-        return generatedId.intValue();
+        Number number = holder.getKey();
+        return number.intValue();
     }
 
     public void update(UserAuth model) {
         Map<String,Object> params = new HashMap<String, Object>();
         /*
-
+            
          */
         namedJdbcTemplate.update(SQL_UPDATE_LOGIN_BY_ID,params);
     }
 
     public void delete(int id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("id", id);
+        params.put("user_id", id);
         namedJdbcTemplate.update(SQL_DELETE_LOGIN_BY_ID, params);
     }
 
@@ -103,6 +106,9 @@ public class UserAuthNamedJdbcTemplate implements BaseUserAuthDao {
     }
 
     public UserAuth findByToken(Token token) {
-        
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("auth_token", token);
+        List<UserAuth> userAuth = namedJdbcTemplate.query(SQL_SELECt_USER_BY_TOKEN, params, userAuthRowMapper);
+        return userAuth.get(0);
     }
 }
