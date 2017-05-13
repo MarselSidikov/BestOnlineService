@@ -13,8 +13,8 @@ public class Token {
     private String token;
 
     public Token(Builder builder) {
-        this.id = id;
-        this.token = token;
+        this.id = builder.id;
+        this.token = builder.token;
     }
 
     public static class Builder {

@@ -15,9 +15,9 @@ public class Login {
 
     public Login(Builder builder) {
 
-        this.id = id;
-        this.login = login;
-        this.password = password;
+        this.id = builder.id;
+        this.login = builder.login;
+        this.password = builder.password;
 
     }
 
