@@ -1,6 +1,8 @@
 CREATE TABLE group_user (
   id SERIAL PRIMARY KEY,
-  users VARCHAR(50),
-  posts VARCHAR(50),
-  friends INTEGER
+  firstNameUser VARCHAR(40),
+  lastNameUser VARCHAR(40),
+  ageUser INTEGER,
+  city VARCHAR(30),
+  image VARCHAR(50)
 );

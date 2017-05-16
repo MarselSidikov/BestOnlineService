@@ -1,39 +1,21 @@
 package dao;
 
+import javafx.geometry.Pos;
+import models.Post;
 import models.Profile;
+import models.User;
 
 import java.util.List;
 
 /**
- * 08.05.2017
+ * 09.05.2017
  * ProfileDao @author Zavidonov Denis (First Software Engineering Platform)
  *
  * @version v1.0
  */
-public class ProfileDao implements BaseProfileDao {
+public interface ProfileDao extends BaseDao<Profile>{
 
+    List<User> findAllFriends();
+    User findFriend();
 
-    public List<Profile> findAllByUsers(String users) {
-        return null;
-    }
-
-    public Profile findFriend(int friend) {
-        return null;
-    }
-
-    public void delete(int friend, String users, String posts) {
-
-    }
-
-    public void add(int friend, String posts) {
-
-    }
-
-    public void update(Profile users, Profile posts) {
-
-    }
-
-    public void save(Profile users) {
-
-    }
 }

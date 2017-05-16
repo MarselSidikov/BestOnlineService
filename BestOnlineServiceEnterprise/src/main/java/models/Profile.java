@@ -1,5 +1,9 @@
 package models;
 
+import dao.BaseDao;
+
+import java.util.List;
+
 /**
  * 07.05.2017
  * Profile
@@ -9,34 +13,62 @@ package models;
  */
 public class Profile {
     private int id ;
-    private String users;
-    private String posts;
-    private int friend;
+    private String firstNameUser;
+    private String lastNameUser;
+    private int ageUser;
+    private String city;
+    private String image;
+    private List<Post> posts;
+    private List<User>friends;
 
 
     public static class Builder {
         private int id ;
-        private String users;
-        private String posts;
-        private int friend;
+        private String firstNameUser;
+        private String lastNameUser;
+        private int ageUser;
+        private String city;
+        private String image;
+        private List<Post> posts;
+        private List<User>friends;
 
         public Builder (){
 
         }
+
         public Builder id (int id){
             this.id = id;
             return this;
         }
-        public Builder users (String users){
-            this.users = users;
+
+
+        public Builder firstNameUser (String firstNameUser){
+            this.firstNameUser = firstNameUser;
             return this;
         }
-        public Builder posts (String posts){
+        public Builder lastNameUser (String lastNameUser){
+            this.lastNameUser = lastNameUser;
+            return this;
+        }
+        public Builder ageUser (int ageUser){
+            this.ageUser = ageUser;
+            return this;
+        }
+        public Builder city (String city){
+            this.city = city;
+            return this;
+        }
+        public Builder image (String image){
+            this.image = image;
+            return this;
+        }
+        
+        public Builder posts (List<Post> posts){
             this.posts = posts;
             return this;
         }
-        public Builder friends (int friends){
-            this.friend = friends;
+        public Builder friends (List<User>friends){
+            this.friends = friends;
             return this;
         }
 
@@ -47,44 +79,79 @@ public class Profile {
     }
     private Profile(Profile.Builder builder){
         this.id = builder.id;
-        this.users = builder.users;
-       // this.interests = builder.interests;
+        this.firstNameUser = builder.firstNameUser;
+        this.lastNameUser = builder.lastNameUser;
+        this.ageUser = builder.ageUser;
+        this.city = builder.city;
+        this.image = builder.image;
         this.posts = builder.posts;
-        this.friend = builder.friend;
+        this.friends = builder.friends;
+
     }
+
 
     public String toString() {
         return  id + " "
-                + users + " "
-               // + interests + " "
+                + firstNameUser + " "
+                + lastNameUser + " "
+                + ageUser + " "
+                + city + " "
+                + image + " "
                 + posts + " "
-                + friend + " ";
+                + friends + " ";
 
+    }
+
+
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getUsers() {
-        return users;
+    public String getFirstNameUser() {
+        return firstNameUser;
     }
 
-    public String getPosts() {
+    public String getLastNameUser() {
+        return lastNameUser;
+    }
+
+    public int getAgeUser() {
+        return ageUser;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public List<Post> getPosts() {
         return posts;
     }
 
-    public int getFriends() {
-        return friend;
+    public List<User> getFriends() {
+        return friends;
     }
+
 
     public boolean equals(Object obj){
         if (obj != null && obj instanceof Profile){
             Profile that = (Profile)obj;
             return this.id == that.id
-                    && this.users.equals(that.users)
+                    && this.firstNameUser.equals(that.firstNameUser)
+                    && this.lastNameUser.equals(that.lastNameUser)
+                    && this.ageUser == that.ageUser
+                    && this.city.equals(that.city)
+                    && this.image.equals(that.image)
                     && this.posts.equals(that.posts)
-                    && this.friend == that.friend;
+                    && this.friends.equals(that.friends);
 
         } return false;
 
