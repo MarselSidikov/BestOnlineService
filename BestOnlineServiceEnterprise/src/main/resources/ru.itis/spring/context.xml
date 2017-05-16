@@ -6,8 +6,8 @@
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="org.postgresql.Driver"/>
-        <property name="url" value="jdbc:postgresql://localhost:5432/best_online_service_db"/>
+        <property name="url" value="jdbc:postgresql://localhost:5432/service_db"/>
         <property name="username" value="postgres"/>
-        <property name="password" value="aspirin12"/>
+        <property name="password" value="qwerty007"/>
     </bean>
 </beans>

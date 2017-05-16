@@ -5,6 +5,8 @@ import models.Message;
 import models.User;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -14,26 +16,50 @@ import org.springframework.jdbc.support.KeyHolder;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
-public class ChatDaoNamedJdbcImpl implements BaseDao<Chat> {
+public class ChatDaoNamedJdbcImpl implements ChatDao {
+
+    //language=SQL
+    private static final String SQL_FIND = "SELECT * FROM chat WHERE id = :id";
+
+    //language=SQL
+    private static final String SQL_FIND_ALL = "SELECT chat.id AS chat_id, chat.name AS chat_name, message.id AS message_id," +
+            " message.text AS message_text, message.chat_id AS message_chat_id\n" +
+            "FROM chat\n" +
+            "  JOIN service_user\n" +
+            "    ON service_user.id = creator_id\n" +
+            "  JOIN message\n" +
+            "    ON message.chat_id = chat.id\n" +
+            "  JOIN chat_user\n" +
+            "    ON service_user.id = chat_user.user_id ORDER BY chat.id;";
+
+
+    //language=SQL
+    private static final String SQL_SAVE = "INSERT INTO chat(name, creator_id) VALUES (:name, :creator)";
+    //language=SQL
+    private static final String SQL_DELETE = "DELETE FROM chat WHERE id = :id";
+    //language=SQL
+    private static final String SQL_UPDATE = "UPDATE chat SET name = :name,:creator_id = :creator WHERE id = :id";
 
     private NamedParameterJdbcTemplate namedParameterTemplate;
+    private UsersDao usersDao;
+    private MessageDao messageDao;
 
     public ChatDaoNamedJdbcImpl(DataSource dataSource) {
-        ApplicationContext context = new ClassPathXmlApplicationContext("ru.itis\\spring\\context.xml");
-        dataSource = context.getBean(DataSource.class);
         this.namedParameterTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
-        private RowMapper<Chat> chatRowMapper = new RowMapper<Chat>() {
+    private RowMapper<Chat> chatRowMapper = new RowMapper<Chat>() {
         public Chat mapRow(ResultSet resultSet, int i) throws SQLException {
+            User creator = usersDao.find(resultSet.getInt("creator_id"));
             Chat chat = new Chat.Builder()
                     .id(resultSet.getInt("id"))
-                    .creator((User)resultSet.getObject("creator_id"))
+                    .creator(creator)
                     .name(resultSet.getString("name"))
                     .users((List<User>) resultSet.getObject("users"))
                     .messages((List<Message>) resultSet.getObject("messages"))
@@ -42,22 +68,52 @@ public class ChatDaoNamedJdbcImpl implements BaseDao<Chat> {
         }
     };
 
-    //language=SQL
-    private static final String SQL_FIND = "SELECT * FROM chat WHERE id = :id";
-    //language=SQL
-    private static final String SQL_SAVE = "INSERT INTO chat(name, creator_id) VALUES (:name, :creator)";
-    //language=SQL
-    private static final String SQL_DELETE = "DELETE FROM chat WHERE id = :id";
-    //language=SQL
-    private static final String SQL_UPDATE = "UPDATE chat SET name = :name,:creator_id = :creator WHERE id = :id";
-    //language=SQL
-    private static final String SQL_FIND_ALL = "SELECT * FROM chat";
+    public ResultSetExtractor<List<Chat>> resultSetExtractor = new ResultSetExtractor<List<Chat>>() {
+        @Override
+        public List<Chat> extractData(ResultSet resultSet) throws SQLException, DataAccessException {
+            // уникальные чаты
+            Map<Integer, Chat> chats = new HashMap<>();
+            // все уникальные сообщения
+            Map<Integer, Message> messages = new HashMap<>();
+            // смотрим текущую строку
+            while (resultSet.next()) {
+                // достаем id чата
+                int chatId = resultSet.getInt("chat_id");
 
+                // если такого чата еще не было
+                if (chats.get(chatId) == null) {
+                    // создаем чат
+                    String chatName = resultSet.getString("chat_name");
+                    Chat chat = new Chat.Builder()
+                            .id(chatId).name(chatName)
+                            .messages(new ArrayList<Message>())
+                            .build();
+                    // кладем в мап
+                    chats.put(chatId, chat);
+                    // таким образом после прохождения всего while у нас
+                    // в мапе будут все чаты, доступные по id
+                }
+                // достаем id сообщения
+                int messageId = resultSet.getInt("message_id");
+
+                if (messages.get(messageId) == null) {
+                    String messageText = resultSet.getString("message_text");
+                    int messageChatId = resultSet.getInt("message_chat_id");
+                    Message message = new Message.Builder()
+                            .text(messageText)
+                            .id(messageId).build();
+                    messages.put(messageId, message);
+                    chats.get(messageChatId).getMessages().add(message);
+                }
+            }
+            return new ArrayList<Chat>(chats.values());
+        }
+    };
 
     public Chat find(int id) {
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
-        return (Chat)namedParameterTemplate.query(SQL_FIND, params,chatRowMapper);
+        return (Chat) namedParameterTemplate.query(SQL_FIND, params, chatRowMapper);
     }
 
     public int save(Chat chat) {
@@ -66,8 +122,8 @@ public class ChatDaoNamedJdbcImpl implements BaseDao<Chat> {
                 .addValue("name", chat.getName());
         final KeyHolder holder = new GeneratedKeyHolder();
         namedParameterTemplate.update(SQL_SAVE, params, holder, new String[]{"id"});
-        Number generetedId = holder.getKey();
-        return generetedId.intValue();
+        Number generatedId = holder.getKey();
+        return generatedId.intValue();
     }
 
     public void delete(int id) {
@@ -77,7 +133,7 @@ public class ChatDaoNamedJdbcImpl implements BaseDao<Chat> {
     }
 
     public List<Chat> findAll() {
-        return namedParameterTemplate.query(SQL_FIND_ALL,chatRowMapper);
+        return namedParameterTemplate.query(SQL_FIND_ALL, resultSetExtractor);
     }
 
     public void update(Chat chat) {

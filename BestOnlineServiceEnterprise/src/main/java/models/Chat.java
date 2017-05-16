@@ -17,13 +17,13 @@ public class Chat {
     private List<User> users;
     private List<Message> messages;
 
-    public Chat(Builder builder){
-    this.id = id;
-    this.creator = creator;
-    this.name = name;
-    this.users = users;
-    this.messages = messages;
-}
+    public Chat(Builder builder) {
+        this.id = builder.id;
+        this.creator = builder.creator;
+        this.name = builder.name;
+        this.users = builder.users;
+        this.messages = builder.messages;
+    }
 
     public int getId() {
         return id;
@@ -80,38 +80,44 @@ public class Chat {
             this.id = id;
             return this;
         }
+
         public Builder creator(User creator) {
             this.creator = creator;
             return this;
         }
+
         public Builder name(String name) {
             this.name = name;
             return this;
         }
+
         public Builder users(List<User> users) {
             this.users = users;
             return this;
         }
+
         public Builder messages(List<Message> messages) {
             this.messages = messages;
             return this;
         }
-        public Chat build(){
+
+        public Chat build() {
             return new Chat(this);
         }
 
         @Override
         public String toString() {
-            return  id + " "
+            return id + " "
                     + creator + " "
-                     + name + " "
-                     + users + " "
+                    + name + " "
+                    + users + " "
                     + messages;
 
         }
 
         @Override
         public boolean equals(Object o) {
+            // TODO: поправить
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
@@ -123,7 +129,5 @@ public class Chat {
             if (!users.equals(builder.users)) return false;
             return messages.equals(builder.messages);
         }
-
-
     }
 }

@@ -11,14 +11,14 @@ public class Message {
 
     private int id;
     private String text;
-    private int chat;
+    private Chat chat;
     private User author;
 
     public Message(Builder builder){
-        this.id = id;
-        this.text = text;
-        this.chat= chat;
-        this.author = author;
+        this.id = builder.id;
+        this.text = builder.text;
+        this.chat= builder.chat;
+        this.author = builder.author;
     }
 
     public int getId() {
@@ -37,11 +37,11 @@ public class Message {
         this.text = text;
     }
 
-    public int getChat() {
+    public Chat getChat() {
         return chat;
     }
 
-    public void setChat(int chat) {
+    public void setChat(Chat chat) {
         this.chat = chat;
     }
 
@@ -57,7 +57,7 @@ public class Message {
 
         private int id;
         private String text;
-        private int chat;
+        private Chat chat;
         private User author;
 
         public Builder() {
@@ -73,7 +73,7 @@ public class Message {
             return this;
         }
 
-        public Builder chat(int chat) {
+        public Builder chat(Chat chat) {
             this.chat = chat;
             return this;
         }
@@ -97,6 +97,7 @@ public class Message {
 
         @Override
         public boolean equals(Object o) {
+            // TODO: поправить
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
