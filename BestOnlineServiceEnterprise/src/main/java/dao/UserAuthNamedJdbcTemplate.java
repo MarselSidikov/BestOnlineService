@@ -25,20 +25,20 @@ import java.util.Map;
 public class UserAuthNamedJdbcTemplate implements BaseUserAuthDao {
 
     //language=SQL
-    private final String SQL_SELECT_ALL = "SELECT * FROM login";
+    private final String SQL_SELECT_ALL = "SELECT * FROM service_login";
     //language=SQL
-    private final String SQL_SELECT_LOGIN_BY_ID = "SELECT * FROM logins WHERE user_id = :user_id";
+    private final String SQL_SELECT_LOGIN_BY_ID = "SELECT * FROM service_login WHERE user_id = :user_id";
     //language=SQL
-    private final String SQL_INSERT_LOGIN = "INSERT INTO logins(login,password) VALUES (:login, :password)";
+    private final String SQL_INSERT_LOGIN = "INSERT INTO service_login(login,password) VALUES (:login, :password)";
     //language=SQL
-    private final String SQL_UPDATE_LOGIN_BY_ID = "UPDATE logins SET login = :login, password = :password, " +
+    private final String SQL_UPDATE_LOGIN_BY_ID = "UPDATE service_login SET login = :login, password = :password, " +
             "WHERE user_id = :user_id ";
     //language=SQL
-    private final String SQL_DELETE_LOGIN_BY_ID = "DELETE FROM logins WHERE user_id = :user_id";
+    private final String SQL_DELETE_LOGIN_BY_ID = "DELETE FROM service_login WHERE user_id = :user_id";
     //language=SQL
-    private final String SQL_SELECT_USER_BY_LOGIN = "SELECT * FROM logins WHERE login = :login";
+    private final String SQL_SELECT_USER_BY_LOGIN = "SELECT * FROM service_login WHERE login = :login";
     //language=SQL
-    private final String SQL_SELECT_USER_BY_TOKEN = "SELECT * FROM logins WHERE auth_token = auth_token";
+    private final String SQL_SELECT_USER_BY_TOKEN = "SELECT * FROM service_login WHERE auth_token = auth_token";
 
     private NamedParameterJdbcTemplate namedJdbcTemplate;
 
@@ -49,13 +49,13 @@ public class UserAuthNamedJdbcTemplate implements BaseUserAuthDao {
 
     private RowMapper<UserAuth> userAuthRowMapper = new RowMapper<UserAuth>() {
         public UserAuth mapRow(ResultSet resultSet, int i) throws SQLException {
-            return null;
-                    /*new UserAuth.Builder()
+            UserAuth userAuth = new UserAuth.Builder()
                     .id(resultSet.getInt(1))
-                    .login(resultSet.getString("login"))
-                    .password(resultSet.getString("password"))
-                    .token(resultSet.getObject("token"))
-                    .build();*/
+                    .login((Login) resultSet.getObject("login"))
+                    .password((Login) resultSet.getObject("password"))
+                    .token((Token) resultSet.getObject("token"))
+                    .build();
+            return userAuth;
         }
     };
 
@@ -70,6 +70,7 @@ public class UserAuthNamedJdbcTemplate implements BaseUserAuthDao {
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("login", model.getLogin())
                 .addValue("password", model.getPassword());
+                .addValue("token", model.getToken());
         final KeyHolder holder = new GeneratedKeyHolder();
         namedJdbcTemplate.update(SQL_INSERT_LOGIN, params, holder, new String[]{"id"});
         Number number = holder.getKey();
@@ -93,18 +94,12 @@ public class UserAuthNamedJdbcTemplate implements BaseUserAuthDao {
     public List<UserAuth> findAll() {
         return namedJdbcTemplate.query(SQL_SELECT_ALL, userAuthRowMapper);
     }
-
+/*
     public UserAuth findByLogin(String login) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("login", login);
         List<UserAuth> userAuth = namedJdbcTemplate.query(SQL_SELECT_USER_BY_LOGIN, params, userAuthRowMapper);
         return userAuth.get(0);
     }
-
-    public UserAuth findByToken(Token token) {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("auth_token", token);
-        List<UserAuth> userAuth = namedJdbcTemplate.query(SQL_SELECT_USER_BY_TOKEN, params, userAuthRowMapper);
-        return userAuth.get(0);
-    }
+*/
 }

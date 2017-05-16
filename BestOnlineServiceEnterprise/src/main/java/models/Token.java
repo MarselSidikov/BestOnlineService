@@ -10,16 +10,19 @@ package models;
 public class Token {
 
     private int id;
+    private Login loginId;
     private String token;
 
     public Token(Builder builder) {
         this.id = builder.id;
+        this.loginId = builder.loginId;
         this.token = builder.token;
     }
 
     public static class Builder {
 
         private int id;
+        private Login loginId;
         private String token;
 
         public Builder id(int id) {
@@ -32,9 +35,30 @@ public class Token {
             return this;
         }
 
+        public Builder loginId(Login loginId) {
+            this.loginId = loginId;
+            return this;
+        }
+
         public Token build() {
             return new Token(this);
         }
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Login getLoginId() {
+        return loginId;
+    }
+
+    public void setLoginId() {
+        this.loginId = loginId;
     }
 
     public String getToken() {
@@ -57,6 +81,7 @@ public class Token {
             if (obj == this) return true;
             Token that = (Token) obj;
             return this.id == that.id &&
+                    this.loginId.equals(that.loginId) &&
                     this.token.equals(that.token);
         } return false;
     }

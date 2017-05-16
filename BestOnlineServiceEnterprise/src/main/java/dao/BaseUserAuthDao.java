@@ -12,8 +12,4 @@ import models.UserAuth;
  */
 public interface BaseUserAuthDao extends BaseDao<UserAuth> {
 
-    UserAuth findByLogin(String login);
-
-    UserAuth findByToken(Token token);
-
 }

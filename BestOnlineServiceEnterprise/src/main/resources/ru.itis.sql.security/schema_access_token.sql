@@ -1,4 +1,5 @@
 CREATE TABLE access_token (
-  user_id INTEGER REFERENCES login(id),
+  id SERIAL PRIMARY KEY,
+  login_id INTEGER REFERENCES service_login(id),
   token VARCHAR(255)
 )
