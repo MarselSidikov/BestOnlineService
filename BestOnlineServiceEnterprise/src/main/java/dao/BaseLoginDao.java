@@ -1,5 +1,7 @@
 package dao;
 
+import models.Login;
+
 /**
  * 13.05.2017
  * BaseLoginDao

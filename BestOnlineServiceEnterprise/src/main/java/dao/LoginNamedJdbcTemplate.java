@@ -2,7 +2,6 @@ package dao;
 
 import models.Login;
 import models.Token;
-import models.UserAuth;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -87,15 +86,15 @@ import java.util.Map;
         namedJdbcTemplate.update(SQL_DELETE_LOGIN_BY_ID, params);
     }
 
-    public List<Token> findAll() {
+    public List<Login> findAll() {
         return namedJdbcTemplate.query(SQL_SELECT_ALL, loginRowMapper);
     }
 
     public Login findByLogin(String login) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("login", login);
-        List<Login> login = namedJdbcTemplate.query(SQL_SELECT_BY_LOGIN, params, loginRowMapper);
-        return login.get(0);
+        List<Login> loginList = namedJdbcTemplate.query(SQL_SELECT_BY_LOGIN, params, loginRowMapper);
+        return loginList.get(0);
     }
 
  }

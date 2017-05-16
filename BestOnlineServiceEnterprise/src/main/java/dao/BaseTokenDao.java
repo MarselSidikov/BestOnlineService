@@ -1,5 +1,7 @@
 package dao;
 
+import models.Token;
+
 /**
  * 13.05.2017
  * BaseTokenDao
