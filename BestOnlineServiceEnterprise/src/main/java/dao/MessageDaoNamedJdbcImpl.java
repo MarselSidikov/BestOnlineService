@@ -29,7 +29,7 @@ public class MessageDaoNamedJdbcImpl implements MessageDao {
     //language=SQL
     private static final String SQL_DELETE = "DELETE FROM message WHERE id = :id";
     //language=SQL
-    private static final String SQL_FIND_ALL_BY_CHAT_ID = "SELECT * FROM message WHERE chat_id = :chat_id";
+    private static final String SQL_FIND_ALL_BY_CHAT_ID = "SELECT * FROM message JOIN chat ON message.chat_id = chat.id WHERE chat.id = :id";
 
 
     private NamedParameterJdbcTemplate namedParameterTemplate;
@@ -67,7 +67,6 @@ public class MessageDaoNamedJdbcImpl implements MessageDao {
                 .addValue("text", message.getText())
                 .addValue("chat", message.getChat())
                 .addValue("author", message.getAuthor());
-
         final KeyHolder holder = new GeneratedKeyHolder();
         namedParameterTemplate.update(SQL_SAVE, params, holder, new String[]{"id"});
         Number generated = holder.getKey();
@@ -92,7 +91,7 @@ public class MessageDaoNamedJdbcImpl implements MessageDao {
 
     @Override
     public List<Message> findAllByChatId(int id) {
-        // TODO
-        return null;
+        MapSqlParameterSource params = new MapSqlParameterSource("id", id);
+        return namedParameterTemplate.query(SQL_FIND_ALL_BY_CHAT_ID, messageRowMapper);
     }
 }

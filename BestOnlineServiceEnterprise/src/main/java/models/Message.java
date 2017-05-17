@@ -96,18 +96,14 @@ public class Message {
         }
 
         @Override
-        public boolean equals(Object o) {
-            // TODO: поправить
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            Message message = (Message) o;
-
-            if (id != message.id) return false;
-            if (!text.equals(message.text)) return false;
-            return author.equals(message.author);
+        public boolean equals(Object obj) {
+            if(obj != null && obj instanceof Message){
+                Message that = (Message)obj;
+                return this.id == that.id
+                        && this.text.equals(that.text)
+                        && this.chat.equals(that.chat)
+                        && this.author.equals(that.author);
+            } return false;
         }
-
-
     }
 }

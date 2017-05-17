@@ -116,18 +116,15 @@ public class Chat {
         }
 
         @Override
-        public boolean equals(Object o) {
-            // TODO: поправить
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            Builder builder = (Builder) o;
-
-            if (id != builder.id) return false;
-            if (!creator.equals(builder.creator)) return false;
-            if (!name.equals(builder.name)) return false;
-            if (!users.equals(builder.users)) return false;
-            return messages.equals(builder.messages);
+        public boolean equals(Object obj) {
+            if(obj != null && obj instanceof Chat){
+                Chat that = (Chat)obj;
+                return this.id == that.id
+                        && this.creator.equals(that.creator)
+                        && this.name.equals(that.name)
+                        && this.users.equals(that.users)
+                        && this.messages.equals(that.messages);
+            } return false;
         }
     }
 }
