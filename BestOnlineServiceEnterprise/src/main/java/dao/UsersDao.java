@@ -10,4 +10,6 @@ import models.User;
  * @version v1.0
  */
 public interface UsersDao extends BaseDao<User> {
+
+
 }

@@ -105,6 +105,29 @@ public class ChatDaoNamedJdbcImpl implements ChatDao {
                     messages.put(messageId, message);
                     chats.get(messageChatId).getMessages().add(message);
                 }
+//
+                String chatName = resultSet.getString("chat_name");
+
+                if (chats.get(chatName) == null) {
+                    int id = resultSet.getInt("id");
+                    int creatorId = resultSet.getInt("creator_id");
+                    Chat chat = new Chat.Builder()
+                            .id(id).build();
+                    chats.put(id, chat);
+
+                }
+
+                String messageText = resultSet.getString("text");
+
+                if (messages.get(messageText) == null) {
+                    int id = resultSet.getInt("id");
+                    int authorId = resultSet.getInt("author_id");
+                    Message message = new Message.Builder()
+                            .id(id).build();
+                            messages.put(id, message);
+                }
+
+
             }
             return new ArrayList<Chat>(chats.values());
         }
@@ -123,6 +146,7 @@ public class ChatDaoNamedJdbcImpl implements ChatDao {
         final KeyHolder holder = new GeneratedKeyHolder();
         namedParameterTemplate.update(SQL_SAVE, params, holder, new String[]{"id"});
         Number generatedId = holder.getKey();
+//        chat.setId(generatedId);
         return generatedId.intValue();
     }
 

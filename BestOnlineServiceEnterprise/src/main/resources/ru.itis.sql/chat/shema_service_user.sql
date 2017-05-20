@@ -1,4 +1,7 @@
-CREATE TABLE chat_user (
-  chat_id INTEGER REFERENCES chat(id),
-  user_id INTEGER REFERENCES service_user(id)
+CREATE TABLE service_user (
+  id SERIAL PRIMARY KEY,
+  login VARCHAR(20),
+  password VARCHAR(20),
+  name VARCHAR(20),
+  age INTEGER
 );

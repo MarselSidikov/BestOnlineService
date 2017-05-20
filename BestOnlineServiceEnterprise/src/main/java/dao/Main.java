@@ -19,6 +19,5 @@ public class Main {
         ApplicationContext context = new ClassPathXmlApplicationContext("ru.itis\\spring\\context.xml");
         ChatDao chatDao = new ChatDaoNamedJdbcImpl(context.getBean(DataSource.class));
         List<Chat> chatList = chatDao.findAll();
-        int i = 0;
     }
 }
