@@ -1,5 +1,6 @@
 package dao;
 
+import models.Login;
 import models.Token;
 import models.UserAuth;
 import org.springframework.jdbc.core.RowMapper;
@@ -94,12 +95,4 @@ public class UserAuthNamedJdbcTemplate implements BaseUserAuthDao {
     public List<UserAuth> findAll() {
         return namedJdbcTemplate.query(SQL_SELECT_ALL, userAuthRowMapper);
     }
-/*
-    public UserAuth findByLogin(String login) {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("login", login);
-        List<UserAuth> userAuth = namedJdbcTemplate.query(SQL_SELECT_USER_BY_LOGIN, params, userAuthRowMapper);
-        return userAuth.get(0);
-    }
-*/
 }
