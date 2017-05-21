@@ -1,8 +1,9 @@
 package dao;
 
 import models.Film;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import org.springframework.context.support.GenericXmlApplicationContext;
+import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -26,9 +27,18 @@ public class FilmsNamedJdbcTemplateDaoImpl implements FilmsDao {
     private NamedParameterJdbcTemplate namedJdbcTemplate;
 
     public FilmsNamedJdbcTemplateDaoImpl() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("ru.itis\\spring\\context.xml");
+
+        GenericXmlApplicationContext context = new GenericXmlApplicationContext();
+        ConfigurableEnvironment environment = context.getEnvironment();
+        environment.addActiveProfile("dev");
+        context.load("ru.itis\\spring\\posterContext.xml");
+        context.refresh();
         DataSource dataSource = context.getBean(DataSource.class);
-        this.namedJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+        namedJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+
+//        ApplicationContext context = new ClassPathXmlApplicationContext("ru.itis\\spring\\posterContext.xml");
+//        DataSource dataSource = context.getBean(DataSource.class);
+//        this.namedJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
     //language=SQL
