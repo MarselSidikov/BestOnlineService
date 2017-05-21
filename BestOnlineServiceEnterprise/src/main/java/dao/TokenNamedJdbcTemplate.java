@@ -1,7 +1,7 @@
 package dao;
 
 import models.Token;
-import models.UserAuth;
+import models.User;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -48,7 +48,7 @@ import java.util.Map;
         public Token mapRow(ResultSet resultSet, int i) throws SQLException {
             Token token = new Token.Builder()
                     .id(resultSet.getInt(1))
-                    .loginId(resultSet.getString("login_id"))
+                    .loginId((User)resultSet.getObject("user_id"))
                     .token(resultSet.getString("token"))
                     .build();
             return token;
@@ -64,7 +64,7 @@ import java.util.Map;
 
     public int save(Token model) {
         MapSqlParameterSource params = new MapSqlParameterSource()
-                .addValue("login_id", model.getLoginId())
+                .addValue("login_id", model.getUser())
                 .addValue("token", model.getToken());
         final KeyHolder holder = new GeneratedKeyHolder();
         namedJdbcTemplate.update(SQL_INSERT_TOKEN, params, holder, new String[]{"id"});
@@ -93,8 +93,8 @@ import java.util.Map;
     public Token findByToken(String token) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("token", token);
-        List<Token> token = namedJdbcTemplate.query(SQL_SELECT_BY_TOKEN, params, tokenRowMapper);
-        return token.get(0);
+        List<Token> tokenList = namedJdbcTemplate.query(SQL_SELECT_BY_TOKEN, params, tokenRowMapper);
+        return tokenList.get(0);
     }
 
  }

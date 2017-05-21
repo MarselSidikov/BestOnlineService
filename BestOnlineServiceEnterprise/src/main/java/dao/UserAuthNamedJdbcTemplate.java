@@ -2,6 +2,7 @@ package dao;
 
 import models.Login;
 import models.Token;
+import models.User;
 import models.UserAuth;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -35,7 +36,7 @@ public class UserAuthNamedJdbcTemplate implements BaseUserAuthDao {
     private final String SQL_UPDATE_LOGIN_BY_ID = "UPDATE service_login SET login = :login, password = :password, " +
             "WHERE user_id = :user_id ";
     //language=SQL
-    private final String SQL_DELETE_LOGIN_BY_ID = "DELETE FROM service_login WHERE user_id = :user_id";
+    private final String SQL_DELETE_LOGIN_BY_ID = "DELETE FROM service_login WHERE id = :id";
     //language=SQL
     private final String SQL_SELECT_USER_BY_LOGIN = "SELECT * FROM service_login WHERE login = :login";
     //language=SQL
@@ -52,8 +53,7 @@ public class UserAuthNamedJdbcTemplate implements BaseUserAuthDao {
         public UserAuth mapRow(ResultSet resultSet, int i) throws SQLException {
             UserAuth userAuth = new UserAuth.Builder()
                     .id(resultSet.getInt(1))
-                    .login((Login) resultSet.getObject("login"))
-                    .password((Login) resultSet.getObject("password"))
+                    .user((User)resultSet.getObject(2))
                     .token((Token) resultSet.getObject("token"))
                     .build();
             return userAuth;
@@ -69,8 +69,7 @@ public class UserAuthNamedJdbcTemplate implements BaseUserAuthDao {
 
     public int save(UserAuth model) {
         MapSqlParameterSource params = new MapSqlParameterSource()
-                .addValue("login", model.getLogin())
-                .addValue("password", model.getPassword());
+                .addValue("user", model.getUser())
                 .addValue("token", model.getToken());
         final KeyHolder holder = new GeneratedKeyHolder();
         namedJdbcTemplate.update(SQL_INSERT_LOGIN, params, holder, new String[]{"id"});
@@ -88,7 +87,7 @@ public class UserAuthNamedJdbcTemplate implements BaseUserAuthDao {
 
     public void delete(int id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("user_id", id);
+        params.put("id", id);
         namedJdbcTemplate.update(SQL_DELETE_LOGIN_BY_ID, params);
     }
 

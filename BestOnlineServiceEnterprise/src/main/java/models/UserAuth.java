@@ -10,21 +10,18 @@ package models;
 public class UserAuth {
 
     private int id;
-    private Login login;
-    private Login password;
+    private User user;
     private Token token;
 
     public UserAuth(Builder builder) {
         this.id = builder.id;
-        this.login = builder.login;
-        this.password = builder.password;
+        this.user = builder.user;
         this.token = builder.token;
     }
 
     public static class Builder {
         private int id;
-        private Login login;
-        private Login password;
+        private User user;
         private Token token;
 
         public Builder id(int id) {
@@ -32,13 +29,8 @@ public class UserAuth {
             return this;
         }
 
-        public Builder login(Login login) {
-            this.login = login;
-            return this;
-        }
-
-        public Builder password(Login password) {
-            this.password = password;
+        public Builder user(User user) {
+            this.user = user;
             return this;
         }
 
@@ -56,24 +48,8 @@ public class UserAuth {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Login getLogin() {
-        return login;
-    }
-
-    public void setLogin(Login login) {
-        this.login = login;
-    }
-
-    public Login getPassword() {
-        return password;
-    }
-
-    public void setPassword(Login password) {
-        this.password = password;
+    public User getUser() {
+        return user;
     }
 
     public Token getToken() {
@@ -83,8 +59,7 @@ public class UserAuth {
     @Override
     public String toString() {
         return id +
-                " " + login +
-                " " + password +
+                " " + user +
                 " " + token;
     }
 
@@ -94,8 +69,7 @@ public class UserAuth {
             if (obj == this) return true;
             UserAuth that = (UserAuth) obj;
             return this.id == that.id
-                    && this.login.equals(that.login)
-                    && this.password.equals(that.password)
+                    && this.user.equals(that.user)
                     && this.token.equals(that.token);
         } return false;
     }

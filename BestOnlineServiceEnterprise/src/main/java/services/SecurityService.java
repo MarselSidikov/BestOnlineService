@@ -1,11 +1,11 @@
 package services;
 
-/**
- * 06.05.2017
- * SecurityService
- *
- * @author Sidikov Marsel (First Software Engineering Platform)
- * @version v1.0
- */
+import models.UserAuth;
+
+import java.util.List;
+
 public interface SecurityService {
+
+    List<UserAuth> findAll();
+
 }
