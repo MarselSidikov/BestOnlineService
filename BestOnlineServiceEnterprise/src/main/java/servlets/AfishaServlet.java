@@ -27,18 +27,12 @@ public class AfishaServlet extends HttpServlet{
     @Override
     public void init() throws ServletException {
         super.init();
-        GenericXmlApplicationContext context = new GenericXmlApplicationContext();
-        ConfigurableEnvironment environment = context.getEnvironment();
-        environment.addActiveProfile("dev");
-        context.load("ru.itis\\spring\\posterContext.xml");
-        context.refresh();
-        afishaService = context.getBean(AfishaServiceImpl.class);
-
+        ApplicationContext context = new ClassPathXmlApplicationContext("ru.itis\\spring\\posterContext.xml");
+        afishaService = context.getBean(AfishaService.class);
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        super.doGet(request, response);
         request.setAttribute("films",afishaService.findAll());
         request.getRequestDispatcher("/jsp/films.jsp").forward(request,response);
     }
