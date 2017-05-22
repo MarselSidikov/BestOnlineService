@@ -1,5 +1,6 @@
 package servlets;
 
+import models.Film;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
@@ -37,7 +38,57 @@ public class AfishaServlet extends HttpServlet{
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("films",afishaService.findAll());
+        String name = request.getParameter("name");
+        String genre = request.getParameter("genre");
+        String country = request.getParameter("country");
+        String producer = request.getParameter("producer");
+        String actors = request.getParameter("actor");
+        String method = request.getParameter("film");
+        if(method != null && method.equals("add")){
+            request.getRequestDispatcher("jsp/filmsAdd.jsp").forward(request,response);
+        }
+        if(name != null){
+            request.setAttribute("films",afishaService.findByName(name));
+        } else if(genre != null){
+            request.setAttribute("films",afishaService.findByGenre(genre));
+        } else if(country != null){
+            request.setAttribute("films",afishaService.findByCountry(country));
+        } else if(producer != null){
+            request.setAttribute("films",afishaService.findByProducer(producer));
+        } else if(actors != null){
+            request.setAttribute("films",afishaService.findByActors(actors));
+        }else{
+            request.setAttribute("films",afishaService.findAll());
+        }
+
         request.getRequestDispatcher("/jsp/films.jsp").forward(request,response);
+
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String name = req.getParameter("name");
+        String releaseDate = req.getParameter("releaseDate");
+        String genre = req.getParameter("genre");
+        String country = req.getParameter("country");
+        String producer = req.getParameter("producer");
+        String lasting = req.getParameter("lasting");
+        String description = req.getParameter("description");
+        String actors = req.getParameter("actors");
+
+        Film film = new Film.Builder()
+                .name(name)
+                .releaseDate(releaseDate)
+                .genre(genre)
+                .country(country)
+                .producer(producer)
+                .lasting(Double.parseDouble(lasting))
+                .description(description)
+                .actors(actors)
+                .build();
+        afishaService.register(film);
+        req.setAttribute("films", afishaService.findAll());
+        req.getRequestDispatcher("/jsp/films.jsp").forward(req,resp);
+
     }
 }
