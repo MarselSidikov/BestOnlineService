@@ -13,4 +13,5 @@ import java.util.List;
 public interface PostDao extends BaseDao<Post> {
     List<Post> findAllPosts();
     List<Post> findAllByAuthor();
+    List<Post> findAllPostByUser(String name);
 }

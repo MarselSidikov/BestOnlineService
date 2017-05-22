@@ -1,20 +1,18 @@
 package models;
 
-import dao.BaseDao;
-
 import java.util.List;
 
 /**
- * 07.05.2017
+ * 06.05.2017
  * Profile
  *
- * @author Zavidonov Denis (First Software Engineering Platform)
+ * @author Sidikov Marsel (First Software Engineering Platform)
  * @version v1.0
  */
 public class Profile {
+
     private int id ;
-    private String firstNameUser;
-    private String lastNameUser;
+    private String nameUser;
     private int ageUser;
     private String city;
     private String image;
@@ -24,8 +22,7 @@ public class Profile {
 
     public static class Builder {
         private int id ;
-        private String firstNameUser;
-        private String lastNameUser;
+        private String nameUser;
         private int ageUser;
         private String city;
         private String image;
@@ -42,14 +39,11 @@ public class Profile {
         }
 
 
-        public Builder firstNameUser (String firstNameUser){
-            this.firstNameUser = firstNameUser;
+        public Builder nameUser (String nameUser){
+            this.nameUser = nameUser;
             return this;
         }
-        public Builder lastNameUser (String lastNameUser){
-            this.lastNameUser = lastNameUser;
-            return this;
-        }
+
         public Builder ageUser (int ageUser){
             this.ageUser = ageUser;
             return this;
@@ -67,7 +61,7 @@ public class Profile {
             this.posts = posts;
             return this;
         }
-        public Builder friends (List<User>friends){
+        public Builder friends (List<User> friends){
             this.friends = friends;
             return this;
         }
@@ -79,8 +73,7 @@ public class Profile {
     }
     private Profile(Profile.Builder builder){
         this.id = builder.id;
-        this.firstNameUser = builder.firstNameUser;
-        this.lastNameUser = builder.lastNameUser;
+        this.nameUser = builder.nameUser;
         this.ageUser = builder.ageUser;
         this.city = builder.city;
         this.image = builder.image;
@@ -92,8 +85,7 @@ public class Profile {
 
     public String toString() {
         return  id + " "
-                + firstNameUser + " "
-                + lastNameUser + " "
+                + nameUser + " "
                 + ageUser + " "
                 + city + " "
                 + image + " "
@@ -112,13 +104,10 @@ public class Profile {
         return id;
     }
 
-    public String getFirstNameUser() {
-        return firstNameUser;
+    public String getNameUser() {
+        return nameUser;
     }
 
-    public String getLastNameUser() {
-        return lastNameUser;
-    }
 
     public int getAgeUser() {
         return ageUser;
@@ -145,8 +134,7 @@ public class Profile {
         if (obj != null && obj instanceof Profile){
             Profile that = (Profile)obj;
             return this.id == that.id
-                    && this.firstNameUser.equals(that.firstNameUser)
-                    && this.lastNameUser.equals(that.lastNameUser)
+                    && this.nameUser.equals(that.nameUser)
                     && this.ageUser == that.ageUser
                     && this.city.equals(that.city)
                     && this.image.equals(that.image)

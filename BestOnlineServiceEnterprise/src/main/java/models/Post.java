@@ -67,6 +67,26 @@ public class Post {
 
     }
 
+    public int getIdPost() {
+        return idPost;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public String getTextPost() {
+        return textPost;
+    }
+
+    public String getImagePost() {
+        return imagePost;
+    }
+
     public String toString() {
         return idPost + " "
                 + author + " "
