@@ -1,6 +1,5 @@
 package dao;
 
-import models.Login;
 import models.Token;
 import models.User;
 import models.UserAuth;
@@ -43,6 +42,8 @@ public class UserAuthNamedJdbcTemplate implements BaseUserAuthDao {
     private final String SQL_SELECT_USER_BY_TOKEN = "SELECT * FROM service_login WHERE auth_token = auth_token";
 
     private NamedParameterJdbcTemplate namedJdbcTemplate;
+    private UsersDao usersDao;
+    private BaseTokenDao tokenDao;
 
     public UserAuthNamedJdbcTemplate(DataSource dataSource) {
         this.namedJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
@@ -51,10 +52,12 @@ public class UserAuthNamedJdbcTemplate implements BaseUserAuthDao {
 
     private RowMapper<UserAuth> userAuthRowMapper = new RowMapper<UserAuth>() {
         public UserAuth mapRow(ResultSet resultSet, int i) throws SQLException {
+            User user = usersDao.find(resultSet.getInt("user_id"));
+            Token token = tokenDao.find(resultSet.getInt("auth_token"));
             UserAuth userAuth = new UserAuth.Builder()
                     .id(resultSet.getInt(1))
-                    .user((User)resultSet.getObject(2))
-                    .token((Token) resultSet.getObject("token"))
+                    .user(user)
+                    .token(token)
                     .build();
             return userAuth;
         }
@@ -79,9 +82,9 @@ public class UserAuthNamedJdbcTemplate implements BaseUserAuthDao {
 
     public void update(UserAuth model) {
         Map<String, Object> params = new HashMap<String, Object>();
-        /*
-
-         */
+        params.put("id", model.getId());
+        params.put("user", model.getUser());
+        params.put("token", model.getToken());
         namedJdbcTemplate.update(SQL_UPDATE_LOGIN_BY_ID, params);
     }
 

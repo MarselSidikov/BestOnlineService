@@ -35,7 +35,7 @@ public class Token {
             return this;
         }
 
-        public Builder loginId(User user) {
+        public Builder user(User user) {
             this.user = user;
             return this;
         }

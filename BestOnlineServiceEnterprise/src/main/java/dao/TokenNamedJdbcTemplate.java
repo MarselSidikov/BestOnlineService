@@ -30,15 +30,16 @@ import java.util.Map;
     //language=SQL
  	private final String SQL_SELECT_TOKEN_BY_ID = "SELECT * FROM token WHERE id = :id";
     //language=SQL
-    private final String SQL_INSERT_TOKEN = "INSERT INTO access_token(login_id, token) VALUES (:loginId, :token)";
+    private final String SQL_INSERT_TOKEN = "INSERT INTO access_token(id, token) VALUES (:id, :token)";
     //language=SQL
-    private final String SQL_UPDATE_TOKEN_BY_ID = "";
+    private final String SQL_UPDATE_TOKEN_BY_ID = "UPDATE access_token SET user_id = :user_id WHERE user_id = :user_id";
     //language=SQL
     private final String SQL_DELETE_TOKEN_BY_ID = "DELETE FROM access_token WHERE id = :id";
     //language=SQL
     private final String SQL_SELECT_BY_TOKEN = "SELECT * FROM token WHERE token = :token";
 
 	private NamedParameterJdbcTemplate namedJdbcTemplate;
+	private UsersDao usersDao;
 
     public TokenNamedJdbcTemplate(DataSource dataSource) {
         this.namedJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
@@ -46,9 +47,10 @@ import java.util.Map;
 
     private RowMapper<Token> tokenRowMapper = new RowMapper<Token>() {
         public Token mapRow(ResultSet resultSet, int i) throws SQLException {
+            User user = usersDao.find(resultSet.getInt("user_id"));
             Token token = new Token.Builder()
                     .id(resultSet.getInt(1))
-                    .loginId((User)resultSet.getObject("user_id"))
+                    .user(user)
                     .token(resultSet.getString("token"))
                     .build();
             return token;
@@ -64,7 +66,7 @@ import java.util.Map;
 
     public int save(Token model) {
         MapSqlParameterSource params = new MapSqlParameterSource()
-                .addValue("login_id", model.getUser())
+                .addValue("user_id", model.getUser())
                 .addValue("token", model.getToken());
         final KeyHolder holder = new GeneratedKeyHolder();
         namedJdbcTemplate.update(SQL_INSERT_TOKEN, params, holder, new String[]{"id"});
@@ -74,9 +76,9 @@ import java.util.Map;
 
     public void update(Token model) {
         Map<String, Object> params = new HashMap<String, Object>();
-        /*
-
-         */
+        params.put("id", model.getId());
+        params.put("user", model.getUser());
+        params.put("token", model.getToken());
         namedJdbcTemplate.update(SQL_UPDATE_TOKEN_BY_ID, params);
     }
 
