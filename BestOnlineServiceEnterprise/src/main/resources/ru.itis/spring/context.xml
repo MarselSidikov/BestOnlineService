@@ -1,13 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:context="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:jdbs="http://www.springframework.org/schema/jdbc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/jdbc
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
 
 
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="org.postgresql.Driver"/>
-        <property name="url" value="jdbc:postgresql://localhost:5432/best_online_service_db"/>
-        <property name="username" value="postgres"/>
-        <property name="password" value="aspirin12"/>
-    </bean>
+    <beans profile="dev">
+        <context:property-placeholder properties-ref="db_properties"/>
+        <util:properties id="db_properties" location="classpath*:ru.itis/spring/db.properties"/>
+
+        <bean id="afishaService" class="services.impl.AfishaServiceImpl">
+            <constructor-arg ref="afishaDao"></constructor-arg>
+        </bean>
+        <bean id="afishaDao" class="dao.FilmsNamedJdbcTemplateDaoImpl">
+            <constructor-arg ref="dataSource"/>
+        </bean>
+        <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+            <property name="driverClassName" value="${jdbc.driver}"/>
+            <property name="url" value="${jdbc.url}"/>
+            <property name="username" value="${jdbc.name}"/>
+            <property name="password" value="${jdbc.password}"/>
+        </bean>
+    </beans>
+
+
+    <beans profile="test">
+        <bean id="afishaServiceTest" class="services.impl.AfishaServiceImpl">
+            <constructor-arg ref="filmsDaoTest"/>
+        </bean>
+        <bean id="filmsDaoTest" class="dao.FilmsNamedJdbcTemplateDaoImpl">
+            <constructor-arg ref="testDataSource"/>
+        </bean>
+        <jdbs:embedded-database id="testDataSource" type="H2">
+            <jdbs:script location="classpath:ru.itis.sql/poster/test/films_schema.sql"/>
+            <jdbs:script location="classpath:ru.itis.sql/poster/test/films_data.sql"/>
+        </jdbs:embedded-database>
+    </beans>
 </beans>

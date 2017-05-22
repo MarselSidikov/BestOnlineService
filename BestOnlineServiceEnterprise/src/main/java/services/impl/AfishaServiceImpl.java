@@ -5,6 +5,7 @@ import dao.FilmsNamedJdbcTemplateDaoImpl;
 import models.Film;
 import services.AfishaService;
 
+import javax.sql.DataSource;
 import java.util.List;
 
 /**
@@ -16,8 +17,8 @@ import java.util.List;
 public class AfishaServiceImpl implements AfishaService {
     private FilmsDao filmsDao;
 
-    public AfishaServiceImpl() {
-        this.filmsDao = new FilmsNamedJdbcTemplateDaoImpl();
+    public AfishaServiceImpl(FilmsDao filmsDao) {
+        this.filmsDao = filmsDao;
     }
 
     @Override

@@ -27,7 +27,11 @@ public class AfishaServlet extends HttpServlet{
     @Override
     public void init() throws ServletException {
         super.init();
-        ApplicationContext context = new ClassPathXmlApplicationContext("ru.itis\\spring\\posterContext.xml");
+       GenericXmlApplicationContext context = new  GenericXmlApplicationContext();
+       ConfigurableEnvironment environment = context.getEnvironment();
+       environment.addActiveProfile("dev");
+       context.load("ru.itis\\spring\\context.xml");
+       context.refresh();
         afishaService = context.getBean(AfishaService.class);
     }
 

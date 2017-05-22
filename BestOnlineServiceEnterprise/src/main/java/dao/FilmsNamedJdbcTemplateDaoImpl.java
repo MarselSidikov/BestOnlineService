@@ -28,10 +28,7 @@ public class FilmsNamedJdbcTemplateDaoImpl implements FilmsDao {
 
     private NamedParameterJdbcTemplate namedJdbcTemplate;
 
-    public FilmsNamedJdbcTemplateDaoImpl() {
-
-        ApplicationContext context = new ClassPathXmlApplicationContext("ru.itis\\spring\\context.xml");
-        DataSource dataSource = context.getBean(DataSource.class);
+    public FilmsNamedJdbcTemplateDaoImpl(DataSource dataSource) {
         this.namedJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
