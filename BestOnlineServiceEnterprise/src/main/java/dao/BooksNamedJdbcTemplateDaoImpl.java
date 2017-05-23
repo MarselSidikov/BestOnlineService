@@ -1,8 +1,6 @@
 package dao;
 
 import models.Book;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -23,7 +21,7 @@ import java.util.Map;
  * @author Shaikhutdinov Artur (First Software Engineering Platform)
  * @version v1.0
  */
-public class BooksNamedJdbcTemplateDaoImpl implements BaseBookDao {
+public class BooksNamedJdbcTemplateDaoImpl implements BooksDao {
     private NamedParameterJdbcTemplate namedJdbcTemplate;
     private JdbcTemplate template;
 
@@ -35,7 +33,7 @@ public class BooksNamedJdbcTemplateDaoImpl implements BaseBookDao {
     //language=SQL
     private final String SQL_SELECT_ALL = "SELECT * FROM books";
     // language=SQL
-    private final String SQL_SELECT_BOOK_BY_ID = "SELECT * FROM books WHERE id = :id";
+    private final String SQL_SELECT_BOOK_BY_ID = "SELECT * FROM books WHERE id = ?";
     // language=SQL
     private final String SQL_SELECT_BOOKS_BY_NAME = "SELECT * FROM books WHERE name = :name";
     // language=SQL
@@ -47,11 +45,11 @@ public class BooksNamedJdbcTemplateDaoImpl implements BaseBookDao {
     //language=SQL
     private final String SQL_SELECT_BOOKS_BY_YEAROFISSUE = "SELECT * FROM books WHERE yearOfIssue = :yearOfIssue";
     // language=SQL
-    private final String SQL_INSERT_BOOK = "INSERT INTO books(name, author, type, genre, publishingHouse, yearOfIssue, numberOfPages, language, descriprion) VALUES " +
-            "(:name , :author , :type , :genre , :publishingHouse , :yearOfIssue , :numberOfPages , :language , :descriprion)";
+    private final String SQL_INSERT_BOOK = "INSERT INTO books(name, author, type, genre, publishingHouse, yearOfIssue, numberOfPages, language, description) VALUES " +
+            "(:name , :author , :type , :genre , :publishingHouse , :yearOfIssue , :numberOfPages , :language , :description)";
     // language=SQL
     private final String SQL_UPDATE_BOOK_BY_ID = "UPDATE books SET name = :name , author = :author , type = :type , genre = :genre , " +
-            "publishingHouse = :publishingHouse , yearOfIssue = :yearOfIssue , numberOfPages = :numberOfPages , language = :language , description = :descriprion WHERE id = :id ";
+            "publishingHouse = :publishingHouse , yearOfIssue = :yearOfIssue , numberOfPages = :numberOfPages , language = :language , description = :description WHERE id = :id ";
     // language=SQL
     private final String SQL_DELETE_BOOK_BY_ID = "DELETE FROM books WHERE id = :id";
 
@@ -74,10 +72,7 @@ public class BooksNamedJdbcTemplateDaoImpl implements BaseBookDao {
     };
 
     public Book find(int id) {
-        Map<String, Object> params= new HashMap<String,Object>();
-        params.put("id",id);
-        List<Book> books = namedJdbcTemplate.query(SQL_SELECT_BOOK_BY_ID,params,bookRowMapper);
-        return books.get(0);
+        return template.queryForObject(SQL_SELECT_BOOK_BY_ID, new Object[]{id}, bookRowMapper);
     }
 
 
