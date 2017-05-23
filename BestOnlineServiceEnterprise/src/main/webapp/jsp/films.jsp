@@ -24,6 +24,7 @@
             <th>описание</th>
             <th>дата выхода</th>
             <th>актеры</th>
+            <th>режиссер</th>
             <th>изображение</th>
         </tr>
         <c:forEach items="${requestScope.films}" var="film">
@@ -36,6 +37,7 @@
                 <td><c:out value="${film.description}"></c:out> </td>
                 <td><c:out value="${film.releaseDate}"></c:out> </td>
                 <td><c:out value="${film.actors}"></c:out> </td>
+                <td><c:out value="${film.producer}"></c:out> </td>
                 <td><c:out value="${film.picture}"></c:out> </td>
             </tr>
         </c:forEach>

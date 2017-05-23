@@ -29,7 +29,6 @@
         </bean>
     </beans>
 
-
     <beans profile="test">
         <bean id="afishaServiceTest" class="services.impl.AfishaServiceImpl">
             <constructor-arg ref="filmsDaoTest"/>

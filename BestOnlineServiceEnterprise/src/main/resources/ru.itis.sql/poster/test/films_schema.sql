@@ -6,7 +6,7 @@ CREATE TABLE films(
   genre VARCHAR(50),
   country VARCHAR(50),
   producer VARCHAR(50),
-  lasting DOUBLE PRECISION,
+  lasting INTEGER,
   description VARCHAR(255),
   actors VARCHAR(50),
   picture VARCHAR(100)

@@ -65,7 +65,7 @@ public class FilmsNamedJdbcTemplateDaoImpl implements FilmsDao {
                     .genre(resultSet.getString("genre"))
                     .country(resultSet.getString("country"))
                     .producer(resultSet.getString("producer"))
-                    .lasting(resultSet.getDouble("lasting"))
+                    .lasting(resultSet.getInt("lasting"))
                     .description(resultSet.getString("description"))
                     .actors(resultSet.getString("actors"))
                     .picture(resultSet.getString("picture"))

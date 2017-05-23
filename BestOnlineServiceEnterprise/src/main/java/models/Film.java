@@ -13,7 +13,7 @@ public class Film {
     private String genre;
     private String country;
     private String producer;
-    private Double lasting;
+    private int lasting;
     private String description;
     private String actors;
     private String picture;
@@ -38,7 +38,7 @@ public class Film {
         private String genre;
         private String country;
         private String producer;
-        private Double lasting;
+        private int lasting;
         private String description;
         private String actors;
         private String picture;
@@ -67,7 +67,7 @@ public class Film {
             this.producer = producer;
             return this;
         }
-        public Builder lasting(Double lasting){
+        public Builder lasting(int lasting){
             this.lasting = lasting;
             return this;
         }
@@ -116,7 +116,7 @@ public class Film {
         return producer;
     }
 
-    public Double getLasting() {
+    public int getLasting() {
         return lasting;
     }
 
@@ -157,7 +157,7 @@ public class Film {
                     && this.actors.equals(that.actors)
                     && this.country.equals(that.country)
                     && this.description.equals(that.description)
-                    && this.lasting.equals(that.lasting)
+                    && this.lasting == that.lasting
                     && this.producer.equals(that.producer)
                     && this.picture.equals(that.picture)
                     && this.releaseDate.equals(that.releaseDate);

@@ -82,7 +82,7 @@ public class AfishaServlet extends HttpServlet{
                 .genre(genre)
                 .country(country)
                 .producer(producer)
-                .lasting(Double.parseDouble(lasting))
+                .lasting(Integer.parseInt(lasting))
                 .description(description)
                 .actors(actors)
                 .build();
