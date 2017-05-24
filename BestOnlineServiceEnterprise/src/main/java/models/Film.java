@@ -12,7 +12,7 @@ public class Film {
     private int id;
     private String name;
     private String releaseDate;
-    private List <String> genre;
+    private List <String> genres;
     private String country;
     private String producer;
     private int lasting;
@@ -26,7 +26,7 @@ public class Film {
         this.id = builder.id;
         this.name = builder.name;
         this.releaseDate = builder.releaseDate;
-        this.genre = builder.genre;
+        this.genres = builder.genre;
         this.country = builder.country;
         this.producer = builder.producer;
         this.lasting = builder.lasting;
@@ -108,8 +108,8 @@ public class Film {
         return releaseDate;
     }
 
-    public List<String> getGenre() {
-        return genre;
+    public List<String> getGenres() {
+        return genres;
     }
 
     public String getCountry() {
@@ -141,7 +141,7 @@ public class Film {
         return  id +
                 " " + name +
                 " " + releaseDate +
-                " " + genre +
+                " " + genres +
                 " " + country +
                 " " + producer +
                 " " + lasting +
@@ -157,7 +157,7 @@ public class Film {
             Film that = (Film) obj;
             return this.id == that.id
                     && this.name.equals(that.name)
-                    && this.genre.equals(that.genre)
+                    && this.genres.equals(that.genres)
                     && this.actors.equals(that.actors)
                     && this.country.equals(that.country)
                     && this.description.equals(that.description)

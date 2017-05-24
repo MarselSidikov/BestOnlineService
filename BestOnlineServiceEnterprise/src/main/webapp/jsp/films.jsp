@@ -31,12 +31,20 @@
             <tr>
                 <td><c:out value="${film.id}"></c:out> </td>
                 <td><c:out value="${film.name}"></c:out> </td>
-                <td><c:out value="${film.genre}"></c:out> </td>
+                <td>
+                    <c:forEach items="${film.genres}" var="genre">
+                        <c:out value="${genre}">,</c:out>
+                    </c:forEach>
+                </td>
                 <td><c:out value="${film.country}"></c:out> </td>
                 <td><c:out value="${film.lasting}"></c:out> </td>
                 <td><c:out value="${film.description}"></c:out> </td>
                 <td><c:out value="${film.releaseDate}"></c:out> </td>
-                <td><c:out value="${film.actors}"></c:out> </td>
+                <td>
+                    <c:forEach items=" ${film.actors}" var = "actor">
+                        <c:out value="${actor}">,</c:out>
+                    </c:forEach>
+                </td>
                 <td><c:out value="${film.producer}"></c:out> </td>
                 <td><c:out value="${film.picture}"></c:out> </td>
             </tr>

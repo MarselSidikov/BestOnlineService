@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 21.05.2017
@@ -69,23 +71,34 @@ public class AfishaServlet extends HttpServlet{
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getParameter("name");
         String releaseDate = req.getParameter("releaseDate");
-        String genre = req.getParameter("genre");
+        String genres = req.getParameter("genre");
         String country = req.getParameter("country");
         String producer = req.getParameter("producer");
         String lasting = req.getParameter("lasting");
         String description = req.getParameter("description");
         String actors = req.getParameter("actors");
 
+        String actorsAsArray[] = actors.split(",");
+        String genresAsArray[] = genres.split(",");
+        List<String> genresAsList = new ArrayList<>();
+        List<String> actorsAsList = new ArrayList<>();
+        for(int i = 0; i < actorsAsArray.length; i ++){
+            actorsAsList.add(actorsAsArray[i]);
+        }
+        for(int i = 0; i < genresAsArray.length; i ++){
+            genresAsList.add(genresAsArray[i]);
+        }
         Film film = new Film.Builder()
                 .name(name)
                 .releaseDate(releaseDate)
-                .genre(genre)
+                .actors(actorsAsList)
                 .country(country)
                 .producer(producer)
                 .lasting(Integer.parseInt(lasting))
                 .description(description)
-                .actors(actors)
+                .genre(genresAsList)
                 .build();
+
         afishaService.register(film);
         req.setAttribute("films", afishaService.findAll());
         req.getRequestDispatcher("/jsp/films.jsp").forward(req,resp);
