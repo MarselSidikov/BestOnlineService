@@ -11,6 +11,6 @@ import models.Token;
 
 public interface BaseTokenDao extends BaseDao<Token> {
 	
-	T findByToken(String token);
+	Token findByToken(String token);
 	
 }

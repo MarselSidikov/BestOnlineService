@@ -1,0 +1,7 @@
+CREATE TABLE user_data (
+  id SERIAL PRIMARY KEY,
+  login VARCHAR(50) NOT NULL,
+  password VARCHAR(50) NOT NULL,
+  name VARCHAR(50),
+  age INTEGER
+)

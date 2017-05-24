@@ -49,30 +49,17 @@ public class Token {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public User getUser() {
         return user;
-    }
-
-    public void setUser() {
-        this.user = user;
     }
 
     public String getToken() {
         return token;
     }
 
-    public void setToken(String token) {
-        this.token = token;
-    }
-
     @Override
     public String toString() {
-        return id +
-                " " + token;
+        return user + " " + token;
     }
 
     @Override

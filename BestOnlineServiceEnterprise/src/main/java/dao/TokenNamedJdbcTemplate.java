@@ -30,13 +30,16 @@ import java.util.Map;
     //language=SQL
  	private final String SQL_SELECT_TOKEN_BY_ID = "SELECT * FROM token WHERE id = :id";
     //language=SQL
-    private final String SQL_INSERT_TOKEN = "INSERT INTO access_token(id, token) VALUES (:id, :token)";
+    private final String SQL_INSERT_TOKEN = "INSERT INTO access_token(user_id, token) VALUES (:user_id, :token)";
     //language=SQL
-    private final String SQL_UPDATE_TOKEN_BY_ID = "UPDATE access_token SET user_id = :user_id WHERE user_id = :user_id";
+    private final String SQL_UPDATE_TOKEN_BY_ID = "UPDATE access_token SET user_id = :user_id, token = :token" +
+            " WHERE id = :id";
     //language=SQL
     private final String SQL_DELETE_TOKEN_BY_ID = "DELETE FROM access_token WHERE id = :id";
     //language=SQL
-    private final String SQL_SELECT_BY_TOKEN = "SELECT * FROM token WHERE token = :token";
+    private final String SQL_SELECT_BY_TOKEN = "SELECT * FROM access_token WHERE token = :token";
+    //language=SQL
+    private final String SQL_SELECT_BY_USER_ID = "SELECT * FROM access_token WHERE user_id = :user_id";
 
 	private NamedParameterJdbcTemplate namedJdbcTemplate;
 	private UsersDao usersDao;
@@ -76,8 +79,7 @@ import java.util.Map;
 
     public void update(Token model) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("id", model.getId());
-        params.put("user", model.getUser());
+        params.put("user_id", model.getUser());
         params.put("token", model.getToken());
         namedJdbcTemplate.update(SQL_UPDATE_TOKEN_BY_ID, params);
     }
@@ -97,6 +99,10 @@ import java.util.Map;
         params.put("token", token);
         List<Token> tokenList = namedJdbcTemplate.query(SQL_SELECT_BY_TOKEN, params, tokenRowMapper);
         return tokenList.get(0);
+    }
+
+    public Token findUserById(int id) {
+        return null;
     }
 
  }

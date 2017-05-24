@@ -1,17 +1,20 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: Kart
-  Date: 21.05.2017
-  Time: 23:38
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="models.User" %>
+<%@ page import="java.util.ArrayList" %>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<head>
-    <title>Title</title>
-</head>
 <body>
-
+<table>
+    <c:forEach items="${requestScope.security}" var="user">
+        <tr>
+            <td><c:out value="${user.id}"/></td>
+            <td><c:out value="${user.login}"/></td>
+            <td><c:out value="${user.password}"/></td>
+            <td><c:out value="${user.name}"/></td>
+            <td><c:out value="${user.age}"/></td>
+        </tr>
+    </c:forEach>
+</table>
 </body>
 </html>

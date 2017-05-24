@@ -1,11 +1,11 @@
 package services;
 
-import models.UserAuth;
+import models.User;
 
 import java.util.List;
 
 public interface SecurityService {
 
-    List<UserAuth> findAll();
+    List<User> findAll();
 
 }

@@ -2,6 +2,8 @@ package dao;
 
 import models.User;
 
+import java.util.List;
+
 /**
  * 22.05.2017
  * UsersDao
@@ -10,4 +12,9 @@ import models.User;
  * @version 0.1
  */
 public interface UsersDao extends BaseDao<User> {
+
+    User findUserByLogin();
+    List<User> findUsersByName();
+    List<User> findUsersByAge();
+
 }

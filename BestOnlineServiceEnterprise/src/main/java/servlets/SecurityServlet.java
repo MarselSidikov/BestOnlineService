@@ -2,7 +2,10 @@ package servlets;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.support.GenericXmlApplicationContext;
+import org.springframework.core.env.ConfigurableEnvironment;
 import services.SecurityService;
+import services.SecurityServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,13 +27,19 @@ public class SecurityServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        ApplicationContext context = new ClassPathXmlApplicationContext("ru.itis\\spring\\posterContext.xml");
-        securityService = context.getBean(SecurityService.class);
+        GenericXmlApplicationContext context = new GenericXmlApplicationContext();
+        ConfigurableEnvironment environment = context.getEnvironment();
+        environment.addActiveProfile("dev");
+        context.load("ru.itis\\spring\\context.xml");
+        context.refresh();
+        securityService = context.getBean(SecurityServiceImpl.class);
+        /*ApplicationContext context = new ClassPathXmlApplicationContext("ru.itis\\spring\\context.xml");
+        securityService = context.getBean(SecurityService.class);*/
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("security", securityService.findAll());
-        request.getRequestDispatcher("/jsp/security.jsp").forward(request,response);
+        request.getRequestDispatcher("/jsp/security.jsp").forward(request, response);
     }
 }
