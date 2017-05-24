@@ -1,5 +1,7 @@
 package models;
 
+import java.util.List;
+
 /**
  * 08.05.2017
  * Film @author Ayupov Ayaz (First Software Engineering Platform)
@@ -10,13 +12,15 @@ public class Film {
     private int id;
     private String name;
     private String releaseDate;
-    private String genre;
+    private List <String> genre;
     private String country;
     private String producer;
     private int lasting;
     private String description;
-    private String actors;
+    private List <String> actors;
     private String picture;
+
+
 
     public Film(Builder builder){
         this.id = builder.id;
@@ -35,12 +39,12 @@ public class Film {
         private int id;
         private String name;
         private String releaseDate;
-        private String genre;
+        private List<String> genre;
         private String country;
         private String producer;
         private int lasting;
         private String description;
-        private String actors;
+        private List<String> actors;
         private String picture;
 
         public Builder id(int id){
@@ -55,7 +59,7 @@ public class Film {
             this.releaseDate = releaseDate;
             return this;
         }
-        public Builder genre(String genre){
+        public Builder genre(List<String> genre){
             this.genre = genre;
             return this;
         }
@@ -75,7 +79,7 @@ public class Film {
             this.description = description;
             return this;
         }
-        public Builder actors(String actors){
+        public Builder actors(List<String> actors){
             this.actors = actors;
             return this;
         }
@@ -104,7 +108,7 @@ public class Film {
         return releaseDate;
     }
 
-    public String getGenre() {
+    public List<String> getGenre() {
         return genre;
     }
 
@@ -124,7 +128,7 @@ public class Film {
         return description;
     }
 
-    public String getActors() {
+    public List<String> getActors() {
         return actors;
     }
 

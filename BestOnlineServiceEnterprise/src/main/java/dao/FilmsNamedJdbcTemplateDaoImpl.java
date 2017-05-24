@@ -6,14 +6,20 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import javax.sql.DataSource;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,111 +33,293 @@ import java.util.Map;
 public class FilmsNamedJdbcTemplateDaoImpl implements FilmsDao {
 
     private NamedParameterJdbcTemplate namedJdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
+
 
     public FilmsNamedJdbcTemplateDaoImpl(DataSource dataSource) {
         this.namedJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     //language=SQL
-    private final String SQL_SELECT_ALL = "SELECT * FROM films";
+    private final String SQL_SELECT_ALL = "SELECT films.id AS id, films.name AS film_name," +
+            " films.releasedate AS releasedate, films.country AS country, " +
+            "films.description AS description, films.lasting AS lasting," +
+            " films.producer AS producer, films.picture AS picture, actors.id AS actor_id, actors.id_film AS actors_id_film," +
+            " actors.actor_name AS actors_name, genres.genre AS genre, genres.id AS genre_id " +
+            "FROM films JOIN actors ON films.id = actors.id_film \n " +
+            "JOIN genres ON films.id = genres.id_film";
+
     // language=SQL
-    private final String SQL_SELECT_FILM_BY_ID = "SELECT * FROM films WHERE id = :id";
+    private final String SQL_SELECT_FILM_BY_ID = "SELECT films.id AS id, films.name AS film_name," +
+            " films.releasedate AS releasedate, films.country AS country, " +
+            "films.description AS description, films.lasting AS lasting," +
+            " films.producer AS producer, films.picture AS picture, actors.id AS actor_id, actors.id_film AS actors_id_film," +
+            " actors.actor_name AS actors_name, genres.genre AS genre, genres.id AS genre_id " +
+            "FROM films JOIN actors ON films.id = actors.id_film \n " +
+            "JOIN genres ON films.id = genres.id_film " +
+            "WHERE films.id = :id";
+
     // language=SQL
-    private final String SQL_SELECT_FILMS_BY_NAME = "SELECT * FROM films WHERE name = :name";
+    private final String SQL_SELECT_FILMS_BY_NAME = "SELECT films.id AS id, films.name AS film_name," +
+            " films.releasedate AS releasedate, films.country AS country, " +
+            "films.description AS description, films.lasting AS lasting," +
+            " films.producer AS producer, films.picture AS picture, actors.id AS actor_id, actors.id_film AS actors_id_film," +
+            " actors.actor_name AS actors_name, genres.genre AS genre, genres.id AS genre_id " +
+            "FROM films JOIN actors ON films.id = actors.id_film \n " +
+            "JOIN genres ON films.id = genres.id_film " +
+            "WHERE films.name = :name";
+
     // language=SQL
-    private final String SQL_SELECT_FILMS_BY_COUNTRY = "SELECT * FROM films WHERE country = :country";
+    private final String SQL_SELECT_FILMS_BY_COUNTRY = "SELECT films.id AS id, films.name AS film_name," +
+            " films.releasedate AS releasedate, films.country AS country, " +
+            "films.description AS description, films.lasting AS lasting," +
+            " films.producer AS producer, films.picture AS picture, actors.id AS actor_id, actors.id_film AS actors_id_film," +
+            " actors.actor_name AS actors_name, genres.genre AS genre, genres.id AS genre_id " +
+            "FROM films JOIN actors ON films.id = actors.id_film \n " +
+            "JOIN genres ON films.id = genres.id_film " +
+            "WHERE films.country = :country";
+
     // language=SQL
-    private final String SQL_SELECT_FILMS_BY_PRODUCER = "SELECT * FROM films WHERE producer = :producer";
+    private final String SQL_SELECT_FILMS_BY_PRODUCER = "SELECT films.id AS id, films.name AS film_name," +
+            " films.releasedate AS releasedate, films.country AS country, " +
+            "films.description AS description, films.lasting AS lasting," +
+            " films.producer AS producer, films.picture AS picture, actors.id AS actor_id, actors.id_film AS actors_id_film," +
+            " actors.actor_name AS actors_name, genres.genre AS genre, genres.id AS genre_id " +
+            "FROM films JOIN actors ON films.id = actors.id_film \n " +
+            "JOIN genres ON films.id = genres.id_film " +
+            " WHERE films.producer = :id";
+
     // language=SQL
-    private final String SQL_SELECT_FILMS_BY_GENRE = "SELECT * FROM films WHERE genre = :genre";
+    private final String SQL_SELECT_FILMS_BY_GENRE = "SELECT films.id AS id, films.name AS film_name," +
+            " films.releasedate AS releasedate, films.country AS country, " +
+            "films.description AS description, films.lasting AS lasting," +
+            " films.producer AS producer, films.picture AS picture, actors.id AS actor_id, actors.id_film AS actors_id_film," +
+            " actors.actor_name AS actors_name, genres.genre AS genre, genres.id AS genre_id " +
+            "FROM films JOIN actors ON films.id = actors.id_film \n " +
+            "JOIN genres ON films.id = genres.id_film " +
+            "WHERE genres.genre = :name";
+
+    //language=SQL
+    private final String SQL_SELECT_FILMS_BY_ACTORS = "SELECT films.id AS id, films.name AS film_name," +
+            " films.releasedate AS releasedate, films.country AS country, " +
+            "films.description AS description, films.lasting AS lasting," +
+            " films.producer AS producer, films.picture AS picture, actors.id AS actor_id, actors.id_film AS actors_id_film," +
+            " actors.actor_name AS actors_name, genres.genre AS genre, genres.id AS genre_id " +
+            "FROM films JOIN actors ON films.id = actors.id_film \n " +
+            "JOIN genres ON films.id = genres.id_film " +
+            "WHERE actors.actor_name = :name";
+
     // language=SQL
-    private final String SQL_INSERT_FILM = "INSERT INTO films(name,releasedate,genre,country,producer,lasting,description,actors,picture) VALUES " +
-            "(:name , :releasedate , :genre , :country , :producer , :lasting , :description , :actors , :picture)";
+    private final String SQL_INSERT_FILM = "INSERT INTO films(name,releasedate,country,producer,lasting,description,picture) VALUES " +
+            "(:name , :releasedate  , :country , :producer , :lasting , :description , :picture)";
+
     // language=SQL
     private final String SQL_UPDATE_FILM_BY_ID = "UPDATE films SET name = :name , releasedate = :releasedate ," +
-            " genre = :genre , country = :country , producer = :producer , lasting = :lasting , description = :description , actors = :actors , picture = :picture WHERE id = :id ";
+            " country = :country , producer = :producer , lasting = :lasting , description = :description, picture = :picture" +
+            " WHERE id = :id ";
+
     // language=SQL
     private final String SQL_DELETE_FILM_BY_ID = "DELETE FROM films WHERE id = :id";
 
-    //language=SQL
-    private final String SQL_SELECT_FILMS_BY_ACTORS = "SELECT * FROM films WHERE actors = :actors";
+    // language=SQL
+    private final String SQL_INSER_ACTORS = "INSERT INTO actors ( id_film, actor_name) VALUES ( :id_film, :actor_name)";
 
-    private RowMapper<Film> movieRowMapper = new RowMapper<Film>() {
-        public Film mapRow(ResultSet resultSet, int i) throws SQLException {
-            return new Film.Builder()
-                    .id(resultSet.getInt(1))
-                    .name(resultSet.getString("name"))
-                    .releaseDate(resultSet.getString("releasedate"))
-                    .genre(resultSet.getString("genre"))
-                    .country(resultSet.getString("country"))
-                    .producer(resultSet.getString("producer"))
-                    .lasting(resultSet.getInt("lasting"))
-                    .description(resultSet.getString("description"))
-                    .actors(resultSet.getString("actors"))
-                    .picture(resultSet.getString("picture"))
-                    .build();
+    // language=SQL
+    private final String SQL_DELETE_ACTORS_BY_FILM_ID = "DELETE FROM actors WHERE id_film = :id_film ";
+
+    // language=SQL
+    private final String SQL_DELETE_GENRES_BY_FILM_ID = "DELETE FROM genres WHERE id_film = :id_film ";
+
+    //language=SQL
+    private final String SQL_SELECT_ACTORS_ALL = "SELECT * FROM actors ";
+
+    // language=SQL
+    private final String SQL_INSER_GENRE = "INSERT INTO genres ( id_film, genre) VALUES ( :id_film, :genre)";
+
+
+    private ResultSetExtractor <List<Film>> resultSetExtractor = new ResultSetExtractor<List<Film>>() {
+        @Override
+        public List<Film> extractData(ResultSet resultSet) throws SQLException, DataAccessException {
+
+            Map<Integer, Film> films = new HashMap<>();
+
+            // Map<id_actor , Map <id_film, acterName>
+            Map<Integer, Map<Integer, String> > actors = new HashMap<>();
+
+            //Map<id_genre , Map <id_films, genre>
+            Map<Integer, Map<Integer, String>> genres = new HashMap<>();
+
+            while(resultSet.next()){
+                //films:
+                int filmsId = resultSet.getInt("id");
+                if(films.get(filmsId) == null){
+                    String filmName = resultSet.getString("film_name");
+                    String releaseDate = resultSet.getString("releasedate");
+                    String country = resultSet.getString("country");
+                    String producer = resultSet.getString("producer");
+                    int lasting = resultSet.getInt("lasting");
+                    String description = resultSet.getString("description");
+                    String picture = resultSet.getString("picture");
+                    List<String> film_actors = new ArrayList<>();
+                    List<String> film_genres = new ArrayList<>();
+                    // Создаем объект
+                    Film newFilm = new Film.Builder()
+                            .id(filmsId)
+                            .name(filmName)
+                            .releaseDate(releaseDate)
+                            .country(country)
+                            .producer(producer)
+                            .description(description)
+                            .lasting(lasting)
+                            .picture(picture)
+                            .actors(film_actors)
+                            .genre(film_genres).build();
+                    //кладем в Map
+                    films.put(filmsId,newFilm);
+                }
+                //genres:
+                int idGenre = resultSet.getInt("genre_id");
+                String genre = resultSet.getString("genre");
+                if(genres.get(idGenre) == null){
+                    genres.put(idGenre, null);
+                    genres.get(idGenre).put(filmsId,genre);
+                    films.get(filmsId).getGenre().add(genre);
+                }
+
+                if(genres.get(idGenre).get(filmsId) == null){
+                    genres.get(idGenre).put(filmsId,genre);
+                    films.get(filmsId).getGenre().add(genre);
+                }
+
+                //actors:
+                int actorId = resultSet.getInt("actor_id");
+                String actorName = resultSet.getString("actor_name");
+                // если нет актера, то мы его создаем
+                if(actors.get(actorId) == null){
+                    actors.put(actorId,null);
+                    actors.get(actorId).put(filmsId,actorName);
+                    films.get(filmsId).getActors().add(actorName);
+                }
+                // если нам попался существующий актер, который снимался и в других фильмах
+                // то мы его добавляем в Map<id_film, acterName>
+                 if(actors.get(actorId).get(filmsId) == null){
+                    actors.get(actorId).put(filmsId,actorName);
+                     films.get(filmsId).getActors().add(actorName);
+                }
+            }
+
+            return new ArrayList<Film>(films.values());
         }
     };
 
-    public Film find(int id) {
+     public Film find(int id) {
         Map<String, Object> params= new HashMap<String,Object>();
         params.put("id",id);
-        List<Film> movies = namedJdbcTemplate.query(SQL_SELECT_FILM_BY_ID,params,movieRowMapper);
+        List<Film> movies = namedJdbcTemplate.query(SQL_SELECT_FILM_BY_ID,params,resultSetExtractor);
         return movies.get(0);
     }
 
     public List<Film> findByName(String name) {
         Map<String,Object> params = new HashMap<String,Object>();
-        params.put("name",name);
-        return namedJdbcTemplate.query(SQL_SELECT_FILMS_BY_NAME,params,movieRowMapper);
+        params.put("film_name",name);
+        return namedJdbcTemplate.query(SQL_SELECT_FILMS_BY_NAME,params,resultSetExtractor);
     }
 
     public List<Film> findByCountry(String country) {
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("country",country);
-        return namedJdbcTemplate.query(SQL_SELECT_FILMS_BY_COUNTRY,params,movieRowMapper);
+        return namedJdbcTemplate.query(SQL_SELECT_FILMS_BY_COUNTRY,params,resultSetExtractor);
     }
 
     public List<Film> findByProducer(String producer) {
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("producer",producer);
-        return namedJdbcTemplate.query(SQL_SELECT_FILMS_BY_PRODUCER,params,movieRowMapper);
+        return namedJdbcTemplate.query(SQL_SELECT_FILMS_BY_PRODUCER,params,resultSetExtractor);
     }
 
     public List<Film> findByGenre(String genre) {
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("genre",genre);
-        return namedJdbcTemplate.query(SQL_SELECT_FILMS_BY_GENRE,params,movieRowMapper);
+        return namedJdbcTemplate.query(SQL_SELECT_FILMS_BY_GENRE,params,resultSetExtractor);
     }
 
     public List<Film> findByActors(String actorsName) {
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("actors",actorsName);
-        return namedJdbcTemplate.query(SQL_SELECT_FILMS_BY_ACTORS,params,movieRowMapper);
+        return namedJdbcTemplate.query(SQL_SELECT_FILMS_BY_ACTORS,params,resultSetExtractor);
     }
 
     public int save(Film film) {
         MapSqlParameterSource params = new MapSqlParameterSource()
-                .addValue("name", film.getName())
+                .addValue("film_name", film.getName())
                 .addValue("releasedate", film.getReleaseDate())
-                .addValue("genre", film.getGenre())
                 .addValue("country", film.getCountry())
                 .addValue("producer", film.getProducer())
                 .addValue("lasting", film.getLasting())
                 .addValue("description", film.getDescription())
-                .addValue("actors", film.getActors())
                 .addValue("picture", film.getPicture());
         final KeyHolder holder = new GeneratedKeyHolder();
         namedJdbcTemplate.update(SQL_INSERT_FILM, params, holder, new String[]{"id"});
         Number generetedId = holder.getKey();
-        return generetedId.intValue();
+        int idFilm = generetedId.intValue();
+        // создаем актеров:
+        List<String> actors = film.getActors();
+        saveActors(actors,idFilm);
+        // создаем жанры:
+        List<String> genres = film.getGenre();
+        saveGenre(genres,idFilm);
+        return idFilm;
+    }
 
+    private void saveGenre(List<String> genres,int id_film){
+         Map<String, Object> param = new HashMap<>();
+         param.put("id_film", id_film);
 
+         for(int i = 0; i < genres.size(); i++){
+             param.put("genre",genres.get(i));
+             namedJdbcTemplate.update(SQL_INSER_GENRE,param);
+         }
+    }
+
+    private void saveActors(List<String> actors, int id_film){
+            Map<String,Object> param = new HashMap<>();
+            param.put("id_film",id_film);
+
+           for(int i = 0; i < actors.size(); i ++){
+                param.put("actor_name", actors.get(i));
+                namedJdbcTemplate.update(SQL_INSER_ACTORS,param);
+           }
+        }
+
+    private void updateActorsByIdFilm(List<String> actors, int id_films){
+        //если стринг будет из 2х актеров, когда в таблице значений 3, то последний не изменится
+        //по этому удаляем всех актеров по id фильма и записываем новые данные.
+        deleteActorsByIdFilm(id_films);
+        saveActors(actors,id_films);
+
+    }
+    private void updateGenreByIdFilm(List<String> genres, int idFilm){
+        deleteGenreByIdFilm(idFilm);
+        saveGenre(genres,idFilm);
+    }
+
+    private void deleteActorsByIdFilm(int idFilm){
+        Map<String, Object> param = new HashMap<>();
+        param.put("id_film",idFilm);
+        namedJdbcTemplate.update(SQL_DELETE_ACTORS_BY_FILM_ID,param);
+    }
+
+    private void deleteGenreByIdFilm(int idFilm){
+        Map<String, Object> param = new HashMap<>();
+        param.put("id_film",idFilm);
+        namedJdbcTemplate.update(SQL_DELETE_GENRES_BY_FILM_ID,param);
     }
 
     public void update(Film film) {
         Map<String,Object> params = new HashMap<String, Object>();
-        params.put("id" , film.getId());
+        int id_film = film.getId();
+        params.put("id" , id_film);
         params.put("name" , film.getName());
         params.put("releasedate" , film.getReleaseDate());
         params.put("genre" , film.getGenre());
@@ -139,19 +327,24 @@ public class FilmsNamedJdbcTemplateDaoImpl implements FilmsDao {
         params.put("producer" , film.getProducer());
         params.put("lasting" , film.getLasting());
         params.put("description" , film.getDescription());
-        params.put("actors" , film.getActors());
         params.put("picture" , film.getPicture());
-
         namedJdbcTemplate.update(SQL_UPDATE_FILM_BY_ID,params);
+        List<String> actors = film.getActors();
+        updateActorsByIdFilm(actors, id_film);
+        List<String> genre = film.getGenre();
+        updateGenreByIdFilm(genre,id_film);
+
     }
 
     public void delete(int id) {
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("id",id);
         namedJdbcTemplate.update(SQL_DELETE_FILM_BY_ID,params);
+        deleteGenreByIdFilm(id);
+        deleteActorsByIdFilm(id);
     }
 
     public List<Film> findAll() {
-        return namedJdbcTemplate.query(SQL_SELECT_ALL,movieRowMapper);
+        return namedJdbcTemplate.query(SQL_SELECT_ALL,resultSetExtractor);
     }
 }
