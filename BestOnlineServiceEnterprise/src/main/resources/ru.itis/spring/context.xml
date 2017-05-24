@@ -19,6 +19,7 @@
         <util:properties id="db_properties" location="classpath*:ru.itis/db.properties"/>
 
         <bean id="securityService" class="services.SecurityServiceImpl">
+            <constructor-arg ref="usersDao"/>
         </bean>
         <bean id="usersDao" class="dao.UserNamedJdbcTemplate">
             <constructor-arg ref="dataSource"/>

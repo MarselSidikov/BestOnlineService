@@ -32,7 +32,7 @@ public class SecurityServlet extends HttpServlet {
         environment.addActiveProfile("dev");
         context.load("ru.itis\\spring\\context.xml");
         context.refresh();
-        securityService = context.getBean(SecurityServiceImpl.class);
+        securityService = context.getBean(SecurityService.class);
         /*ApplicationContext context = new ClassPathXmlApplicationContext("ru.itis\\spring\\context.xml");
         securityService = context.getBean(SecurityService.class);*/
     }
