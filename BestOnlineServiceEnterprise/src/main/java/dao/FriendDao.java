@@ -1,6 +1,10 @@
 package dao;
 
 import models.Friend;
+import org.springframework.jdbc.core.RowMapper;
+
+
+import java.util.List;
 
 /**
  * 20.05.2017
@@ -9,4 +13,10 @@ import models.Friend;
  * @version v1.0
  */
 public interface FriendDao extends BaseDao<Friend> {
+    List<Friend> findAllFriends(String name);
+
+    List<Friend> findFriend(String name);
+
+    List<Friend> deleteFriend(String name);
 }
+

@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
+import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -49,6 +50,10 @@ public class PostDaoImpl implements PostDao {
 
         }
     };
+
+    public PostDaoImpl(DataSource dataSource) {
+        this.namedJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+    }
 
 
     public Post find(int id) {
@@ -93,7 +98,8 @@ public class PostDaoImpl implements PostDao {
         return null;
     }
 
-    public List<Post> findAllByAuthor() {
+    @Override
+    public List<Post> findAllByAuthor(String name) {
         return null;
     }
 

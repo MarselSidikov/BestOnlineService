@@ -1,4 +1,4 @@
-CREATE TABLE group_user (
+CREATE TABLE schema_profile (
   id SERIAL PRIMARY KEY,
   firstNameUser VARCHAR(40),
   lastNameUser VARCHAR(40),

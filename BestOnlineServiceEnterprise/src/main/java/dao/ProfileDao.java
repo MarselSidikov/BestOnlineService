@@ -15,7 +15,6 @@ import java.util.List;
  */
 public interface ProfileDao extends BaseDao<Profile>{
 
-    List<User> findAllFriends();
-    User findFriend(String name);
+
 
 }

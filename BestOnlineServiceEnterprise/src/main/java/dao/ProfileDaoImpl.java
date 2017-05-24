@@ -2,12 +2,13 @@ package dao;
 
 import models.Post;
 import models.Profile;
-import models.User;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+
+import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -28,12 +29,15 @@ public class ProfileDaoImpl implements ProfileDao {
 
     private PostDao postDao ;
 
+    public ProfileDaoImpl(DataSource dataSource) {
+        this.namedJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+    }
 
     //language=SQL
-    private static final String SQL_SAVE = "INSERT INTO profile (id ,firstNameUser,lastNameUser,ageUser,city,image)" +
+    private static final String SQL_SAVE = "INSERT INTO profile (id ,firstNameUser, lastNameUser, ageUser, city, image)" +
             "VALUES(:id ,:firstNameUser,:lastNameUser,:ageUser,:city,:image)" ;
     //language=SQL
-    private static final String SQL_UPDATE = "UPDATE profile SET firstNameUser = :firstNameUser,lastNameUser = :lastNameUser," +
+    private static final String SQL_UPDATE = "UPDATE profile SET firstNameUser = :firstNameUser, lastNameUser = :lastNameUser," +
             "ageUser = :ageUser,city = :city,image = :image WHERE id = :id";
     //language=SQL
     private static final String SQL_FIND = "SELECT * FROM profile WHERE id = :id";
@@ -55,11 +59,10 @@ public class ProfileDaoImpl implements ProfileDao {
                    .city(resultSet.getString("city"))
                    .image(resultSet.getString("image"))
                    .posts(posts)
-                   .friends((List<User>)resultSet.getObject("friends"))
+                  // .friends((List<User>)resultSet.getObject("friends"))
                    .build();
        }
    };
-
 
 
 
@@ -107,13 +110,4 @@ public class ProfileDaoImpl implements ProfileDao {
     }
 
 
-    @Override
-    public List<User> findAllFriends() {
-        return null;
-    }
-
-    @Override
-    public User findFriend(String name) {
-        return null;
-    }
 }

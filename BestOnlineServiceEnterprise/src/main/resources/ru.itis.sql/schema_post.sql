@@ -1,4 +1,4 @@
-CREATE TABLE group_user (
+CREATE TABLE schema_post (
   idPost SERIAL PRIMARY KEY,
   data VARCHAR(40),
   textPost TEXT,
