@@ -2,12 +2,17 @@ package test;
 
 import dao.ProductJdbcTemplate;
 import models.Product;
-import models.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.GenericXmlApplicationContext;
+import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.dao.EmptyResultDataAccessException;
 
+
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -15,16 +20,41 @@ import static junit.framework.TestCase.assertEquals;
  * Created by Marat on 23.05.2017.
  */
 public class ProductNamedJdbcTemplateDaoImplTest  {
-   /* @Autowired
+    @Autowired
     private ProductJdbcTemplate ProductDao;
-    private final int Product_6_ID = 6;
+    private final int PRODUCT_ID_6 = 6;
     private final String Name = "Book_Name";
     private final String manufacturer = "Zavod";
-    private final String dateRelease = ""
+    private final String dateRelease = "01.01.1990";
 
+    private final Product PRODUCT_6 = new Product.Builder()
+            .id(6)
+            .name("Book_Name")
+            .manufacturer("Zavod")
+            .dateRelease("01.01.1990")
+            .price(100)
+            .build();
+
+    private final int PRODUCT_6_ID = 6;
     private final Product Product_6 = new Product.Builder()
-            .id(Product_6_ID)
-            .name("Book")
+            .id(PRODUCT_6_ID)
+            .name("Book_Name")
+            .manufacturer("Zavod")
+            .dateRelease("01.01.1990")
+            .price(100)
+            .build();
+
+    private final Product INSERT_PRODUCT = new Product.Builder()
+            .id(PRODUCT_6_ID)
+            .name("Book_Name")
+            .manufacturer("Zavod")
+            .dateRelease("01.01.1990")
+            .price(100)
+            .build();
+
+    private final Product UPDATE_PRODUCT_6 = new Product.Builder()
+            .id(PRODUCT_6_ID)
+            .name("Book_Name")
             .manufacturer("Zavod")
             .dateRelease("01.01.1990")
             .price(100)
@@ -32,37 +62,45 @@ public class ProductNamedJdbcTemplateDaoImplTest  {
 
 
 
-
-
-
-    private final int Product_6_ID = 6;
-    private final Product Product_6 = new Product.Builder()
-            .id(Product_6_ID)
-            .name("Book")
-            .manufacturer("Zavod")
-            .dateRelease("01.01.1990")
-            .price(100)
-            .build();
 
     @Before
     public void setUp() throws Exception {
+        GenericXmlApplicationContext context = new  GenericXmlApplicationContext();
+        ConfigurableEnvironment environment = context.getEnvironment();
+        environment.addActiveProfile("test");
+        context.load("ru.itis\\spring\\context.xml");
+        context.refresh();
+        ProductDao = context.getBean(ProductJdbcTemplate.class);
 
     }
 
     @Test
     public void testFind() throws Exception {
-        Product expected = Product_6;
-        Product actual = ProductDao.find(Product_6_ID);
+        Product expected = PRODUCT_6;
+        Product actual = ProductDao.find(PRODUCT_6_ID);
 
         assertEquals(expected, actual);
     }
+    @Test
+    public void findByName() throws Exception {
+        List<Product> expected = new ArrayList<Product>();
+        expected.add(PRODUCT_6);
+        List<Product> actual = ProductDao.findByName(Name);
+        assertEquals(expected,actual);
+    }
 
-
+    @Test
+    public void findAll() throws Exception {
+        List<Product> expected = new ArrayList<Product>();
+        expected.add(PRODUCT_6);
+        List<Product> actual = ProductDao.findAll();
+        assertEquals(expected, actual);
+    }
 
     @Test(expected = EmptyResultDataAccessException.class)
     public void testDelete() {
-        ProductDao.delete(Product_6_ID);
-        ProductDao.find(Product_6_ID);
-    }*/
+        ProductDao.delete(PRODUCT_6_ID);
+        ProductDao.find(PRODUCT_6_ID);
+    }
 }
 

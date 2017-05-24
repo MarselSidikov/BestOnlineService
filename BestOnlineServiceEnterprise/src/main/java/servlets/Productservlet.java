@@ -9,8 +9,8 @@ import java.io.IOException;
 
 /**
  * Created by Marat on 23.05.2017.
- */ /*
-public class Productservlet extends HttpServlet {
+ *//*
+public class Productservlet /*extends HttpServlet {
 
     private ProductService productService;
 
@@ -69,6 +69,6 @@ public class Productservlet extends HttpServlet {
 
     }
 }
+
+
 */
-
-
