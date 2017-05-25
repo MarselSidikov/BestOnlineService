@@ -1,16 +1,22 @@
 package servlets;
 import models.Product;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import services.ProductService;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
 /**
  * Created by Marat on 23.05.2017.
  *//*
-public class Productservlet /*extends HttpServlet {
+public class Productservlet extends HttpServlet {
 
     private ProductService productService;
 
@@ -69,6 +75,6 @@ public class Productservlet /*extends HttpServlet {
 
     }
 }
+ */
 
 
-*/
