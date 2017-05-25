@@ -32,7 +32,7 @@ public class AfishaServlet extends HttpServlet{
         super.init();
        GenericXmlApplicationContext context = new  GenericXmlApplicationContext();
        ConfigurableEnvironment environment = context.getEnvironment();
-       environment.addActiveProfile("dev");
+       environment.addActiveProfile("heroku");
        context.load("ru.itis\\spring\\context.xml");
        context.refresh();
         afishaService = context.getBean(AfishaService.class);

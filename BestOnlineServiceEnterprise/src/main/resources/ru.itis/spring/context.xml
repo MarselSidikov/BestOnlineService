@@ -10,6 +10,26 @@
         http://www.springframework.org/schema/jdbc
         http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
+    <beans profile="heroku">
+        <context:property-placeholder properties-ref="heroku_properties"/>
+        <util:properties id="heroku_properties" location="ru.itis/spring/db.properties"/>
+
+        <bean id="afishaServiceHeroku" class="services.impl.AfishaServiceImpl">
+            <constructor-arg ref="afishaDaoHeroku"></constructor-arg>
+        </bean>
+        <bean id="afishaDaoHeroku" class="dao.FilmsNamedJdbcTemplateDaoImpl">
+            <constructor-arg ref="dataSourceHeroku"/>
+        </bean>
+        <bean id="dataSourceHeroku" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+            <property name="url" value="${heroku.url}"/>
+            <property name="username" value="${heroku.name}"/>
+            <property name="password" value="${heroku.password}"/>
+            <property name="driverClassName" value="${heroku.driver}"/>
+        </bean>
+    </beans>
+
+
+
 
     <beans profile="dev">
         <context:property-placeholder properties-ref="db_properties"/>
