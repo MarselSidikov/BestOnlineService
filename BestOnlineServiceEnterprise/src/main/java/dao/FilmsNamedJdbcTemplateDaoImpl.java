@@ -35,58 +35,69 @@ public class FilmsNamedJdbcTemplateDaoImpl implements FilmsDao {
     }
 
     //language=SQL
-    private final String SQL_SELECT_ALL = "SELECT films.id AS id, films.name AS film_name," +
+    private final String SQL_SELECT_ALL =
+            "SELECT films.id AS id, films.name AS film_name," +
             " films.releasedate AS releasedate, films.country AS country, " +
             "films.description AS description, films.lasting AS lasting," +
-            " films.producer AS producer, films.picture AS picture, actors.id AS actor_id, actors.id_film AS actors_id_film," +
-            " actors.actor_name AS actor_name, genres.genre AS genre, genres.id AS genre_id " +
+            "films.producer AS producer, films.picture AS picture, actors.id AS actor_id, actors.id_film AS actors_id_film," +
+            "actors.actor_name AS actor_name, genres.genre AS genre, genres.id AS genre_id " +
             "FROM films JOIN actors ON films.id = actors.id_film \n " +
             "JOIN genres ON films.id = genres.id_film ";
 
     // language=SQL
-    private final String SQL_SELECT_FILM_BY_ID = SQL_SELECT_ALL + "WHERE films.id = :id";
+    private final String SQL_SELECT_FILM_BY_ID =
+            SQL_SELECT_ALL + "WHERE id = :id";
 
     // language=SQL
-    private final String SQL_SELECT_FILMS_BY_NAME = SQL_SELECT_ALL + "WHERE films.name = :name";
+    private final String SQL_SELECT_FILMS_BY_NAME =
+            SQL_SELECT_ALL + "WHERE film_name = :film_name";
 
     // language=SQL
-    private final String SQL_SELECT_FILMS_BY_COUNTRY = SQL_SELECT_ALL + "WHERE films.country = :country";
+    private final String SQL_SELECT_FILMS_BY_COUNTRY =
+            SQL_SELECT_ALL + "WHERE country = :country";
 
     // language=SQL
-    private final String SQL_SELECT_FILMS_BY_PRODUCER = SQL_SELECT_ALL + "WHERE films.producer = :producer";
+    private final String SQL_SELECT_FILMS_BY_PRODUCER =
+            SQL_SELECT_ALL + "WHERE producer = :producer";
 
     // language=SQL
-    private final String SQL_SELECT_FILMS_BY_GENRE = SQL_SELECT_ALL + "WHERE genres.genre = :genre";
+    private final String SQL_SELECT_FILMS_BY_GENRE =
+            SQL_SELECT_ALL + "WHERE genre = :genre";
 
     //language=SQL
-    private final String SQL_SELECT_FILMS_BY_ACTORS = SQL_SELECT_ALL + "WHERE actors.actor_name = :actor_name";
+    private final String SQL_SELECT_FILMS_BY_ACTORS =
+            SQL_SELECT_ALL + "WHERE actor_name = :actor_name";
 
     // language=SQL
-    private final String SQL_INSERT_FILM = "INSERT INTO films(name,releasedate,country,producer,lasting,description,picture) VALUES " +
+    private final String SQL_INSERT_FILM =
+            "INSERT INTO films(name,releasedate,country,producer,lasting,description,picture) VALUES " +
             "(:film_name , :releasedate  , :country , :producer , :lasting , :description , :picture)";
 
     // language=SQL
-    private final String SQL_UPDATE_FILM_BY_ID = "UPDATE films SET name = :name , releasedate = :releasedate ," +
+    private final String SQL_UPDATE_FILM_BY_ID =
+            "UPDATE films SET name = :name , releasedate = :releasedate ," +
             " country = :country , producer = :producer , lasting = :lasting , description = :description, picture = :picture" +
             " WHERE id = :id ";
 
     // language=SQL
-    private final String SQL_DELETE_FILM_BY_ID = "DELETE FROM films WHERE id = :id";
+    private final String SQL_DELETE_FILM_BY_ID =
+            "DELETE FROM films WHERE id = :id";
 
     // language=SQL
-    private final String SQL_INSER_ACTORS = "INSERT INTO actors ( id_film, actor_name) VALUES ( :id_film, :actor_name)";
+    private final String SQL_INSER_ACTORS =
+            "INSERT INTO actors ( id_film, actor_name) VALUES ( :id_film, :actor_name)";
 
     // language=SQL
-    private final String SQL_DELETE_ACTORS_BY_FILM_ID = "DELETE FROM actors WHERE id_film = :id_film ";
+    private final String SQL_DELETE_ACTORS_BY_FILM_ID =
+            "DELETE FROM actors WHERE id_film = :id_film ";
 
     // language=SQL
-    private final String SQL_DELETE_GENRES_BY_FILM_ID = "DELETE FROM genres WHERE id_film = :id_film ";
-
-    //language=SQL
-    private final String SQL_SELECT_ACTORS_ALL = "SELECT * FROM actors ";
+    private final String SQL_DELETE_GENRES_BY_FILM_ID =
+            "DELETE FROM genres WHERE id_film = :id_film ";
 
     // language=SQL
-    private final String SQL_INSER_GENRE = "INSERT INTO genres ( id_film, genre) VALUES ( :id_film, :genre)";
+    private final String SQL_INSER_GENRE =
+            "INSERT INTO genres ( id_film, genre) VALUES ( :id_film, :genre)";
 
 
     private ResultSetExtractor <List<Film>> resultSetExtractor = new ResultSetExtractor<List<Film>>() {
@@ -113,21 +124,15 @@ public class FilmsNamedJdbcTemplateDaoImpl implements FilmsDao {
                     String description = resultSet.getString("description");
                     String picture = resultSet.getString("picture");
 
-                    String actorsAsString = resultSet.getString("actor_name");
-                    String genreAsString = resultSet.getString("genre");
+                    String actor= resultSet.getString("actor_name");
+                    String genre = resultSet.getString("genre");
 
-                    String actorsAsArray[] = actorsAsString.split(" ");
-                    String genresAsArray[] = genreAsString.split(" ");
 
                     List<String> film_actors = new ArrayList<>();
                     List<String> film_genres = new ArrayList<>();
 
-                    for(int i = 0; i < actorsAsArray.length; i++){
-                        film_actors.add(actorsAsArray[i]);
-                    }
-                    for(int i = 0; i < genresAsArray.length; i++){
-                        film_genres.add(genresAsArray[i]);
-                    }
+                   film_actors.add(actor);
+                   film_genres.add(genre);
                     // Создаем объект
                     Film newFilm = new Film.Builder()
                             .id(filmsId)
@@ -208,9 +213,9 @@ public class FilmsNamedJdbcTemplateDaoImpl implements FilmsDao {
         return namedJdbcTemplate.query(SQL_SELECT_FILMS_BY_GENRE,params,resultSetExtractor);
     }
 
-    public List<Film> findByActors(String actorsName) {
+    public List<Film> findByActors(String actorName) {
         Map<String,Object> params = new HashMap<String,Object>();
-        params.put("actors_name",actorsName);
+        params.put("actor_name",actorName);
         return namedJdbcTemplate.query(SQL_SELECT_FILMS_BY_ACTORS,params,resultSetExtractor);
     }
 

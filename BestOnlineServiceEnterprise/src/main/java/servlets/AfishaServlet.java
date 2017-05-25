@@ -40,25 +40,25 @@ public class AfishaServlet extends HttpServlet{
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String name = request.getParameter("name");
+        String film_name = request.getParameter("name");
         String genre = request.getParameter("genre");
         String country = request.getParameter("country");
         String producer = request.getParameter("producer");
-        String actors = request.getParameter("actor");
+        String actors_name = request.getParameter("actor");
         String method = request.getParameter("film");
         if(method != null && method.equals("add")){
             request.getRequestDispatcher("jsp/filmsAdd.jsp").forward(request,response);
         }
-        if(name != null){
-            request.setAttribute("films",afishaService.findByName(name));
+        if(film_name != null){
+            request.setAttribute("films",afishaService.findByName(film_name));
         } else if(genre != null){
             request.setAttribute("films",afishaService.findByGenre(genre));
         } else if(country != null){
             request.setAttribute("films",afishaService.findByCountry(country));
         } else if(producer != null){
             request.setAttribute("films",afishaService.findByProducer(producer));
-        } else if(actors != null){
-            request.setAttribute("films",afishaService.findByActors(actors));
+        } else if(actors_name != null){
+            request.setAttribute("films",afishaService.findByActors(actors_name));
         }else{
             request.setAttribute("films",afishaService.findAll());
         }
