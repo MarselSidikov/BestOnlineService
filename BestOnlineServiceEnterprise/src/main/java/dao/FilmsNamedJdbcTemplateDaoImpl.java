@@ -41,67 +41,25 @@ public class FilmsNamedJdbcTemplateDaoImpl implements FilmsDao {
             " films.producer AS producer, films.picture AS picture, actors.id AS actor_id, actors.id_film AS actors_id_film," +
             " actors.actor_name AS actor_name, genres.genre AS genre, genres.id AS genre_id " +
             "FROM films JOIN actors ON films.id = actors.id_film \n " +
-            "JOIN genres ON films.id = genres.id_film";
+            "JOIN genres ON films.id = genres.id_film ";
 
     // language=SQL
-    private final String SQL_SELECT_FILM_BY_ID = "SELECT films.id AS id, films.name AS film_name," +
-            " films.releasedate AS releasedate, films.country AS country, " +
-            "films.description AS description, films.lasting AS lasting," +
-            " films.producer AS producer, films.picture AS picture, actors.id AS actor_id, actors.id_film AS actors_id_film," +
-            " actors.actor_name AS actors_name, genres.genre AS genre, genres.id AS genre_id " +
-            "FROM films JOIN actors ON films.id = actors.id_film \n " +
-            "JOIN genres ON films.id = genres.id_film " +
-            "WHERE films.id = :id";
+    private final String SQL_SELECT_FILM_BY_ID = SQL_SELECT_ALL + "WHERE films.id = :id";
 
     // language=SQL
-    private final String SQL_SELECT_FILMS_BY_NAME = "SELECT films.id AS id, films.name AS film_name," +
-            " films.releasedate AS releasedate, films.country AS country, " +
-            "films.description AS description, films.lasting AS lasting," +
-            " films.producer AS producer, films.picture AS picture, actors.id AS actor_id, actors.id_film AS actors_id_film," +
-            " actors.actor_name AS actors_name, genres.genre AS genre, genres.id AS genre_id " +
-            "FROM films JOIN actors ON films.id = actors.id_film \n " +
-            "JOIN genres ON films.id = genres.id_film " +
-            "WHERE films.name = :name";
+    private final String SQL_SELECT_FILMS_BY_NAME = SQL_SELECT_ALL + "WHERE films.name = :name";
 
     // language=SQL
-    private final String SQL_SELECT_FILMS_BY_COUNTRY = "SELECT films.id AS id, films.name AS film_name," +
-            " films.releasedate AS releasedate, films.country AS country, " +
-            "films.description AS description, films.lasting AS lasting," +
-            " films.producer AS producer, films.picture AS picture, actors.id AS actor_id, actors.id_film AS actors_id_film," +
-            " actors.actor_name AS actors_name, genres.genre AS genre, genres.id AS genre_id " +
-            "FROM films JOIN actors ON films.id = actors.id_film \n " +
-            "JOIN genres ON films.id = genres.id_film " +
-            "WHERE films.country = :country";
+    private final String SQL_SELECT_FILMS_BY_COUNTRY = SQL_SELECT_ALL + "WHERE films.country = :country";
 
     // language=SQL
-    private final String SQL_SELECT_FILMS_BY_PRODUCER = "SELECT films.id AS id, films.name AS film_name," +
-            " films.releasedate AS releasedate, films.country AS country, " +
-            "films.description AS description, films.lasting AS lasting," +
-            " films.producer AS producer, films.picture AS picture, actors.id AS actor_id, actors.id_film AS actors_id_film," +
-            " actors.actor_name AS actors_name, genres.genre AS genre, genres.id AS genre_id " +
-            "FROM films JOIN actors ON films.id = actors.id_film \n " +
-            "JOIN genres ON films.id = genres.id_film " +
-            " WHERE films.producer = :id";
+    private final String SQL_SELECT_FILMS_BY_PRODUCER = SQL_SELECT_ALL + "WHERE films.producer = :producer";
 
     // language=SQL
-    private final String SQL_SELECT_FILMS_BY_GENRE = "SELECT films.id AS id, films.name AS film_name," +
-            " films.releasedate AS releasedate, films.country AS country, " +
-            "films.description AS description, films.lasting AS lasting," +
-            " films.producer AS producer, films.picture AS picture, actors.id AS actor_id, actors.id_film AS actors_id_film," +
-            " actors.actor_name AS actors_name, genres.genre AS genre, genres.id AS genre_id " +
-            "FROM films JOIN actors ON films.id = actors.id_film \n " +
-            "JOIN genres ON films.id = genres.id_film " +
-            "WHERE genres.genre = :name";
+    private final String SQL_SELECT_FILMS_BY_GENRE = SQL_SELECT_ALL + "WHERE genres.genre = :genre";
 
     //language=SQL
-    private final String SQL_SELECT_FILMS_BY_ACTORS = "SELECT films.id AS id, films.name AS film_name," +
-            " films.releasedate AS releasedate, films.country AS country, " +
-            "films.description AS description, films.lasting AS lasting," +
-            " films.producer AS producer, films.picture AS picture, actors.id AS actor_id, actors.id_film AS actors_id_film," +
-            " actors.actor_name AS actors_name, genres.genre AS genre, genres.id AS genre_id " +
-            "FROM films JOIN actors ON films.id = actors.id_film \n " +
-            "JOIN genres ON films.id = genres.id_film " +
-            "WHERE actors.actor_name = :name";
+    private final String SQL_SELECT_FILMS_BY_ACTORS = SQL_SELECT_ALL + "WHERE actors.actor_name = :actor_name";
 
     // language=SQL
     private final String SQL_INSERT_FILM = "INSERT INTO films(name,releasedate,country,producer,lasting,description,picture) VALUES " +
@@ -158,8 +116,8 @@ public class FilmsNamedJdbcTemplateDaoImpl implements FilmsDao {
                     String actorsAsString = resultSet.getString("actor_name");
                     String genreAsString = resultSet.getString("genre");
 
-                    String actorsAsArray[] = actorsAsString.split(",");
-                    String genresAsArray[] = genreAsString.split(",");
+                    String actorsAsArray[] = actorsAsString.split(" ");
+                    String genresAsArray[] = genreAsString.split(" ");
 
                     List<String> film_actors = new ArrayList<>();
                     List<String> film_genres = new ArrayList<>();
