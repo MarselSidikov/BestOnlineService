@@ -1,6 +1,27 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+<web-app
+        version="3.0"
+        xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 
-</beans>
+<servlet>
+<servlet-name>chatServlet</servlet-name>
+<servlet-class>servlets.ChatServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+<servlet-name>chatServlet</servlet-name>
+<url-pattern>/chat</url-pattern>
+</servlet-mapping>
+
+<servlet>
+<servlet-name>messageServlet</servlet-name>
+<servlet-class>servlets.MessageServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+<servlet-name>messageServlet</servlet-name>
+<url-pattern>/message</url-pattern>
+</servlet-mapping>
+
+</web-app>

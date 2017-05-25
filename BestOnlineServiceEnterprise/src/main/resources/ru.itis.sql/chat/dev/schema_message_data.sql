@@ -6,5 +6,12 @@ INSERT INTO message(text, chat_id, author_id)
 VALUES ('SomeText333', '3', 3);
 INSERT INTO message(text, chat_id, author_id)
 VALUES ('SomeText444', '4', 4);
+INSERT INTO message(text, chat_id, author_id)
+VALUES ('SomeText555', '5', 5);
+INSERT INTO message(text, chat_id, author_id)
+VALUES ('SomeText666', '6', 2);
+INSERT INTO message(text, chat_id, author_id)
+VALUES ('SomeText777', '7', 3);
+
 
 

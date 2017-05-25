@@ -36,6 +36,10 @@ public class MessageDaoNamedJdbcImpl implements MessageDao {
     private UsersDao usersDao;
     private ChatDao chatDao;
 
+    public MessageDaoNamedJdbcImpl(DataSource dataSource) {
+        this.namedParameterTemplate = new NamedParameterJdbcTemplate(dataSource);
+    }
+
     public MessageDaoNamedJdbcImpl(DataSource dataSource, UsersDao usersDao, ChatDao chatDao) {
         this.usersDao = usersDao;
         this.chatDao = chatDao;

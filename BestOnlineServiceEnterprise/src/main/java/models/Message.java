@@ -17,7 +17,7 @@ public class Message {
     public Message(Builder builder){
         this.id = builder.id;
         this.text = builder.text;
-        this.chat= builder.chat;
+        this.chat = builder.chat;
         this.author = builder.author;
     }
 

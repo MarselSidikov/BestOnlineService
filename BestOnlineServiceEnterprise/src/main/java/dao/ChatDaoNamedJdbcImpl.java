@@ -3,8 +3,6 @@ package dao;
 import models.Chat;
 import models.Message;
 import models.User;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
@@ -75,6 +73,8 @@ public class ChatDaoNamedJdbcImpl implements ChatDao {
             Map<Integer, Chat> chats = new HashMap<>();
             // все уникальные сообщения
             Map<Integer, Message> messages = new HashMap<>();
+            Map<String, Chat> chatNames = new HashMap<>();
+            Map<String, Message> messageTexts = new HashMap<>();
             // смотрим текущую строку
             while (resultSet.next()) {
                 // достаем id чата
@@ -85,7 +85,8 @@ public class ChatDaoNamedJdbcImpl implements ChatDao {
                     // создаем чат
                     String chatName = resultSet.getString("chat_name");
                     Chat chat = new Chat.Builder()
-                            .id(chatId).name(chatName)
+                            .id(chatId)
+                            .name(chatName)
                             .messages(new ArrayList<Message>())
                             .build();
                     // кладем в мап
@@ -105,29 +106,42 @@ public class ChatDaoNamedJdbcImpl implements ChatDao {
                     messages.put(messageId, message);
                     chats.get(messageChatId).getMessages().add(message);
                 }
-//
+
                 String chatName = resultSet.getString("chat_name");
 
-                if (chats.get(chatName) == null) {
-                    int id = resultSet.getInt("id");
-                    int creatorId = resultSet.getInt("creator_id");
+                if (chatNames.get(chatName) == null) {
+                    int idOfChat = resultSet.getInt("chat_id");
                     Chat chat = new Chat.Builder()
-                            .id(id).build();
-                    chats.put(id, chat);
-
+                            .id(chatId)
+                            .name(chatName)
+                            .messages(new ArrayList<Message>())
+                            .build();
+                    chatNames.put(chatName, chat);
                 }
 
-                String messageText = resultSet.getString("text");
+                String messageText = resultSet.getString("message_text");
 
-                if (messages.get(messageText) == null) {
+                if (messageTexts.get(messageText) == null) {
+                    int messageChatId = resultSet.getInt("message_chat_id");
                     int id = resultSet.getInt("id");
-                    int authorId = resultSet.getInt("author_id");
                     Message message = new Message.Builder()
-                            .id(id).build();
-                            messages.put(id, message);
+                            .text(messageText)
+                            .id(messageId).build();
+                    messageTexts.put(messageText, message);
+
                 }
 
+                int messageChatId = resultSet.getInt("chat_id");
 
+                if (chats.get(messageChatId) == null) {
+                    int idOfChat = resultSet.getInt("chat_id");
+                    Chat chat = new Chat.Builder()
+                            .id(chatId)
+                            .name(chatName)
+                            .messages(new ArrayList<Message>())
+                            .build();
+                    chats.put(messageChatId, chat);
+                }
             }
             return new ArrayList<Chat>(chats.values());
         }
@@ -146,7 +160,6 @@ public class ChatDaoNamedJdbcImpl implements ChatDao {
         final KeyHolder holder = new GeneratedKeyHolder();
         namedParameterTemplate.update(SQL_SAVE, params, holder, new String[]{"id"});
         Number generatedId = holder.getKey();
-//        chat.setId(generatedId);
         return generatedId.intValue();
     }
 

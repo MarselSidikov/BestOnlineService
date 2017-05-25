@@ -2,12 +2,69 @@
 <!--suppress SpringFacetInspection -->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util" xmlns:jdbs="http://www.springframework.org/schema/jdbc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util.xsd
+       http://www.springframework.org/schema/jdbc
+       http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
+
+
+
+
+<beans profile="dev">
+<context:property-placeholder properties-ref="db_properties"/>
+<util:properties id="db_properties" location="classpath*:ru.itis/spring/db.properties"/>
+
+    <bean id="chatService" class="services.impl.ChatServiceImpl">
+        <constructor-arg ref="chatDao"></constructor-arg>
+    </bean>
+    <bean id="chatDao" class="dao.ChatDaoNamedJdbcImpl">
+        <constructor-arg ref="dataSource"/>
+    </bean>
+
+    <bean id="messageService" class="services.impl.MessageServiceImpl">
+        <constructor-arg ref="messageDao"></constructor-arg>
+    </bean>
+    <bean id="messageDao" class="dao.MessageDaoNamedJdbcImpl">
+        <constructor-arg ref="dataSource"/>
+    </bean>
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="org.postgresql.Driver"/>
-        <property name="url" value="jdbc:postgresql://localhost:5432/service_db"/>
-        <property name="username" value="postgres"/>
-        <property name="password" value="qwerty007"/>
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.name}"/>
+        <property name="password" value="${jdbc.password}"/>
     </bean>
+</beans>
+
+
+        <beans profile="test">
+
+            <bean id="chatServiceTest" class="services.impl.ChatServiceImpl">
+                <constructor-arg ref="chatDaoTest"/>
+            </bean>
+            <bean id="chatDaoTest" class="dao.ChatDaoNamedJdbcImpl">
+                <constructor-arg ref="testDataSource"/>
+            </bean>
+
+            <bean id="messageServiceTest" class="services.impl.MessageServiceImpl">
+                <constructor-arg ref="messageDaoTest"/>
+            </bean>
+            <bean id="messageDaoTest" class="dao.MessageDaoNamedJdbcImpl">
+                <constructor-arg ref="testDataSource"/>
+            </bean>
+
+            <jdbs:embedded-database id="testDataSource" type="H2">
+                <jdbs:script location="classpath:ru.itis.sql/chat/test/schema_chat_test.sql"/>
+                <jdbs:script location="classpath:ru.itis.sql/chat/test/schema_chat_test_data.sql"/>
+                <jdbs:script location="classpath:ru.itis.sql/chat/test/schema_message_test.sql"/>
+                <jdbs:script location="classpath:ru.itis.sql/chat/test/schema_message_test_data.sql"/>
+            </jdbs:embedded-database>
+        </beans>
+
 </beans>

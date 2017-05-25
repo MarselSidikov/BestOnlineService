@@ -1,7 +1,10 @@
-DROP TABLE IF EXISTS message;
-CREATE TABLE message (
-  id INTEGER AUTO_INCREMENT,
-  text VARCHAR(50),
-  chat_id INTEGER REFERENCES chat(id),
-  author_id INTEGER REFERENCES service_user(id)
-);
+INSERT INTO message(text, chat_id, author_id)
+VALUES ('SomeText111', '1', 1);
+INSERT INTO message(text, chat_id, author_id)
+VALUES ('SomeText222', '2', 2);
+INSERT INTO message(text, chat_id, author_id)
+VALUES ('SomeText333', '3', 3);
+INSERT INTO message(text, chat_id, author_id)
+VALUES ('SomeText444', '4', 4);
+INSERT INTO message(text, chat_id, author_id)
+VALUES ('SomeText555', '5', 5);

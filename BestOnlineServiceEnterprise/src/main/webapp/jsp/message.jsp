@@ -1,16 +1,19 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: АЛИМ
-  Date: 22.05.2017
-  Time: 17:17
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>$Title$</title>
+    <title>Message</title>
 </head>
 <body>
-$END$
+<table>
+    <c:forEach items="${requestScope.message}" var="message">
+        <tr>
+            <td><c:out value="${message.id}"/></td>
+            <td><c:out value="${message.text}"/></td>
+            <td><c:out value="${message.chatId}"/></td>
+            <td><c:out value="${message.authorId}"/></td>
+        </tr>
+    </c:forEach>
+</table>
 </body>
 </html>
