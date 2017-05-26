@@ -18,10 +18,11 @@
             <constructor-arg value="#{systemEnvironment['jdbc:postgresql://ec2-54-228-255-234.eu-west-1.compute.amazonaws.com:5432/d8h091fdlbvf3u']}"/>
         </bean>
         <bean id="dataSourceHeroku" class="org.apache.tomcat.jdbc.pool.DataSource">
-            <property name="url" value="#{'jdbc:postgresql://'+@dbUrl.getHost() + ':' + @dbUrl.getPort() + @dbUrl.getPath()}"/>
+            <property name="url" value="${}"/>
             <property name="username" value="#{ @dbUrl.getUserInfo().split(':')[0] }"/>
             <property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }"/>
-        </bean>
+            <property name="driverClassName" value="org.postgresql.Driver"/>
+         </bean>
 
         <bean id="afishaServiceHeroku" class="services.impl.AfishaServiceImpl">
             <constructor-arg ref="afishaDaoHeroku"></constructor-arg>
