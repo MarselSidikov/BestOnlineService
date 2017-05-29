@@ -36,6 +36,12 @@ public class PostDaoImpl implements PostDao {
     private static final String SQL_FIND_ALL ="SELECT * FROM post";
     //language=SQL
     private static final String SQL_DELETE ="DELETE FROM post WHERE idPost = :idPost";
+    //language=SQL
+    private static final String SQL_FIND_ALL_BY_POSTS = "SELECT * FROM post ";
+    //language=SQL
+    private static final String SQL_FIND_ALL_BY_AUTHOR ="SELECT * FROM post";
+    //language=SQL
+    private static final String SQL_FIND_ALL_BY_USER = "SELECT * FROM post";
 
 
     private RowMapper<Post> postRowMapper = new RowMapper<Post>() {
@@ -95,17 +101,17 @@ public class PostDaoImpl implements PostDao {
     }
 
     public List<Post> findAllPosts() {
-        return null;
+        return namedJdbcTemplate.query(SQL_FIND_ALL_BY_POSTS,postRowMapper);
     }
 
     @Override
     public List<Post> findAllByAuthor(String name) {
-        return null;
+        return namedJdbcTemplate.query(SQL_FIND_ALL_BY_AUTHOR,postRowMapper);
     }
 
     @Override
     public List<Post> findAllPostByUser(String name) {
-        return null;
+        return namedJdbcTemplate.query(SQL_FIND_ALL_BY_USER,postRowMapper);
     }
 
 }

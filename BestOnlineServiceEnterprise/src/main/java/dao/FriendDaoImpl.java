@@ -39,6 +39,14 @@ public class FriendDaoImpl implements FriendDao {
 
     //language=SQL
     private static final String SQL_FIND_ALL = "SELECT * FROM friend";
+    //language=SQL
+    private static final String SQL_FIND_ALL_BY_NAME = "SELECT *FROM friend WHERE nameFriend = :nameFriend ";
+    //language=SQL
+    private static final String SQL_UPDATE = "UPDATE friend SET nameFrind = :nameFriend WHERE idFriend = :idFriend";
+    //language=SQL
+    private static final String SQL_FIND_BY_NAME = " SELECT * FROM friend";
+    //language=SQL
+   // private static final String SQL_DELETE_BY_NAME = " DELETE FROM friend WHERE nameFriend = :nameFriend";
 
 
     private RowMapper<Friend> friendRowMapper = new RowMapper<Friend>() {
@@ -55,7 +63,7 @@ public class FriendDaoImpl implements FriendDao {
     public Friend find(int id) {
         Map<String,Object> params = new HashMap<>();
         params.put("id",id);
-        return (Friend) namedJdbcTemplate.query(SQL_FIND, params, friendRowMapper);
+        return (Friend)namedJdbcTemplate.query(SQL_FIND,params,friendRowMapper);
     }
 
     @Override
@@ -71,6 +79,11 @@ public class FriendDaoImpl implements FriendDao {
 
     @Override
     public void update(Friend model) {
+        Map<String,Object> params = new HashMap<>();
+        params.put("nameFriend",model);
+        namedJdbcTemplate.update(SQL_UPDATE,params);
+
+
     }
 
     @Override
@@ -90,16 +103,15 @@ public class FriendDaoImpl implements FriendDao {
 
     @Override
     public List<Friend> findAllFriends(String name) {
-        return null;
+        return namedJdbcTemplate.query(SQL_FIND_ALL_BY_NAME,friendRowMapper);
     }
 
     @Override
     public List<Friend> findFriend(String name) {
-        return null;
+        Map<String,Object>params = new HashMap<>();
+        params.put("nameFriend",name);
+        return namedJdbcTemplate.query(SQL_FIND_BY_NAME,params,friendRowMapper);
     }
 
-    @Override
-    public List<Friend> deleteFriend(String name) {
-        return null;
-    }
+
 }

@@ -17,6 +17,8 @@ public interface FriendDao extends BaseDao<Friend> {
 
     List<Friend> findFriend(String name);
 
-    List<Friend> deleteFriend(String name);
+   // List<Friend> deleteFriend(String name);
+  //List<Friend> findAge(int age);
+    // List<Friend>findAllAge(int age);
 }
 
