@@ -1,7 +1,9 @@
 package dao;
 
+import models.Actor;
 import models.Film;
 
+import models.Genre;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -123,16 +125,6 @@ public class FilmsNamedJdbcTemplateDaoImpl implements FilmsDao {
                     int lasting = resultSet.getInt("lasting");
                     String description = resultSet.getString("description");
                     String picture = resultSet.getString("picture");
-
-                    String actor= resultSet.getString("actor_name");
-                    String genre = resultSet.getString("genre");
-
-
-                    List<String> film_actors = new ArrayList<>();
-                    List<String> film_genres = new ArrayList<>();
-
-                   film_actors.add(actor);
-                   film_genres.add(genre);
                     // Создаем объект
                     Film newFilm = new Film.Builder()
                             .id(filmsId)
@@ -141,10 +133,11 @@ public class FilmsNamedJdbcTemplateDaoImpl implements FilmsDao {
                             .country(country)
                             .producer(producer)
                             .description(description)
+                            .genre(new ArrayList<Genre>())
+                            .actors(new ArrayList<Actor>())
                             .lasting(lasting)
                             .picture(picture)
-                            .actors(film_actors)
-                            .genre(film_genres).build();
+                            .build();
                     //кладем в Map
                     films.put(filmsId,newFilm);
                 }
@@ -153,28 +146,22 @@ public class FilmsNamedJdbcTemplateDaoImpl implements FilmsDao {
                 String genre = resultSet.getString("genre");
                 if(genres.get(idGenre) == null){
                     genres.put(idGenre, films);
-                    films.get(filmsId).getGenres().add(genre);
+                    Genre newGenre  = new Genre.Builder().
+                            id(idGenre)
+                            .genre(genre)
+                            .build();
+                    films.get(filmsId).getGenres().add(newGenre);
                 }
-
-
-                if(genres.get(idGenre).get(filmsId) == null){
-                    genres.get(idGenre).put(filmsId,films.get(filmsId));
-                    films.get(filmsId).getGenres().add(genre);
-                }
-
                 //actors:
                 int actorId = resultSet.getInt("actor_id");
                 String actorName = resultSet.getString("actor_name");
-                // если нет актера, то мы его создаем
                 if(actors.get(actorId) == null){
                     actors.put(actorId, films);
-                    films.get(filmsId).getActors().add(actorName);
-                }
-                // если нам попался существующий актер, который снимался и в других фильмах
-                // то мы его добавляем в Map <filmsId, film>
-                 if(actors.get(actorId).get(filmsId) == null){
-                    actors.get(actorId).put(filmsId,films.get(filmsId));
-                     films.get(filmsId).getActors().add(actorName);
+                    Actor newActor = new Actor.Builder()
+                            .id(actorId)
+                            .actor_name(actorName)
+                            .build();
+                    films.get(filmsId).getActors().add(newActor);
                 }
             }
 
@@ -182,7 +169,7 @@ public class FilmsNamedJdbcTemplateDaoImpl implements FilmsDao {
         }
     };
 
-     public Film find(int id) {
+    public Film find(int id) {
         Map<String, Object> params= new HashMap<String,Object>();
         params.put("id",id);
         List<Film> movies = namedJdbcTemplate.query(SQL_SELECT_FILM_BY_ID,params,resultSetExtractor);
@@ -233,42 +220,42 @@ public class FilmsNamedJdbcTemplateDaoImpl implements FilmsDao {
         Number generetedId = holder.getKey();
         int idFilm = generetedId.intValue();
         // создаем актеров:
-        List<String> actors = film.getActors();
+        List<Actor> actors = film.getActors();
         saveActors(actors,idFilm);
         // создаем жанры:
-        List<String> genres = film.getGenres();
+        List<Genre> genres = film.getGenres();
         saveGenre(genres,idFilm);
         return idFilm;
     }
 
-    private void saveGenre(List<String> genres,int id_film){
-         Map<String, Object> param = new HashMap<>();
-         param.put("id_film", id_film);
+    private void saveGenre(List<Genre> genres,int id_film){
+        Map<String, Object> param = new HashMap<>();
+        param.put("id_film", id_film);
 
-         for(int i = 0; i < genres.size(); i++){
-             param.put("genre",genres.get(i));
-             namedJdbcTemplate.update(SQL_INSER_GENRE,param);
-         }
+        for(int i = 0; i < genres.size(); i++){
+            param.put("genre",genres.get(i).getGenre());
+            namedJdbcTemplate.update(SQL_INSER_GENRE,param);
+        }
     }
 
-    private void saveActors(List<String> actors, int id_film){
-            Map<String,Object> param = new HashMap<>();
-            param.put("id_film",id_film);
+    private void saveActors(List<Actor> actors, int id_film){
+        Map<String,Object> param = new HashMap<>();
+        param.put("id_film",id_film);
 
-           for(int i = 0; i < actors.size(); i ++){
-                param.put("actor_name", actors.get(i));
-                namedJdbcTemplate.update(SQL_INSER_ACTORS,param);
-           }
+        for(int i = 0; i < actors.size(); i ++){
+            param.put("actor_name", actors.get(i).getActorName());
+            namedJdbcTemplate.update(SQL_INSER_ACTORS,param);
         }
+    }
 
-    private void updateActorsByIdFilm(List<String> actors, int id_films){
+    private void updateActorsByIdFilm(List<Actor> actors, int id_film){
         //если стринг будет из 2х актеров, когда в таблице значений 3, то последний не изменится
         //по этому удаляем всех актеров по id фильма и записываем новые данные.
-        deleteActorsByIdFilm(id_films);
-        saveActors(actors,id_films);
+        deleteActorsByIdFilm(id_film);
+        saveActors(actors,id_film);
 
     }
-    private void updateGenreByIdFilm(List<String> genres, int idFilm){
+    private void updateGenreByIdFilm(List<Genre> genres, int idFilm){
         deleteGenreByIdFilm(idFilm);
         saveGenre(genres,idFilm);
     }
@@ -298,9 +285,9 @@ public class FilmsNamedJdbcTemplateDaoImpl implements FilmsDao {
         params.put("description" , film.getDescription());
         params.put("picture" , film.getPicture());
         namedJdbcTemplate.update(SQL_UPDATE_FILM_BY_ID,params);
-        List<String> actors = film.getActors();
+        List<Actor> actors = film.getActors();
         updateActorsByIdFilm(actors, id_film);
-        List<String> genre = film.getGenres();
+        List<Genre> genre = film.getGenres();
         updateGenreByIdFilm(genre,id_film);
 
     }

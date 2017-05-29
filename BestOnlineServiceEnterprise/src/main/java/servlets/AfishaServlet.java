@@ -1,6 +1,8 @@
 package servlets;
 
+import models.Actor;
 import models.Film;
+import models.Genre;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
@@ -32,7 +34,7 @@ public class AfishaServlet extends HttpServlet{
         super.init();
        GenericXmlApplicationContext context = new  GenericXmlApplicationContext();
        ConfigurableEnvironment environment = context.getEnvironment();
-       environment.addActiveProfile("heroku");
+       environment.addActiveProfile("dev");
        context.load("ru.itis\\spring\\context.xml");
        context.refresh();
         afishaService = context.getBean(AfishaService.class);
@@ -80,26 +82,33 @@ public class AfishaServlet extends HttpServlet{
 
         String actorsAsArray[] = actors.split(",");
         String genresAsArray[] = genres.split(",");
-        List<String> genresAsList = new ArrayList<>();
-        List<String> actorsAsList = new ArrayList<>();
+        List<Genre> genresAsList = new ArrayList<>();
+        List<Actor> actorsAsList = new ArrayList<>();
         for(int i = 0; i < actorsAsArray.length; i ++){
-            actorsAsList.add(actorsAsArray[i]);
+            Actor newActor = new Actor.Builder()
+                    .actor_name(actorsAsArray[i])
+                    .build();
+            actorsAsList.add(newActor);
         }
         for(int i = 0; i < genresAsArray.length; i ++){
-            genresAsList.add(genresAsArray[i]);
+            Genre newGenre = new Genre.Builder()
+                    .genre(genresAsArray[i])
+                    .build();
+            genresAsList.add(newGenre);
         }
         Film film = new Film.Builder()
                 .name(name)
                 .releaseDate(releaseDate)
-                .actors(actorsAsList)
                 .country(country)
                 .producer(producer)
                 .lasting(Integer.parseInt(lasting))
                 .description(description)
+                .actors(actorsAsList)
                 .genre(genresAsList)
                 .build();
 
-        afishaService.register(film);
+         afishaService.register(film);
+
         req.setAttribute("films", afishaService.findAll());
         req.getRequestDispatcher("/jsp/films.jsp").forward(req,resp);
 
