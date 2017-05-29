@@ -1,6 +1,7 @@
-package dao;
+package ru.itis.dao.impl;
 
-import models.Product;
+import ru.itis.dao.ProductDao;
+import ru.itis.models.Product;
 
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,23 +19,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.sun.xml.internal.ws.policy.sourcemodel.wspolicy.XmlToken.Name;
 import static javax.swing.UIManager.get;
 
 /**
  * Created by Марат on 10.05.2017.
  */
-public class ProductJdbcTemplate implements ProductDao {
+public class ProductDaoJdbcImpl implements ProductDao {
 
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedJdbcTemplate;
 
-    public ProductJdbcTemplate(DataSource dataSource) {
+    public ProductDaoJdbcImpl(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
         this.namedJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
     //language=SQL
-    private final String SQL_SELECT_ALL = "SELECT * FROM Product";
+    private final String SQL_SELECT_ALL = "SELECT * FROM PRODUCT";
     //language=SQL
     private final String SQL_SELECT_PRODUCT_BY_ID = "SELECT * FROM PRODUCT WHERE id = id";
 
@@ -49,6 +49,10 @@ public class ProductJdbcTemplate implements ProductDao {
 
     //language=SQL
     private final String SQL_SELECT_PRODUCT_BY_PRICE = "SELECT * FROM PRODUCT WHERE price = ?";
+
+    //language=SQL
+    private final String SQL_SELECT_PRODUCT_BY_NAME_AND_PRICE = "SELECT * FROM PRODUCT " +
+            "WHERE name = :name AND price = :price";
 
 
     //language=SQL
@@ -141,6 +145,14 @@ public class ProductJdbcTemplate implements ProductDao {
             params.put("Price", price);
             return namedJdbcTemplate.query(SQL_SELECT_PRODUCT_BY_PRICE, params, productRowMapper);
         }
+
+
+    public List<Product> findAllProductsByNameAndPrice(String name, int price) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("name", name);
+        params.put("price", price);
+        return namedJdbcTemplate.query(SQL_SELECT_PRODUCT_BY_NAME_AND_PRICE, params, productRowMapper);
+    }
 
     }
 

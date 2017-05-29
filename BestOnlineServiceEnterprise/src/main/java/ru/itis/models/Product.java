@@ -1,4 +1,4 @@
-package models;
+package ru.itis.models;
 
 
 /**
@@ -95,10 +95,6 @@ public class Product {
 
     public String getDateRelease() {
         return dateRelease;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
     }
 
     public int getPrice() {

@@ -1,7 +1,7 @@
-package test;
+package ru.itis.test;
 
-import dao.ProductJdbcTemplate;
-import models.Product;
+import ru.itis.dao.impl.ProductDaoJdbcImpl;
+import ru.itis.models.Product;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +19,9 @@ import static junit.framework.TestCase.assertEquals;
 /**
  * Created by Marat on 23.05.2017.
  */
-public class ProductNamedJdbcTemplateDaoImplTest  {
+public class ProductJdbcTemplateDaoImplTest {
     @Autowired
-    private ProductJdbcTemplate ProductDao;
+    private ProductDaoJdbcImpl ProductDao;
     private final int PRODUCT_ID_6 = 6;
     private final String Name = "Book_Name";
     private final String manufacturer = "Zavod";
@@ -67,10 +67,10 @@ public class ProductNamedJdbcTemplateDaoImplTest  {
     public void setUp() throws Exception {
         GenericXmlApplicationContext context = new  GenericXmlApplicationContext();
         ConfigurableEnvironment environment = context.getEnvironment();
-        environment.addActiveProfile("test");
+        environment.addActiveProfile("ru/itis/test");
         context.load("ru.itis\\spring\\context.xml");
         context.refresh();
-        ProductDao = context.getBean(ProductJdbcTemplate.class);
+        ProductDao = context.getBean(ProductDaoJdbcImpl.class);
 
     }
 

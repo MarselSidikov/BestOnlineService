@@ -1,6 +1,6 @@
-package dao;
+package ru.itis.dao;
 
-import models.Product;
+import ru.itis.models.Product;
 
 import java.util.List;
 
@@ -12,4 +12,5 @@ public interface ProductDao extends BaseDao<Product>{
     List<Product> findByManufacturer(String manufacturer);
     List<Product> findByDateRelease(String dateRelease);
     List<Product> findByPrice(int price);
+    List<Product> findAllProductsByNameAndPrice(String name, int price);
 }

@@ -1,7 +1,7 @@
-package dao;
+package ru.itis.dao;
 
 import java.util.List;
-import models.Product;
+
 /**
  * 04.05.2017
  * BaseDao

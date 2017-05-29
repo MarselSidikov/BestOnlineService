@@ -1,11 +1,11 @@
-package services;
+package ru.itis.models;
 
 /**
  * 06.05.2017
- * BooksService
+ * Profile
  *
  * @author Sidikov Marsel (First Software Engineering Platform)
  * @version v1.0
  */
-public interface BooksService {
+public class Profile {
 }
