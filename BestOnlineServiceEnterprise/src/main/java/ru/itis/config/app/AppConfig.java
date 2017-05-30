@@ -16,6 +16,7 @@ import javax.sql.DataSource;
 @Configuration
 @ComponentScan("java")
 @PropertySource("java/db.properties")
+
 public class AppConfig {
 
     @Autowired

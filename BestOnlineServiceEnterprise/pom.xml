@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ru.itis</groupId>
-    <artifactId>best-online-service</artifactId>
+    <artifactId>web-jdbc-example</artifactId>
     <version>0.1</version>
     <build>
         <plugins>
