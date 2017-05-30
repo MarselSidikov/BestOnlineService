@@ -62,7 +62,8 @@ public class AfishaServlet extends HttpServlet{
         } else if(actors_name != null){
             request.setAttribute("films",afishaService.findByActors(actors_name));
         }else{
-            request.setAttribute("films",afishaService.findAll());
+            List<Film> films = afishaService.findAll();
+            request.setAttribute("films",films);
         }
 
         request.getRequestDispatcher("/jsp/films.jsp").forward(request,response);
@@ -109,7 +110,8 @@ public class AfishaServlet extends HttpServlet{
 
          afishaService.register(film);
 
-        req.setAttribute("films", afishaService.findAll());
+        List<Film> films = afishaService.findAll();
+        req.setAttribute("films", films);
         req.getRequestDispatcher("/jsp/films.jsp").forward(req,resp);
 
     }

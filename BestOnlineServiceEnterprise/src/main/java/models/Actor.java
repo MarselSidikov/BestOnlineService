@@ -10,23 +10,30 @@ package models;
 public class Actor {
     private int id;
     private String actorName;
-    public Actor(Builder builder){
+
+    public Actor(Builder builder) {
         this.id = builder.id;
         this.actorName = builder.actorName;
     }
-    public static class Builder{
+
+    public Actor() {
+    }
+
+    public static class Builder {
         private int id;
         private String actorName;
 
-        public Builder id(int id){
+        public Builder id(int id) {
             this.id = id;
             return this;
         }
-        public Builder actor_name(String actorName){
+
+        public Builder actor_name(String actorName) {
             this.actorName = actorName;
             return this;
         }
-        public Actor build(){
+
+        public Actor build() {
             return new Actor(this);
         }
     }
