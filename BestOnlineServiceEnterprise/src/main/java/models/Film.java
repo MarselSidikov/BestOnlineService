@@ -12,12 +12,12 @@ public class Film {
     private int id;
     private String name;
     private String releaseDate;
-    private List <String> genres;
+    private List <Genre> genres;
     private String country;
     private String producer;
     private int lasting;
     private String description;
-    private List <String> actors;
+    private List <Actor> actors;
     private String picture;
 
 
@@ -39,12 +39,12 @@ public class Film {
         private int id;
         private String name;
         private String releaseDate;
-        private List<String> genre;
+        private List<Genre> genre;
         private String country;
         private String producer;
         private int lasting;
         private String description;
-        private List<String> actors;
+        private List<Actor> actors;
         private String picture;
 
         public Builder id(int id){
@@ -59,7 +59,7 @@ public class Film {
             this.releaseDate = releaseDate;
             return this;
         }
-        public Builder genre(List<String> genre){
+        public Builder genre(List<Genre> genre){
             this.genre = genre;
             return this;
         }
@@ -79,7 +79,7 @@ public class Film {
             this.description = description;
             return this;
         }
-        public Builder actors(List<String> actors){
+        public Builder actors(List<Actor> actors){
             this.actors = actors;
             return this;
         }
@@ -108,7 +108,7 @@ public class Film {
         return releaseDate;
     }
 
-    public List<String> getGenres() {
+    public List<Genre> getGenres() {
         return genres;
     }
 
@@ -128,7 +128,7 @@ public class Film {
         return description;
     }
 
-    public List<String> getActors() {
+    public List<Actor> getActors() {
         return actors;
     }
 
